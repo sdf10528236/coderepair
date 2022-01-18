@@ -120,4 +120,4 @@ if __name__ == '__main__':
         # print(cur_line_str)
 
     print(df)
-    df.to_csv("printf_test.csv", encoding='utf-8', index=False)
+    df.to_csv("../data/printf_test2.csv", encoding='utf-8', index=False)
