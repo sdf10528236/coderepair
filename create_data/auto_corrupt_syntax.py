@@ -8,7 +8,7 @@ import pandas as pd
 DEBUG_MODE = 0  # 1
 
 
-def creat_printf(numbers, number_of_strings):
+def creat_printf(numbers, number_of_strings):  # 產生printf("字串")程式碼
     cur_line_str = []
     for i in range(numbers):
         cur_line_str.append("printf(\""+"".join(random.choice(string.ascii_letters)
@@ -20,12 +20,13 @@ def creat_printf(numbers, number_of_strings):
 def auto_corrupt_printf(cur_line_str):
 
     positions = [m.span()for m in regex.finditer(
-        '^printf', cur_line_str)]  # 找到首位printf字串
+        '^printf', cur_line_str)]  # 找到首位printf字串位置
 
     to_corrupt = np.random.choice(
         positions[0][1]-positions[0][0], p=[0.1, 0.15, 0.15, 0.15, 0.15, 0.3])  # 依照p概率選擇要刪除printf當中的某字元
 
     cur_line_str = cur_line_str[:to_corrupt] + cur_line_str[to_corrupt+1:]
+
     return cur_line_str
 
 
@@ -66,8 +67,10 @@ def auto_corrupt_syntax(cur_line_str):
     while(len(positions) == 0):
         _action = _actions[np.random.randint(
             len(_actions))]  # 隨機選擇__actions
-        if DEBUG_MODE:
+
+        if DEBUG_MODE:  # 除錯用
             print("action picked:", _action)
+
         _patt = __action_pattern_map[_action]
 
         positions = [m.span()
@@ -82,10 +85,6 @@ def auto_corrupt_syntax(cur_line_str):
                 to_corrupt = 0
             # print("")
             # print(cur_line_str)
-            # print(_patt)
-            # print(_patt[0])
-
-            # print(positions)
 
             cur_line_str = cur_line_str[:positions[to_corrupt][0]] + \
                 _patt[1] + cur_line_str[positions[to_corrupt][1]:]
@@ -102,8 +101,9 @@ if __name__ == '__main__':
     }
     df = pd.DataFrame(data)
 
-    numbers = 1000
+    numbers = 1000  # 產生多少printf("字串")
 
+    # creat_printf(產生多少printf("字串"), 字串要幾個字元(1~n))
     cur_line_str = creat_printf(numbers, 20)
 
     actions = {0: auto_corrupt_printf, 1: auto_corrupt_syntax}
