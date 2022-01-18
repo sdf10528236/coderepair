@@ -23,7 +23,7 @@ def auto_corrupt_printf(cur_line_str):
         '^printf', cur_line_str)]  # 找到首位printf字串
 
     to_corrupt = np.random.choice(
-        positions[0][1]-positions[0][0], p=[0.1, 0.15, 0.15, 0.15, 0.15, 0.3])  # 依照p概率刪除printf當中某字元
+        positions[0][1]-positions[0][0], p=[0.1, 0.15, 0.15, 0.15, 0.15, 0.3])  # 依照p概率選擇要刪除printf當中的某字元
 
     cur_line_str = cur_line_str[:to_corrupt] + cur_line_str[to_corrupt+1:]
     return cur_line_str
