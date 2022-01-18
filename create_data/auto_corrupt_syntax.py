@@ -1,11 +1,9 @@
-from turtle import position
 import numpy as np
 import regex
-import re
 import string
 import random
 import pandas as pd
-DEBUG_MODE = 0  # 1
+DEBUG_MODE = 0  # 1 (除錯用)
 
 
 def creat_printf(numbers, number_of_strings):  # 產生printf("字串")程式碼
