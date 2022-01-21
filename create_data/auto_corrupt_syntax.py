@@ -6,7 +6,7 @@ import pandas as pd
 DEBUG_MODE = 0  # 1 (除錯用)
 
 
-def creat_printf(numbers, number_of_strings):  # 產生printf("字串")程式碼
+def creat_printf(numbers, number_of_strings=20):  # 產生printf("字串")程式碼
     cur_line_str = []
     for i in range(numbers):
         cur_line_str.append("printf(\""+"".join(random.choice(string.ascii_letters)
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     numbers = 1000  # 產生多少printf("字串")
 
     # creat_printf(產生多少printf("字串"), 字串要幾個字元(1~n))
-    cur_line_str = creat_printf(numbers, 20)
+    cur_line_str = creat_printf(numbers)
 
     actions = {0: auto_corrupt_printf, 1: auto_corrupt_syntax}
 
@@ -118,4 +118,4 @@ if __name__ == '__main__':
         # print(cur_line_str)
 
     print(df)
-    df.to_csv("../data/printf_test.csv", encoding='utf-8', index=False)
+    #df.to_csv("../data/printf_test.csv", encoding='utf-8', index=False)
