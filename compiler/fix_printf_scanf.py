@@ -73,4 +73,3 @@ if __name__ == '__main__':
                 line_column = line_column+1
         with open(f"../data/correct_data/c{filename}", "w") as f:
             f.write(file_data)
-        line_column = 1
