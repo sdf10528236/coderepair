@@ -214,7 +214,7 @@ if __name__ == '__main__':
     printf_position_list = []
     scanf_position_list = []
 
-    for base in folderList:
+    for base in folderList[:1]:
         path = folder_path + base + "/" + "correct"
         fileList = os.listdir(path)
         for file in fileList:
@@ -269,7 +269,7 @@ if __name__ == '__main__':
             print(positions)
             to_corrupt = cur_line_str_wrong[positions[0]:positions[1]]
 
-            corrupt = actions[np.random.randint(0, 2)](
+            corrupt = actions[np.random.randint(1, 2)](
                 to_corrupt)  # 隨機選擇actions
 
             cur_line_str_wrong = cur_line_str_wrong[:positions[0]

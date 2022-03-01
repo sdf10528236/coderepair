@@ -12,11 +12,12 @@ OUTPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!"
 
 
-max_input_length = 34
-max_output_length = 30
+max_input_length = 52
+max_output_length = 50
 
 
 def create_model():
+
     encoder_embedding_size = 32
     decoder_embedding_size = 32
     lstm_units = 128
@@ -46,6 +47,7 @@ def create_model():
     optimizer = keras.optimizers.Nadam()
     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
                   metrics=["accuracy"])
+
     return model
 
 
@@ -87,7 +89,7 @@ def convert_date_strs(date_strs):
 sos_id = len(OUTPUT_CHARS) + 1
 
 
-def predict_date_strs(date_strs):
+def predict_date_strs(date_strs, model):
     X = prepare_date_strs_padded(date_strs)
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     for index in range(max_output_length):
@@ -100,12 +102,10 @@ def predict_date_strs(date_strs):
 
 
 if __name__ == '__main__':
-    print(tf.version.VERSION)
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
     latest = 'cp.ckpt'
     model = create_model()
-    model.summary()
+    problem = 'printf(%d", score[j]);'
     model.load_weights(latest)
-    df = pd.read_csv("../data/printf_codinghere01.csv")
-    print([df['wrong'][15], df['wrong'][2100]])
-    print(predict_date_strs(['print("%d ",score[j];', df['wrong'][2100]]))
+    ans = predict_date_strs([problem], model)[0]
+    print(problem)
+    print(ans)

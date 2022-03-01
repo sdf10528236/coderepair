@@ -27,12 +27,12 @@ def fix_str(old_file, new_file, printf_fix_line, scanf_fix_line):
 def run_compiler(path):
     p = subprocess.run(
         ["D:/Program Files/CodeBlocks/MinGW/bin/gcc.exe", path], capture_output=True)
-    print(p.stderr.decode("utf-8"))
+    # print(p.stderr.decode("utf-8"))
     warning_text = p.stderr.decode("utf-8").splitlines()
     return warning_text
 
 
-def str_warning(warning_text):
+def str_warning(filename, warning_text):
     printf_fix_line = {}
     scanf_fix_line = {}
     for text in warning_text:
@@ -48,20 +48,28 @@ def str_warning(warning_text):
                     position_end = p[i][0]
                     string = text[position_start:position_end]
                     if SequenceMatcher(None, "printf", string).ratio() > 0.7:
-                        column = [m.span()
-                                  for m in regex.finditer(":", text)]
+                        colon_positions = [m.span()
+                                           for m in regex.finditer(":", text)]  # 冒號位置
+                        colume_start = [m.span()
+                                        for m in regex.finditer(f"{filename}:", text)]
+                        column_end = min((i[0] for i in colon_positions if i[0] >
+                                          colume_start[0][1]), key=lambda x: abs(x - colume_start[0][1]))
 
-                        column_line = text[column[0][1]:column[1][0]]
+                        column_line = text[colume_start[0][1]:column_end]
 
                         if column_line not in printf_fix_line:
 
                             printf_fix_line[column_line] = string
 
                     elif SequenceMatcher(None, "scanf", string).ratio() > 0.7:
-                        column = [m.span()
-                                  for m in regex.finditer(":", text)]
+                        colon_positions = [m.span()
+                                           for m in regex.finditer(":", text)]  # 冒號位置
+                        colume_start = [m.span()
+                                        for m in regex.finditer(f"{filename}:", text)]
+                        column_end = min((i[0] for i in colon_positions if i[0] >
+                                          colume_start[0][1]), key=lambda x: abs(x - colume_start[0][1]))
 
-                        column_line = text[column[0][1]:column[1][0]]
+                        column_line = text[colume_start[0][1]:column_end]
 
                         # print(text)
                         if column_line not in scanf_fix_line:
@@ -71,18 +79,20 @@ def str_warning(warning_text):
     return printf_fix_line, scanf_fix_line
 
 
+def auto_fix_str(file_path, filename):
+    warning_text = run_compiler(file_path)
+
+    printf_fix_line, scanf_fix_line = str_warning(filename, warning_text)
+
+    fix_str(file_path,
+            file_path, printf_fix_line, scanf_fix_line)
+
+
 if __name__ == '__main__':
+    filename = 'c1.c'
+    folder_path = f'D:/program projects/coderepair/data/correct_data/{filename}'
 
-    file_path = 'D:/program projects/coderepair/data/wrong_data/'
-    fileList = os.listdir(file_path)
-    for file in fileList:
-        filename = file
-        warning_text = run_compiler(f"../data/wrong_data/{filename}")
-
-        printf_fix_line, scanf_fix_line = str_warning(warning_text)
-
-        fix_str(f"../data/wrong_data/{filename}",
-                f"../data/correct_data/c{filename}", printf_fix_line, scanf_fix_line)
+    auto_fix_str(folder_path, filename)
 
     # file_path = 'D:/program projects/coderepair/data/correct_data/'
     # fileList = os.listdir(file_path)
