@@ -5,16 +5,9 @@ from difflib import SequenceMatcher
 import regex
 if __name__ == '__main__':
 
-    filename = "CodeTest"
-
-    line_column = 1
-    file_data = ""
-    with open(f"{filename}.c", "r") as f:
-
-        for line in f:
-            print(line.split())
-            file_data += line
-
-            line_column = line_column+1
-
-    line_column = 1
+    folder_path = 'D:/program projects/coderepair/data/codinghere_data/BASE001/erroneous/c-0b7PJJ-80575p.c'
+    df = pd.read_csv('../data/test.csv')
+    filename = "c1.c"
+    p = subprocess.run(
+        ["D:/Program Files/CodeBlocks/MinGW/bin/gcc.exe", filename], capture_output=True)
+    print(p.stderr.decode("utf-8"))

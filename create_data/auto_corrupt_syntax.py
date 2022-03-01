@@ -122,7 +122,7 @@ def auto_corrupt_printf(cur_line_str):
             len(positions))]  # 隨機選取printf行首字位置
 
         to_corrupt = np.random.choice(
-            printf_position[1]-printf_position[0], p=[0.05, 0.1, 0.1, 0.1, 0.1, 0.55])  # 依照p概率選擇要刪除printf當中的某字元
+            printf_position[1]-printf_position[0], p=[0.03, 0.08, 0.08, 0.08, 0.08, 0.65])  # 依照p概率選擇要刪除printf當中的某字元
 
         cur_line_str = cur_line_str[:to_corrupt] + cur_line_str[to_corrupt+1:]
         # print(cur_line_str)
