@@ -26,9 +26,10 @@ def fix_str(old_file, new_file, printf_fix_line, scanf_fix_line):
 
 def run_compiler(path):
     p = subprocess.run(
-        ["D:/Program Files/CodeBlocks/MinGW/bin/gcc.exe", path], capture_output=True)
+        ["gcc", path], capture_output=True)
     # print(p.stderr.decode("utf-8"))
     warning_text = p.stderr.decode("utf-8").splitlines()
+    #print(p.stderr.decode("utf-8"))
     return warning_text
 
 
@@ -36,9 +37,10 @@ def str_warning(filename, warning_text):
     printf_fix_line = {}
     scanf_fix_line = {}
     for text in warning_text:
-
-        p = [m.span()for m in regex.finditer('\'', text)]
-
+        text = text.replace("‘","\'")
+        text = text.replace("’","\'")
+        p = [m.span()for m in regex.finditer("\'", text)]
+        
         if len(p) != 0:
             for i in range(len(p)):
 
@@ -47,6 +49,8 @@ def str_warning(filename, warning_text):
                 else:
                     position_end = p[i][0]
                     string = text[position_start:position_end]
+                    
+                    
                     if SequenceMatcher(None, "printf", string).ratio() > 0.7:
                         colon_positions = [m.span()
                                            for m in regex.finditer(":", text)]  # 冒號位置
@@ -90,7 +94,7 @@ def auto_fix_str(file_path, filename):
 
 if __name__ == '__main__':
     filename = 'c1.c'
-    folder_path = f'D:/program projects/coderepair/data/correct_data/{filename}'
+    folder_path = f'../data/correct_data/{filename}'
 
     auto_fix_str(folder_path, filename)
 

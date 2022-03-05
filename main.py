@@ -4,8 +4,8 @@ from compiler.compiler_mesg import compiler_mesg
 
 if __name__ == '__main__':
 
-    filename = "c1.c"
-    folder_path = f'D:/program projects/coderepair/data/correct_data/{filename}'
+    filename = "c6.c"
+    folder_path = f'data/correct_data/{filename}'
     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     print(compiler_mesg(folder_path))
     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n")

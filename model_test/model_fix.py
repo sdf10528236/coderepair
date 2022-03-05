@@ -4,9 +4,10 @@ import subprocess
 import pandas as pd
 from model_test.model01 import create_model, predict_date_strs
 import os
+folder = os.path.dirname(os.path.abspath(__file__))
+latest = f'{folder}/cp.ckpt'
 
-
-def run_compiler(filepath, compiler_path="D:/Program Files/CodeBlocks/MinGW/bin/gcc.exe"):
+def run_compiler(filepath, compiler_path="gcc"):
     p = subprocess.run(
         [compiler_path, filepath], capture_output=True)
 
@@ -24,11 +25,9 @@ def column_fix(old_file, new_file, column):
                 printf_positions = [m.span()
                                     for m in regex.finditer('printf', line)]
                 if(len(printf_positions) > 0):
-                    # print(printf_positions)
-                    # print(line[printf_positions[0][0]:])
-                    # print(len(line[printf_positions[0][0]:]))
-                    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-                    latest = 'D:/program projects/coderepair/model_test/cp.ckpt'
+                    
+                    
+                    
                     model = create_model()
                     model.load_weights(latest)
                     fix_line = predict_date_strs(
@@ -72,7 +71,7 @@ def auto_model_fix(folder_path, filename):
 
 
 if __name__ == '__main__':
-
+   
     filename = "c1.c"
-    folder_path = f'D:/program projects/coderepair/data/correct_data/{filename}'
+    folder_path = f'../data/correct_data/{filename}'
     auto_model_fix(folder_path, filename)

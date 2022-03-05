@@ -165,7 +165,6 @@ def auto_corrupt_syntax(cur_line_str):
         'duplicate[': ("\[", "[ ["),
         'duplicate]': ("\]", "] ]"),
         'replace;with,': (";", ","),
-        'replace,with;': (",", ";"),
         'replace;with.': (";", "."),
         'replace);with;)': ("\) ;", "; )"),
     }

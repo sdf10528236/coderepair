@@ -27,9 +27,10 @@ def find_printf(cur_line_str):
 
 if __name__ == '__main__':
 
-    folder_path = 'D:/program projects/coderepair/data/codinghere_data/'
+    folder_path = '/home/laz/Program/coderepair/data/codinghere_data/'
     folderList = os.listdir(folder_path)
-
+    folderList.sort()
+    #print(folderList)
     cnt = 0
     data = {
         "correct": [],
@@ -41,12 +42,14 @@ if __name__ == '__main__':
     for base in folderList:
         path = folder_path + base + "/" + "correct"
         fileList = os.listdir(path)
+        fileList.sort()
         for file in fileList:
             filepath = path + "/" + file
+            #print(filepath)
             f = open(filepath)
             try:
                 cur_line_strs.append(f.read())
-                # print(cur_line_strs)
+                print(len(cur_line_strs))
             except:
                 continue
 
@@ -64,11 +67,11 @@ if __name__ == '__main__':
                     'No', cur_line_str[start:end])]
                 if(len(special01) == 0 and len(special02) == 0):
                     cur_line_str_correct = cur_line_str[start:end]
-                    # print(cur_line_str_correct)
+                    #print(cur_line_str_correct)
                 else:
                     continue
 
-            for i in range(random.randint(5, 20)):
+            for i in range(random.randint(10, 30)):
                 cur_line_str_wrong = cur_line_str_correct
                 for i in range(random.randint(1, 3)):
                     cur_line_str_wrong = auto_corrupt_syntax(
@@ -87,5 +90,7 @@ if __name__ == '__main__':
                 cnt = cnt+1
 
     print(df)
+    df = df.sample(frac=1).reset_index(drop = True)
+    print(df)
     df.to_csv("../data/printf_codinghere01.csv",
-              encoding='utf-8', index=False)
+             encoding='utf-8', index=False)

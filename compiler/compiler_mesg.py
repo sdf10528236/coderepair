@@ -6,13 +6,13 @@ import pandas as pd
 import os
 
 
-def compiler_mesg(filepath, compiler_path="D:/Program Files/CodeBlocks/MinGW/bin/gcc.exe"):
+def compiler_mesg(filepath, compiler_path="gcc"):
     p = subprocess.run(
         [compiler_path, filepath], capture_output=True)
     return p.stderr.decode("utf-8")
 
 
-def run_compiler(filepath, compiler_path="D:/Program Files/CodeBlocks/MinGW/bin/gcc.exe"):
+def run_compiler(filepath, compiler_path="gcc"):
     p = subprocess.run(
         [compiler_path, filepath], capture_output=True)
 
