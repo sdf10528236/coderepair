@@ -98,14 +98,4 @@ if __name__ == '__main__':
 
     auto_fix_str(folder_path, filename)
 
-    # file_path = 'D:/program projects/coderepair/data/correct_data/'
-    # fileList = os.listdir(file_path)
-    # for file in fileList:
-    #     filename = file
-    #     for i in range(5):
-    #         warning_text = run_compiler(f"../data/correct_data/{filename}")
-
-    #         printf_fix_line, scanf_fix_line = str_warning(warning_text)
-
-    #         fix_str(f"../data/correct_data/{filename}",
-    #                 f"../data/correct_data/{filename}", printf_fix_line, scanf_fix_line)
+    
