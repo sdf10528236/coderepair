@@ -6,15 +6,12 @@ from tensorflow import keras
 import os
 
 INPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!"
+    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
 
 OUTPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!"
-
-
-max_input_length = 52
-max_output_length = 50
-
+    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
+    
+sos_id = len(OUTPUT_CHARS) + 1
 
 def create_model():
 
@@ -85,8 +82,13 @@ def convert_date_strs(date_strs):
     ids = np.argmax(pids, axis=2)
     return ids_to_date_strs(ids)
 
+def shifted_output_sequences(Y):
+    sos_tokens = tf.fill(dims=(len(Y), 1), value=sos_id)
+    #print(Y)
+    #print("sos=",sos_tokens)
+    #print(tf.concat([sos_tokens, Y[:, :-1]], axis=1))
+    return tf.concat([sos_tokens, Y[:, :-1]], axis=1)
 
-sos_id = len(OUTPUT_CHARS) + 1
 
 
 def predict_date_strs(date_strs, model):
@@ -101,11 +103,80 @@ def predict_date_strs(date_strs, model):
     return ids_to_date_strs(Y_pred[:, 1:])
 
 
+
 if __name__ == '__main__':
-    latest = 'cp.ckpt'
-    model = create_model()
-    problem = 'printf(%d", score[j]);'
-    model.load_weights(latest)
-    ans = predict_date_strs([problem], model)[0]
-    print(problem)
-    print(ans)
+    df = pd.read_csv('../data/printf.csv')
+    
+
+
+
+    X_train, Y_train = create_dataset(df['wrong'][0:40000], df['correct'][0:40000])
+    X_valid, Y_valid = create_dataset(df['wrong'][40000:45000], df['correct'][40000:45000])
+    X_test, Y_test = create_dataset(df['wrong'][45000:50000], df['correct'][45000:50000])
+
+    max_input_length = X_train.shape[1]
+    
+
+    X_train_decoder = shifted_output_sequences(Y_train)
+    X_valid_decoder = shifted_output_sequences(Y_valid)
+    x_test_decoder = shifted_output_sequences(Y_test)
+
+
+
+    
+    max_output_length = Y_train.shape[1]
+
+    ################################################
+
+    checkpoint_path = "training_2/cp-{epoch:04d}.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+
+
+
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path, 
+        verbose=1, 
+        save_weights_only=True,
+        save_freq = 'epoch' )
+
+    ################################################
+    encoder_embedding_size = 32
+    decoder_embedding_size = 32
+    lstm_units = 128
+
+    np.random.seed(42)
+    tf.random.set_seed(42)
+
+    encoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
+    encoder_embedding = keras.layers.Embedding(
+        input_dim=len(INPUT_CHARS) + 1,
+        output_dim=encoder_embedding_size)(encoder_input)
+    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
+        lstm_units, return_state=True)(encoder_embedding)
+    encoder_state = [encoder_state_h, encoder_state_c]
+
+    decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
+    decoder_embedding = keras.layers.Embedding(
+        input_dim=len(OUTPUT_CHARS) + 2,
+        output_dim=decoder_embedding_size)(decoder_input)
+    decoder_lstm_output = keras.layers.LSTM(lstm_units, return_sequences=True)(
+        decoder_embedding, initial_state=encoder_state)
+    decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
+                                        activation="softmax")(decoder_lstm_output)
+
+
+
+    model = keras.models.Model(inputs=[encoder_input, decoder_input],
+                            outputs=[decoder_output])
+
+
+
+    optimizer = keras.optimizers.Nadam()
+    model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
+                metrics=["accuracy"])
+    #################################################
+    model.save_weights(checkpoint_path.format(epoch=0))
+    #################################################
+
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=10,  callbacks=[cp_callback], 
+                        validation_data=([X_valid, X_valid_decoder], Y_valid))
