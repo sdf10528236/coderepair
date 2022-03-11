@@ -1,9 +1,24 @@
 import numpy as np
 import pandas as pd
 import string
+
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 import tensorflow as tf
 from tensorflow import keras
 import os
+
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+  # Restrict TensorFlow to only use the first GPU
+  try:
+    tf.config.set_visible_devices(gpus[0], 'GPU')
+    logical_gpus = tf.config.list_logical_devices('GPU')
+    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+  except RuntimeError as e:
+    # Visible devices must be set before GPUs have been initialized
+    print(e)
 
 INPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
@@ -13,49 +28,22 @@ OUTPUT_CHARS = "".join(
     
 sos_id = len(OUTPUT_CHARS) + 1
 
-def create_model():
-
-    encoder_embedding_size = 32
-    decoder_embedding_size = 32
-    lstm_units = 128
-
-    np.random.seed(42)
-    tf.random.set_seed(42)
-
-    encoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
-    encoder_embedding = keras.layers.Embedding(
-        input_dim=len(INPUT_CHARS) + 1,
-        output_dim=encoder_embedding_size)(encoder_input)
-    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
-        lstm_units, return_state=True)(encoder_embedding)
-    encoder_state = [encoder_state_h, encoder_state_c]
-
-    decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
-    decoder_embedding = keras.layers.Embedding(
-        input_dim=len(OUTPUT_CHARS) + 2,
-        output_dim=decoder_embedding_size)(decoder_input)
-    decoder_lstm_output = keras.layers.LSTM(lstm_units, return_sequences=True)(
-        decoder_embedding, initial_state=encoder_state)
-    decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
-                                        activation="softmax")(decoder_lstm_output)
-    model = keras.models.Model(inputs=[encoder_input, decoder_input],
-                               outputs=[decoder_output])
-
-    optimizer = keras.optimizers.Nadam()
-    model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
-                  metrics=["accuracy"])
-
-    return model
-
-
 def data_str_to_ids(date_str, chars):
 
-    return[chars.index(c) for c in date_str]
+    return [1+chars.index(c) for c in date_str]
 
 
 def prepare_date_strs(data_strs, chars=INPUT_CHARS):
     X_ids = [data_str_to_ids(dt, chars) for dt in data_strs]
+    xlen = max(len(x) for x in X_ids)
+    y = []
+    for i in range(len(X_ids)):
+        y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
+
+    return np.array(y)
+    print("Before ragged")
     X = tf.ragged.constant(X_ids, ragged_rank=1)
+    print("After ragged")
     return (X + 1).to_tensor()  # using 0 as the padding token ID
 
 
@@ -83,11 +71,14 @@ def convert_date_strs(date_strs):
     return ids_to_date_strs(ids)
 
 def shifted_output_sequences(Y):
-    sos_tokens = tf.fill(dims=(len(Y), 1), value=sos_id)
+    Yshift = np.ones(Y.shape) * sos_id
+    Yshift[:,1:] = Y[:,:-1]
+    return Yshift
+    # sos_tokens = tf.fill(dims=(len(Y), 1), value=sos_id)
     #print(Y)
     #print("sos=",sos_tokens)
     #print(tf.concat([sos_tokens, Y[:, :-1]], axis=1))
-    return tf.concat([sos_tokens, Y[:, :-1]], axis=1)
+    # return tf.concat([sos_tokens, Y[:, :-1]], axis=1)
 
 
 
@@ -117,7 +108,9 @@ if __name__ == '__main__':
     max_input_length = X_train.shape[1]
     
 
+    print(Y_train.shape)
     X_train_decoder = shifted_output_sequences(Y_train)
+    print(X_train_decoder.shape)
     X_valid_decoder = shifted_output_sequences(Y_valid)
     x_test_decoder = shifted_output_sequences(Y_test)
 
