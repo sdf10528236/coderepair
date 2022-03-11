@@ -41,10 +41,6 @@ def prepare_date_strs(data_strs, chars=INPUT_CHARS):
         y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
 
     return np.array(y)
-    print("Before ragged")
-    X = tf.ragged.constant(X_ids, ragged_rank=1)
-    print("After ragged")
-    return (X + 1).to_tensor()  # using 0 as the padding token ID
 
 
 def create_dataset(x, y):
@@ -108,9 +104,7 @@ if __name__ == '__main__':
     max_input_length = X_train.shape[1]
     
 
-    print(Y_train.shape)
     X_train_decoder = shifted_output_sequences(Y_train)
-    print(X_train_decoder.shape)
     X_valid_decoder = shifted_output_sequences(Y_valid)
     x_test_decoder = shifted_output_sequences(Y_test)
 
