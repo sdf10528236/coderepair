@@ -97,9 +97,9 @@ if __name__ == '__main__':
 
 
 
-    X_train, Y_train = create_dataset(df['wrong'][0:40000], df['correct'][0:40000])
-    X_valid, Y_valid = create_dataset(df['wrong'][40000:45000], df['correct'][40000:45000])
-    X_test, Y_test = create_dataset(df['wrong'][45000:50000], df['correct'][45000:50000])
+    X_train, Y_train = create_dataset(df['wrong'][0:120000], df['correct'][0:120000])
+    X_valid, Y_valid = create_dataset(df['wrong'][120000:135000], df['correct'][120000:135000])
+    X_test, Y_test = create_dataset(df['wrong'][135000:150000], df['correct'][135000:150000])
 
     max_input_length = X_train.shape[1]
     
