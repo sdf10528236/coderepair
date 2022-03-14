@@ -89,8 +89,8 @@ if __name__ == '__main__':
                 print(cnt)
                 cnt = cnt+1
 
+    #print(df)
+    #df = df.sample(frac=1).reset_index(drop = True)
     print(df)
-    df = df.sample(frac=1).reset_index(drop = True)
-    print(df)
-    df.to_csv("../data/printf_codinghere01.csv",
+    df.to_csv("../data/printf_codinghere_noShuffle.csv",
              encoding='utf-8', index=False)
