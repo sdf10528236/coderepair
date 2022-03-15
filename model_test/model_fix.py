@@ -7,8 +7,7 @@ import numpy as np
 import tensorflow as tf 
 from tensorflow import keras
 import os
-folder = os.path.dirname(os.path.abspath(__file__))
-latest = f'{folder}/cp.ckpt'
+
 INPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
 
@@ -160,7 +159,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_2/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_noSuffle/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     print(latest)
@@ -168,11 +167,11 @@ if __name__ == '__main__':
 
     model = create_model()
     model.load_weights(latest)
-    df = pd.read_csv('../data/printf.csv')
+    df = pd.read_csv('../data/printf_codinghere_noShuffle.csv')
     
-    X_train, Y_train = create_dataset(df['wrong'][0:120000], df['correct'][0:120000])
-    X_valid, Y_valid = create_dataset(df['wrong'][120000:135000], df['correct'][120000:135000])
-    X_test, Y_test = create_dataset(df['wrong'][135000:150000], df['correct'][135000:150000])
+    X_train, Y_train = create_dataset(df['wrong'][0:100000], df['correct'][0:100000])
+    X_valid, Y_valid = create_dataset(df['wrong'][100000:125000], df['correct'][100000:125000])
+    X_test, Y_test = create_dataset(df['wrong'][125000:150000], df['correct'][125000:150000])
 
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]

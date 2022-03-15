@@ -92,14 +92,14 @@ def predict_date_strs(date_strs, model):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../data/printf.csv')
+    df = pd.read_csv('../data/printf_codinghere_Shuffle.csv')
     
 
 
 
-    X_train, Y_train = create_dataset(df['wrong'][0:120000], df['correct'][0:120000])
-    X_valid, Y_valid = create_dataset(df['wrong'][120000:135000], df['correct'][120000:135000])
-    X_test, Y_test = create_dataset(df['wrong'][135000:150000], df['correct'][135000:150000])
+    X_train, Y_train = create_dataset(df['wrong'][0:100000], df['correct'][0:100000])
+    X_valid, Y_valid = create_dataset(df['wrong'][100000:125000], df['correct'][100000:125000])
+    X_test, Y_test = create_dataset(df['wrong'][125000:150000], df['correct'][125000:150000])
 
     max_input_length = X_train.shape[1]
     
@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     ################################################
 
-    checkpoint_path = "training_2/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_Shuffle/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
 
@@ -165,5 +165,5 @@ if __name__ == '__main__':
     model.save_weights(checkpoint_path.format(epoch=0))
     #################################################
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=10,  callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=20,  callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
