@@ -4,3 +4,4 @@ create_data/printf.py
 model_test/training_*
 
 data/
+a.out
