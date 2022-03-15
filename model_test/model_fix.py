@@ -159,7 +159,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_noSuffle/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_noS_15000/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     print(latest)
@@ -169,9 +169,9 @@ if __name__ == '__main__':
     model.load_weights(latest)
     df = pd.read_csv('../data/printf_codinghere_noShuffle.csv')
     
-    X_train, Y_train = create_dataset(df['wrong'][0:100000], df['correct'][0:100000])
-    X_valid, Y_valid = create_dataset(df['wrong'][100000:125000], df['correct'][100000:125000])
-    X_test, Y_test = create_dataset(df['wrong'][125000:150000], df['correct'][125000:150000])
+    X_train, Y_train = create_dataset(df['wrong'][0:10000], df['correct'][0:10000])
+    X_valid, Y_valid = create_dataset(df['wrong'][10000:12500], df['correct'][10000:12500])
+    X_test, Y_test = create_dataset(df['wrong'][12500:15000], df['correct'][12500:15000])
 
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]
