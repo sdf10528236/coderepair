@@ -29,8 +29,8 @@ def run_compiler(args): #filepath, compiler_path="gcc"):
             result = compile_file(os.path.join(args.idir, file))
             print (result)
             column = find_column(result,file)
-            find_printf_line(os.path.join(args.idir, file),column)
-            
+            if find_printf_line(os.path.join(args.idir, file),column):
+                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
 
 
 def find_printf_line(file,column):
@@ -51,12 +51,15 @@ def find_printf_line(file,column):
                     fix_line = line[printf_positions[0][0]:]
                     print(fix_line)
 
-                    check_printf_error(fix_line)
+                    return check_printf_error(fix_line)
+                        
+       
 
             
 
             line_column = line_column+1
         #print(file_data)
+    return 0    
             
 def check_printf_error(line):
     file_data ='''
@@ -69,7 +72,7 @@ def check_printf_error(line):
         }'''
 
 
-    print(file_data)
+    #print(file_data)
     file_name = "test/temp.c"
     with open(file_name, "w") as f:
         f.write(file_data)
@@ -82,10 +85,14 @@ def check_printf_error(line):
                                for m in regex.finditer("undeclared", text)]
             if(len(undeclared_p)):
                 print(text)
+                return 0
             else:
                 print("!!!!!!!!!!!!!!!!!!!!")
                 print(text)
                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                return 1
+
+    return 0
               
 
         
