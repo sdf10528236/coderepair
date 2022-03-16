@@ -1,4 +1,7 @@
+from inspect import ismethoddescriptor
 import os
+import shutil
+
 
 if __name__ == '__main__':
 
@@ -6,24 +9,20 @@ if __name__ == '__main__':
     folderList = os.listdir(folder_path)
     folderList.sort()
     #print(folderList)
-    cnt = 0
-    data = {
-        "correct": [],
-        "wrong": [],
-    }
-    df = pd.DataFrame(data)
-    cur_line_strs = []
+    sum = 0
+    
 
     for base in folderList:
-        path = folder_path + base + "/" + "correct"
+        path = folder_path + base + "/" + "erroneous"
         fileList = os.listdir(path)
         fileList.sort()
+        
         for file in fileList:
             filepath = path + "/" + file
-            #print(filepath)
-            f = open(filepath)
-            try:
-                cur_line_strs.append(f.read())
-                print(len(cur_line_strs))
-            except:
-                continue
+            
+            
+            #shutil.copyfile(f'{filepath }',f'npdata/{file}')  #複製並移動檔案
+    
+
+    all_list = os.listdir('/home/laz/Program/coderepair/compiler/pdata')
+    print(len(all_list))
