@@ -21,8 +21,8 @@ if __name__ == '__main__':
             filepath = path + "/" + file
             
             
-            #shutil.copyfile(f'{filepath }',f'npdata/{file}')  #複製並移動檔案
+            shutil.copyfile(f'{filepath }',f'npdata/{file}')  #複製並移動檔案
     
 
-    all_list = os.listdir('/home/laz/Program/coderepair/compiler/pdata')
-    print(len(all_list))
+    # all_list = os.listdir('/home/laz/Program/coderepair/compiler/pdata')
+    # print(len(all_list))

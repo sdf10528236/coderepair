@@ -5,7 +5,8 @@ code = '''
 #include <stdio.h>
 int main()
 {
-    printf("Hello")
+    int n = 2;
+    printf(%d", n);
     return 0;
 }
 '''
