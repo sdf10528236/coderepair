@@ -135,7 +135,7 @@ if __name__ == '__main__':
     #             cnt = cnt+1
 
     #----------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(10, 0)
+    cur_line_strs = creat_printf(2000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(0, 4))    #printf("%d",a);
@@ -161,7 +161,7 @@ if __name__ == '__main__':
 
 
     #--------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(10, 0)
+    cur_line_strs = creat_printf(20, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_word(          #printf("hello");
             cur_line_strs[i])
@@ -185,7 +185,7 @@ if __name__ == '__main__':
             print(cnt)
             cnt = cnt+1
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(10)               #printf("sdfsdgqw");
+    cur_line_strs = creat_printf(2000)               #printf("sdfsdgqw");
     
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str
@@ -214,5 +214,5 @@ if __name__ == '__main__':
     #print(df)
     #df = df.sample(frac=1).reset_index(drop = True)
     print(df)
-    df.to_csv("../data/printf02.csv",
+    df.to_csv("../data/printf03.csv",
              encoding='utf-8', index=False)
