@@ -2,6 +2,10 @@ import random
 import string
 import random
 import regex
+import pandas as pd
+import numpy as np
+from auto_corrupt_syntax import auto_corrupt_syntax, auto_corrupt_printf
+
 def printf_add_word(cur_line_str):
     WORDS = ("python", "good", "easy", "difficult", "Hello world!", "hello")
     word = random.choice(WORDS)
@@ -9,13 +13,14 @@ def printf_add_word(cur_line_str):
                  for m in regex.finditer("\"", cur_line_str)]
     
     to_corrupt = positions[0]  # 第一個"的地方
-    cur_line_str = cur_line_str[:to_corrupt[0]+1]+"\""+word+cur_line_str[to_corrupt[0]+1:]
+    cur_line_str = cur_line_str[:to_corrupt[0]+1]+word+cur_line_str[to_corrupt[0]+1:]
     print(cur_line_str)
+    return cur_line_str
 
 
 def printf_add_parameter(cur_line_str, numbers):
-    format_placeholder = ["d", "f", "s", "c"]
-    
+    #format_placeholder = ["d", "f", "s", "c"]
+    format_placeholder = ["d"]
 
     positions = [m.span()
                  for m in regex.finditer("\"", cur_line_str)]
@@ -26,7 +31,7 @@ def printf_add_parameter(cur_line_str, numbers):
 
     for i in range(numbers):
         cur_line_str = cur_line_str + \
-            " %" + random.choice(format_placeholder)
+            " %" + format_placeholder[0]
 
     cur_line_str = cur_line_str + "\""
     for i in range(numbers):
@@ -46,14 +51,90 @@ def creat_printf(numbers, number_of_strings=10):  # 產生printf("字串")程式
     return cur_line_str
 
 
-if __name__ == '__main__':
 
-    cur_line_strs = creat_printf(100, 0)
-    print(len(cur_line_strs))
+if __name__ == '__main__':
+    cnt = 1
+    data = {
+        "correct": [],
+        "wrong": [],
+    }
+    df = pd.DataFrame(data)
+    cur_line_strs = []
+    cur_line_strs = creat_printf(200, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
-            cur_line_strs[i], random.randint(1, 4))
-        
-        # cur_line_strs[i] = printf_add_word(
-        #     cur_line_strs[i])
-    print(cur_line_strs)
+            cur_line_strs[i], random.randint(1, 4))    #printf("%d",a);
+    for cur_line_str in cur_line_strs:
+        cur_line_str_correct = cur_line_str
+        for i in range(random.randint(5, 20)):
+            cur_line_str_wrong = cur_line_str_correct
+            for i in range(random.randint(1, 2)):
+                cur_line_str_wrong = auto_corrupt_syntax(
+                    cur_line_str_wrong)
+            corrupt_printf = np.random.choice(
+                2, p=[0.6, 0.4])  # 依照概率選擇是否corrupt_printf字串
+            if corrupt_printf:
+                cur_line_str_wrong = auto_corrupt_printf(
+                    cur_line_str_wrong)
+
+            df = df.append({
+                "correct": cur_line_str_correct,
+                "wrong": cur_line_str_wrong,
+            }, ignore_index=True)
+            print(cnt)
+            cnt = cnt+1
+
+
+    #--------------------------------------------------------------------------------------------
+    cur_line_strs = creat_printf(20, 0)
+    for i in range(len(cur_line_strs)):
+        cur_line_strs[i] = printf_add_word(          #printf("hello");
+            cur_line_strs[i])
+    for cur_line_str in cur_line_strs:
+        cur_line_str_correct = cur_line_str
+        for i in range(random.randint(5, 20)):
+            cur_line_str_wrong = cur_line_str_correct
+            for i in range(random.randint(1, 2)):
+                cur_line_str_wrong = auto_corrupt_syntax(
+                    cur_line_str_wrong)
+            corrupt_printf = np.random.choice(
+                2, p=[0.6, 0.4])  # 依照概率選擇是否corrupt_printf字串
+            if corrupt_printf:
+                cur_line_str_wrong = auto_corrupt_printf(
+                    cur_line_str_wrong)
+
+            df = df.append({
+                "correct": cur_line_str_correct,
+                "wrong": cur_line_str_wrong,
+            }, ignore_index=True)
+            print(cnt)
+            cnt = cnt+1
+    #--------------------------------------------------------------------------------------------------------------------
+    cur_line_strs = creat_printf(200)               #printf("sdfsdgqw");
+    
+    for cur_line_str in cur_line_strs:
+        cur_line_str_correct = cur_line_str
+        for i in range(random.randint(5, 20)):
+            cur_line_str_wrong = cur_line_str_correct
+            for i in range(random.randint(1, 2)):
+                cur_line_str_wrong = auto_corrupt_syntax(
+                    cur_line_str_wrong)
+            corrupt_printf = np.random.choice(
+                2, p=[0.6, 0.4])  # 依照概率選擇是否corrupt_printf字串
+            if corrupt_printf:
+                cur_line_str_wrong = auto_corrupt_printf(
+                    cur_line_str_wrong)
+
+            df = df.append({
+                "correct": cur_line_str_correct,
+                "wrong": cur_line_str_wrong,
+            }, ignore_index=True)
+            print(cnt)
+            cnt = cnt+1
+
+    #--------------------------------------------------------------------------------------------------------------------
+
+    print(df)
+    df.to_csv("../data/printf04.csv",
+             encoding='utf-8', index=False)
+

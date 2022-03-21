@@ -6,7 +6,7 @@ if __name__ == '__main__':
     df = pd.concat(
     (pd.read_csv(file, usecols=['correct','wrong'], dtype={ 'name': str, 'tweet':str}) for file in files), ignore_index=True)
     
-    #df = df.sample(frac=1).reset_index(drop = True)
+    df = df.sample(frac=1).reset_index(drop = True)
     print(df)
-    df.to_csv("../data/printf_Shuffle.csv",
+    df.to_csv("../data/printf_all.csv",
              encoding='utf-8', index=False)
