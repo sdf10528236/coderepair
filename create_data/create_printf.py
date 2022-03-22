@@ -7,7 +7,7 @@ import numpy as np
 from auto_corrupt_syntax import auto_corrupt_syntax, auto_corrupt_printf
 
 def printf_add_word(cur_line_str):
-    WORDS = ("python", "good", "easy", "difficult", "Hello world!", "hello")
+    WORDS = ("python", "good", "easy", "difficult", "Hello world!", "hello", "nice", "hard")
     word = random.choice(WORDS)
     positions = [m.span()
                  for m in regex.finditer("\"", cur_line_str)]
@@ -19,8 +19,8 @@ def printf_add_word(cur_line_str):
 
 
 def printf_add_parameter(cur_line_str, numbers):
-    #format_placeholder = ["d", "f", "s", "c"]
-    format_placeholder = ["d"]
+    format_placeholder = ["d", "f", "s", "c"]
+    format_placeholder = random.choice(format_placeholder)
 
     positions = [m.span()
                  for m in regex.finditer("\"", cur_line_str)]
@@ -31,7 +31,7 @@ def printf_add_parameter(cur_line_str, numbers):
 
     for i in range(numbers):
         cur_line_str = cur_line_str + \
-            " %" + format_placeholder[0]
+            " %" + format_placeholder
 
     cur_line_str = cur_line_str + "\""
     for i in range(numbers):
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     }
     df = pd.DataFrame(data)
     cur_line_strs = []
-    cur_line_strs = creat_printf(200, 0)
+    cur_line_strs = creat_printf(2000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 4))    #printf("%d",a);
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             print(cnt)
             cnt = cnt+1
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(200)               #printf("sdfsdgqw");
+    cur_line_strs = creat_printf(2000)               #printf("sdfsdgqw");
     
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str
