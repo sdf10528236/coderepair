@@ -60,7 +60,7 @@ if __name__ == '__main__':
     }
     df = pd.DataFrame(data)
     cur_line_strs = []
-    cur_line_strs = creat_printf(2000, 0)
+    cur_line_strs = creat_printf(3000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 3))    #printf("%d",a);
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             print(cnt)
             cnt = cnt+1
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(2500)               #printf("sdfsdgqw");
+    cur_line_strs = creat_printf(3000)               #printf("sdfsdgqw");
     
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str
