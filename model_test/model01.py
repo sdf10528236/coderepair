@@ -97,9 +97,9 @@ if __name__ == '__main__':
 
 
 
-    X_train, Y_train = create_dataset(df['wrong'][0:160000], df['correct'][0:160000])
-    X_valid, Y_valid = create_dataset(df['wrong'][160000:180000], df['correct'][160000:180000])
-    X_test, Y_test = create_dataset(df['wrong'][180000:202743 ], df['correct'][180000:202743 ])
+    X_train, Y_train = create_dataset(df['wrong'][0:220000], df['correct'][0:220000])
+    X_valid, Y_valid = create_dataset(df['wrong'][220000:260000], df['correct'][220000:260000])
+    X_test, Y_test = create_dataset(df['wrong'][260000:300000 ], df['correct'][260000:300000 ])
 
     max_input_length = X_train.shape[1]
     
@@ -115,7 +115,7 @@ if __name__ == '__main__':
 
     ################################################
 
-    checkpoint_path = "training_Shuffle/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_all/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
 
