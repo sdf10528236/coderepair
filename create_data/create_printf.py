@@ -19,7 +19,7 @@ def printf_add_word(cur_line_str):
 
 
 def printf_add_parameter(cur_line_str, numbers):
-    format_placeholder = ["d", "f", "s", "c"]
+    format_placeholder = ["d", "f", "s", "c","lf"]
     format_placeholder = random.choice(format_placeholder)
 
     positions = [m.span()
@@ -36,7 +36,7 @@ def printf_add_parameter(cur_line_str, numbers):
     cur_line_str = cur_line_str + "\""
     for i in range(numbers):
         cur_line_str = cur_line_str + ", "+"".join(random.choice(
-            string.ascii_letters.lower()) for _ in range(random.randint(0, 3))) 
+            string.ascii_letters.lower())for _ in range(random.randint(1, 3)) ) 
     cur_line_str = cur_line_str + ");"
     print(cur_line_str)
     return cur_line_str
@@ -45,7 +45,7 @@ def printf_add_parameter(cur_line_str, numbers):
 def creat_printf(numbers, number_of_strings=10):  # 產生printf("字串")程式碼
     cur_line_str = []
     for i in range(numbers):
-        cur_line_str.append("printf(\""+"".join(random.choice(string.ascii_letters.lower())
+        cur_line_str.append("printf(\""+"".join(random.choice(string.ascii_letters)
                                                 for _ in range(random.randint(0, number_of_strings)))+"\");")
 
     return cur_line_str
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     }
     df = pd.DataFrame(data)
     cur_line_strs = []
-    cur_line_strs = creat_printf(3000, 0)
+    cur_line_strs = creat_printf(30, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 3))    #printf("%d",a);
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             print(cnt)
             cnt = cnt+1
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(3000)               #printf("sdfsdgqw");
+    cur_line_strs = creat_printf(30)               #printf("sdfsdgqw");
     
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str
