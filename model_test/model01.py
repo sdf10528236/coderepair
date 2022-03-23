@@ -92,14 +92,14 @@ def predict_date_strs(date_strs, model):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../data/printf_codinghere_Shuffle.csv')
+    df = pd.read_csv('../data/printf_all.csv')
     
 
 
 
-    X_train, Y_train = create_dataset(df['wrong'][0:100000], df['correct'][0:100000])
-    X_valid, Y_valid = create_dataset(df['wrong'][100000:125000], df['correct'][100000:125000])
-    X_test, Y_test = create_dataset(df['wrong'][125000:150000], df['correct'][125000:150000])
+    X_train, Y_train = create_dataset(df['wrong'][0:160000], df['correct'][0:160000])
+    X_valid, Y_valid = create_dataset(df['wrong'][160000:180000], df['correct'][160000:180000])
+    X_test, Y_test = create_dataset(df['wrong'][180000:202743 ], df['correct'][180000:202743 ])
 
     max_input_length = X_train.shape[1]
     
