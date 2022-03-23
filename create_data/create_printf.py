@@ -7,7 +7,7 @@ import numpy as np
 from auto_corrupt_syntax import auto_corrupt_syntax, auto_corrupt_printf
 
 def printf_add_word(cur_line_str):
-    WORDS = ("python", "good", "easy", "difficult", "Hello world!", "hello", "nice", "hard", "Yes", "No", "Error", "I can do it!", "\n", "This and this are the same string in Python.")
+    WORDS = ("python", "good", "difficult", "Hello world!", "hello", "nice", "Yes", "No", "Error", "I can do it!", "\n", "This and this are the same string in Python.")
     word = random.choice(WORDS)
     positions = [m.span()
                  for m in regex.finditer("\"", cur_line_str)]
