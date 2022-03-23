@@ -3,11 +3,11 @@ import urllib.parse
 
 code = '''
 #include <stdio.h>
+
 int main()
 {
-    int n = 2;
-    printf(%d", n);
-    return 0;
+	printf("This" and 'this' are the same string in Python.\n);
+	return 0;
 }
 '''
 

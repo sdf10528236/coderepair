@@ -7,7 +7,7 @@ import numpy as np
 from auto_corrupt_syntax import auto_corrupt_syntax, auto_corrupt_printf
 
 def printf_add_word(cur_line_str):
-    WORDS = ("python", "good", "easy", "difficult", "Hello world!", "hello", "nice", "hard", "Yes", "No", "Error", "I can do it!", "\n")
+    WORDS = ("python", "good", "easy", "difficult", "Hello world!", "hello", "nice", "hard", "Yes", "No", "Error", "I can do it!", "\n", "This and this are the same string in Python.")
     word = random.choice(WORDS)
     positions = [m.span()
                  for m in regex.finditer("\"", cur_line_str)]
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     }
     df = pd.DataFrame(data)
     cur_line_strs = []
-    cur_line_strs = creat_printf(3000, 0)
+    cur_line_strs = creat_printf(6000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 4))    #printf("%d",a);
@@ -86,13 +86,13 @@ if __name__ == '__main__':
 
 
     #--------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(30, 0)
+    cur_line_strs = creat_printf(60, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_word(          #printf("hello");
             cur_line_strs[i])
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str
-        for i in range(random.randint(5, 20)):
+        for i in range(random.randint(5, 10)):
             cur_line_str_wrong = cur_line_str_correct
             for i in range(random.randint(1, 2)):
                 cur_line_str_wrong = auto_corrupt_syntax(
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             print(cnt)
             cnt = cnt+1
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(3000)               #printf("sdfsdgqw");
+    cur_line_strs = creat_printf(6000)               #printf("sdfsdgqw");
     
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str

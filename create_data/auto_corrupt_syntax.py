@@ -157,9 +157,8 @@ def auto_corrupt_syntax(cur_line_str):
         'delete>': (">", ""),
         'delete>': ("&", ""),
         'delete>': ("\*", ""),
-        'duplicate(': ("\(", "( ("),
-        'duplicate)': ("\)", ") )"),
-        'duplicate,': (",", ", ,"),
+        
+        
         'duplicate{': ("\{", "{ {"),
         'duplicate}': ("\}", "} }"),
         'duplicate[': ("\[", "[ ["),
@@ -168,6 +167,10 @@ def auto_corrupt_syntax(cur_line_str):
         'replace;with.': (";", "."),
         'replace);with;)': ("\) ;", "; )"),
     }
+
+    #'duplicate(': ("\(", "( ("),
+    #'duplicate)': ("\)", ") )"),
+    #'duplicate,': (",", ", ,"),
     _actions = list(__action_pattern_map.keys())
 
     positions = {}
