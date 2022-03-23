@@ -4,8 +4,7 @@
 int main()
 {
 
-    int a=2;
-	printf(" %d" a);                      
+    printf("A 95")         
 		
     return 0;
 }
