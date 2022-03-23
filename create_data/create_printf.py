@@ -119,7 +119,7 @@ if __name__ == '__main__':
             cnt = cnt+1
 
     #--------------------------------------------------------------------------------------------------------------------
-
+    df = df.sample(frac=1).reset_index(drop = True)
     print(df)
     df.to_csv("../data/printf_autocreate.csv",
              encoding='utf-8', index=False)
