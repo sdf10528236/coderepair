@@ -2,7 +2,8 @@ import pandas as pd
 
 
 if __name__ == '__main__':
-    files = ['../data/printf_autocreate.csv','../data/printf02.csv']
+    files = ['../data/printf_autocreate.csv','../data/printf_codinghere_Shuffle.csv']
+    
     df = pd.concat(
     (pd.read_csv(file, usecols=['correct','wrong'], dtype={ 'name': str, 'tweet':str}) for file in files), ignore_index=True)
     
