@@ -169,11 +169,11 @@ if __name__ == '__main__':
     model.load_weights(latest)
     df = pd.read_csv('../data/printf_all.csv')
     
-    X_train, Y_train = create_dataset(df['wrong'][0:220000], df['correct'][0:220000])
-    X_valid, Y_valid = create_dataset(df['wrong'][220000:260000], df['correct'][220000:260000])
-    X_test, Y_test = create_dataset(df['wrong'][260000:300000 ], df['correct'][260000:300000 ])
+    X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
+    X_valid, Y_valid = create_dataset(df['wrong'][60000:80000], df['correct'][60000:80000])
+    X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
 
-    
+
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]
 

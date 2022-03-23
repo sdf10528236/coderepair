@@ -3,8 +3,9 @@
 
 int main()
 {
-
-    printf("A 95")         
+    int a;
+    a=2;
+    printf("%d",a)         
 		
     return 0;
 }
