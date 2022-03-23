@@ -227,8 +227,7 @@ if __name__ == '__main__':
             except:
                 cur_line_str = cur_line_str
 
-    actions = {0: auto_corrupt_syntax,
-               1: auto_corrupt_kw_typo}
+    actions = {0: auto_corrupt_syntax}
 
     for cur_line_str in cur_line_str:
 

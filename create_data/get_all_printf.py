@@ -73,16 +73,12 @@ if __name__ == '__main__':
                 else:
                     continue
 
-            for i in range(random.randint(5, 20)):
+            for i in range(random.randint(5, 10)):
                 cur_line_str_wrong = cur_line_str_correct
-                for i in range(random.randint(1, 3)):
+                for i in range(random.randint(1, 2)):
                     cur_line_str_wrong = auto_corrupt_syntax(
                         cur_line_str_wrong)
-                corrupt_printf = np.random.choice(
-                    2, p=[0.6, 0.4])  # 依照概率選擇是否corrupt_printf字串
-                if corrupt_printf:
-                    cur_line_str_wrong = auto_corrupt_printf(
-                        cur_line_str_wrong)
+                
 
                 df = df.append({
                     "correct": cur_line_str_correct,
@@ -99,5 +95,5 @@ if __name__ == '__main__':
     print(df)
     df = df.sample(frac=1).reset_index(drop = True)
     print(df)
-    df.to_csv("../data/printf03.csv",
+    df.to_csv("../data/printf_codinghere_Shuffle.csv",
              encoding='utf-8', index=False)
