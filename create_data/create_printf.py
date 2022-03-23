@@ -92,7 +92,7 @@ if __name__ == '__main__':
             cur_line_strs[i])
     for cur_line_str in cur_line_strs:
         cur_line_str_correct = cur_line_str
-        for i in range(random.randint(5, 10)):
+        for i in range(random.randint(5, 20)):
             cur_line_str_wrong = cur_line_str_correct
             for i in range(random.randint(1, 2)):
                 cur_line_str_wrong = auto_corrupt_syntax(
