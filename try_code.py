@@ -6,9 +6,10 @@ code = '''
 
 int main()
 {
-	printf("This" and 'this' are the same string in Python.\n);
+	printf("The program uses 34%% CPU resource.")ㄤ
 	return 0;
 }
+
 '''
 
 data = {

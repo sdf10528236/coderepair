@@ -127,7 +127,7 @@ def find_column(warning_text, filename):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Check files by using compiler')
+    parser = argparse.ArgumentParser(description='Check printf_error files and copy to pdata')
 
     parser.add_argument('-i', '--idir', type=str, help='path to the input directory')
     parser.add_argument('-f', '--file', type=str, help='file to be processed')
