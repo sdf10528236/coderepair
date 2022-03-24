@@ -3,9 +3,8 @@
 
 int main()
 {
-    int a;
-    a=2;
-    printf("%d",a)         
+    
+   printf("I can do it!")
 		
     return 0;
 }

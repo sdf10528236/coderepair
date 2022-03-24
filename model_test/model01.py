@@ -92,7 +92,7 @@ def predict_date_strs(date_strs, model):
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../data/printf_all.csv')
+    df = pd.read_csv('../data/printf_autocreate.csv')
     
 
 
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
     ################################################
 
-    checkpoint_path = "training_all/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
 
