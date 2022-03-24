@@ -6,31 +6,10 @@ code = '''
 
 int main()
 {   
-    int x[5][5], y[5][5];
-   int a, b;
-   for(a=0;a<5;a++)
-   {
-       for(b=0;b<5;b++)
-       {
-           scanf("%d", &x[a][b]);
-       }
-   }
-   for(a=0;a<5;a++)
-   {
-       for(b=0;b<5;b++)
-       {
-           y[b][a]=x[a][b];
-       }
-   }
-   for(a=0;a<5;a++)
-   {
-       for(b=0;b<5;b++)
-       {
-           printf(" %2d", y[b][a]);
-       }
-	   printf("\n")
-   }
-    return 0;
+   	int x,y;
+	print("2/5=%.2f",2/5);
+	return 0;
+
 }
 
 
