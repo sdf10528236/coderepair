@@ -22,15 +22,28 @@ def run_compiler(args): #filepath, compiler_path="gcc"):
     if args.file:
         result = compile_file(args.file)
         print(result)
+        print(args.file)
+        if str_warning(result):
+            shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
+        column = find_column(result,args.file)
+        if find_printf_line(args.file,column):
+            
+            shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
+
         
     elif args.idir:
         for file in get_dir_files(args.idir):
             print(file)
             result = compile_file(os.path.join(args.idir, file))
             print (result)
+            if str_warning(result):
+                
+                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
             column = find_column(result,file)
             if find_printf_line(os.path.join(args.idir, file),column):
+                
                 shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
+
 
 
 def find_printf_line(file,column):
@@ -43,6 +56,7 @@ def find_printf_line(file,column):
             if str(line_column) in column:
                 printf_positions = [m.span()
                                     for m in regex.finditer('printf', line)]
+                print(printf_positions)
                 if(len(printf_positions) > 0):
                     
                     
@@ -125,6 +139,29 @@ def find_column(warning_text, filename):
     return column
    
 
+def str_warning(warning_text):
+    
+    for text in warning_text:
+        text = text.replace("‘","\'")
+        text = text.replace("’","\'")
+        p = [m.span()for m in regex.finditer("\'", text)]
+        
+        if len(p) != 0:
+            for i in range(len(p)):
+
+                if i % 2 == 0:
+                    position_start = p[i][1]
+                else:
+                    position_end = p[i][0]
+                    string = text[position_start:position_end]
+                    
+                    
+                    if SequenceMatcher(None, "printf", string).ratio() > 0.7:
+                        return 1
+
+                   
+
+    return 0
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Check printf_error files and copy to pdata')

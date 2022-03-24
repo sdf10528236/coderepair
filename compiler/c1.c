@@ -4,7 +4,7 @@
 int main()
 {
     
-   print("I can do it!")
+   prinf("I can do it!")
 		
     return 0;
 }
