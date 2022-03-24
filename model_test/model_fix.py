@@ -213,3 +213,5 @@ if __name__ == '__main__':
 
             line_column = line_column+1
         print(file_data)
+    with open("c1fix.c", "w") as f:
+        f.write(file_data)
