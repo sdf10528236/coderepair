@@ -202,15 +202,14 @@ if __name__ == '__main__':
                     model.load_weights(latest)
                     print(line[printf_positions[0][0]:])
                     wrong_str = line[printf_positions[0][0]:]
-                    fixed_str = predict_date_strs([wrong_str])[0]
-                    print(fixed_str)
-                    # fix_line = predict_date_strs(
-                    #     [line[printf_positions[0][0]:]], model)[0]
+                    fix_line = predict_date_strs([wrong_str])[0]
+                    print(fix_line)
+                    
 
-                    # line = line[:printf_positions[0][0]] + \
-                    #     fix_line + "\n"
+                    line = line[:printf_positions[0][0]] + \
+                        fix_line + "\n"
 
             file_data += line
 
             line_column = line_column+1
-        # print(file_data)
+        print(file_data)

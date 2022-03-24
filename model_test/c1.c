@@ -4,7 +4,8 @@
 int main()
 {
     
-   print("I can do it!")
+    printf("I can do it!\n;
+	return 0;
 		
-    return 0;
+    
 }
