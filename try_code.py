@@ -5,10 +5,34 @@ code = '''
 #include <stdio.h>
 
 int main()
-{
-	printf("The program uses 34%% CPU resource.")ㄤ
-	return 0;
+{   
+    int x[5][5], y[5][5];
+   int a, b;
+   for(a=0;a<5;a++)
+   {
+       for(b=0;b<5;b++)
+       {
+           scanf("%d", &x[a][b]);
+       }
+   }
+   for(a=0;a<5;a++)
+   {
+       for(b=0;b<5;b++)
+       {
+           y[b][a]=x[a][b];
+       }
+   }
+   for(a=0;a<5;a++)
+   {
+       for(b=0;b<5;b++)
+       {
+           printf(" %2d", y[b][a]);
+       }
+	   printf("\n")
+   }
+    return 0;
 }
+
 
 '''
 
