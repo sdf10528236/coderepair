@@ -34,6 +34,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
 
 def compile_file(file):
     p = subprocess.run(['gcc', file], capture_output=True)
+    print(p.stderr.decode("utf-8"))
     result = p.stderr.decode("utf-8").splitlines()
     return result
             

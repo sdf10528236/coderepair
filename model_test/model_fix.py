@@ -100,19 +100,27 @@ def column_fix(old_file, new_file, column):
 
 
 def find_column(warning_text, filename):
+    column = 0
     for text in warning_text:
-
+        
         p = [m.span()for m in regex.finditer('error', text)]
-        if(len(p) != 0):
+
+        if(len(p) > 0):
             # print(text)
             colon_positions = [m.span()
                                for m in regex.finditer(":", text)]  # 冒號位置
+            
             colume_start = [m.span()
                             for m in regex.finditer(f"{filename}:", text)]
-            column_end = min((i[0] for i in colon_positions if i[0] >
+            if len(colume_start)>0 :
+                column_end = min((i[0] for i in colon_positions if i[0] >
                               colume_start[0][1]), key=lambda x: abs(x - colume_start[0][1]))
-
-            column = text[colume_start[0][1]:column_end]
+          
+            
+                column = text[colume_start[0][1]:column_end]
+            else: 
+                column = 0
+            
             break
 
     return column
