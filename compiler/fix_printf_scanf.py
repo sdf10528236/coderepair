@@ -97,7 +97,7 @@ def auto_fix_str(file_path,new_file, filename):
 
 if __name__ == '__main__':
     filename = 'c1.c'
-    folder_path = f'../data/correct_data/{filename}'
+    folder_path = f'{filename}'
 
     auto_fix_str(folder_path, folder_path,filename)
 
