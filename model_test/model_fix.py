@@ -15,6 +15,8 @@ OUTPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
 sos_id = len(OUTPUT_CHARS) + 1
 
+
+
 def create_model():
     encoder_embedding_size = 32
     decoder_embedding_size = 32
@@ -63,7 +65,7 @@ def run_compiler(filepath, compiler_path="gcc"):
 def column_fix(old_file, new_file, column):
     line_column = 1
     file_data = ""
-    checkpoint_path = "training_2/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "/home/laz/Program/coderepair/model_test/training_autocreate/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     with open(old_file, "r") as f:
@@ -78,13 +80,17 @@ def column_fix(old_file, new_file, column):
                     
                     model = create_model()
                     model.load_weights(latest)
+                    print(line[printf_positions[0][0]:])
+                    wrong_str = line[printf_positions[0][0]:]
+                    try:
+                        fix_line = predict_date_strs([wrong_str])[0]
+                        print(fix_line)
                     
-                    fix_line = predict_date_strs(
-                        [line[printf_positions[0][0]:]], model)[0]
 
-                    line = line[:printf_positions[0][0]] + \
+                        line = line[:printf_positions[0][0]] + \
                         fix_line + "\n"
-
+                    except:
+                        line = line
             file_data += line
 
             line_column = line_column+1
@@ -112,15 +118,17 @@ def find_column(warning_text, filename):
     return column
 
 
-def auto_model_fix(folder_path, filename):
+def auto_model_fix(folder_path, new_folder,filename):
     warning_text = run_compiler(folder_path)
 
     column = find_column(warning_text, filename)
-    column_fix(folder_path, folder_path, column)
+    column_fix(folder_path, new_folder, column)
 
 def create_dataset(x, y):
 
     return prepare_date_strs(x, INPUT_CHARS), prepare_date_strs(y, OUTPUT_CHARS)
+
+
 
 def data_str_to_ids(date_str, chars):
 
@@ -146,6 +154,11 @@ def prepare_date_strs_padded(date_strs):
     return X
 
 def predict_date_strs(date_strs):
+    checkpoint_path = "/home/laz/Program/coderepair/model_test/training_autocreate/cp-{epoch:04d}.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+    latest = tf.train.latest_checkpoint(checkpoint_dir)
+    model = create_model()
+    model.load_weights(latest)
     X = prepare_date_strs_padded(date_strs)
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     for index in range(max_output_length):
@@ -156,62 +169,25 @@ def predict_date_strs(date_strs):
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
     return ids_to_date_strs(Y_pred[:, 1:])
 
+df = pd.read_csv('/home/laz/Program/coderepair/data/printf_autocreate.csv')
+
+
+X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
+X_valid, Y_valid = create_dataset(df['wrong'][60000:80000], df['correct'][60000:80000])
+X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
+
+
+max_input_length = X_train.shape[1]
+max_output_length = Y_train.shape[1]
+
+
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
-    checkpoint_dir = os.path.dirname(checkpoint_path)
-    latest = tf.train.latest_checkpoint(checkpoint_dir)
-    print(latest)
-
-
-    model = create_model()
-    model.load_weights(latest)
-    df = pd.read_csv('../data/printf_autocreate.csv')
+   
     
-    X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
-    X_valid, Y_valid = create_dataset(df['wrong'][60000:80000], df['correct'][60000:80000])
-    X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
-
-
-    max_input_length = X_train.shape[1]
-    max_output_length = Y_train.shape[1]
-
-    # print([df['wrong'][1410],df['wrong'][1611]])
-    # print(predict_date_strs([df['wrong'][1410],df['wrong'][1611]])) 
     filename = "c1.c"
     folder_path = f'{filename}'
     
 
-    warning_text = run_compiler(folder_path)
-
-    column = find_column(warning_text, filename)
-    file_data = ""
-    line_column = 1
-    with open(folder_path, "r") as f:
-
-        for line in f:
-            if str(line_column) == column:
-                printf_positions = [m.span()
-                                    for m in regex.finditer('printf', line)]
-                if(len(printf_positions) > 0):
-                    
-                    
-                    
-                    model = create_model()
-                    model.load_weights(latest)
-                    print(line[printf_positions[0][0]:])
-                    wrong_str = line[printf_positions[0][0]:]
-                    fix_line = predict_date_strs([wrong_str])[0]
-                    print(fix_line)
-                    
-
-                    line = line[:printf_positions[0][0]] + \
-                        fix_line + "\n"
-
-            file_data += line
-
-            line_column = line_column+1
-        print(file_data)
-    with open("c1fix.c", "w") as f:
-        f.write(file_data)
+    auto_model_fix(folder_path,"c1fix.c","c1.c")

@@ -8,6 +8,9 @@ import regex
 def fix_str(old_file, new_file, printf_fix_line, scanf_fix_line):
     line_column = 1
     file_data = ""
+    if (len(printf_fix_line) == 0  and len(scanf_fix_line)== 0 ):
+        print("no str error!")
+        return 0
     with open(old_file, "r") as f:
 
         for line in f:
@@ -83,19 +86,19 @@ def str_warning(filename, warning_text):
     return printf_fix_line, scanf_fix_line
 
 
-def auto_fix_str(file_path, filename):
+def auto_fix_str(file_path,new_file, filename):
     warning_text = run_compiler(file_path)
 
     printf_fix_line, scanf_fix_line = str_warning(filename, warning_text)
 
     fix_str(file_path,
-            file_path, printf_fix_line, scanf_fix_line)
+            new_file, printf_fix_line, scanf_fix_line)
 
 
 if __name__ == '__main__':
     filename = 'c1.c'
     folder_path = f'../data/correct_data/{filename}'
 
-    auto_fix_str(folder_path, filename)
+    auto_fix_str(folder_path, folder_path,filename)
 
     

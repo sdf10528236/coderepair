@@ -18,6 +18,7 @@ def compile_file(file):
     return result
 
 def run_compiler(args): #filepath, compiler_path="gcc"):
+    cnt = 1
     print(args.idir)
     if args.file:
         result = compile_file(args.file)
@@ -38,11 +39,13 @@ def run_compiler(args): #filepath, compiler_path="gcc"):
             print (result)
             if str_warning(result):
                 
-                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
+                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{cnt}.c')
+                cnt = cnt+1
             column = find_column(result,file)
             if find_printf_line(os.path.join(args.idir, file),column):
                 
-                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
+                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{cnt}.c')
+                cnt = cnt+1
 
 
 
