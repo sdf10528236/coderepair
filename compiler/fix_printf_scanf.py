@@ -59,10 +59,11 @@ def str_warning(filename, warning_text):
                                            for m in regex.finditer(":", text)]  # 冒號位置
                         colume_start = [m.span()
                                         for m in regex.finditer(f"{filename}:", text)]
-                        column_end = min((i[0] for i in colon_positions if i[0] >
+                        if  len(colume_start)>0 :
+                            column_end = min((i[0] for i in colon_positions if i[0] >
                                           colume_start[0][1]), key=lambda x: abs(x - colume_start[0][1]))
 
-                        column_line = text[colume_start[0][1]:column_end]
+                            column_line = text[colume_start[0][1]:column_end]
 
                         if column_line not in printf_fix_line:
 
