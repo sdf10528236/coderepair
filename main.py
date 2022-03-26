@@ -21,12 +21,12 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
         for file in get_dir_files(args.idir):
             print(file)
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            for i in range(10):
+            for i in range(5):
                 if(code_fix(os.path.join(args.idir, file),file)):
                     shutil.copyfile(f'{args.idir}/{file}',f'data/fsdata/{file}')
                     print("move to success folder")
                     break
-                elif (i == 9):
+                if (i == 4):
                     shutil.copyfile(f'{args.idir}/{file}',f'data/ffdata/{file}')
                     print("fix error! move it to error data!")  
                 
