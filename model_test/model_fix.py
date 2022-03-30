@@ -71,7 +71,7 @@ def column_fix(old_file, new_file, column):
     with open(old_file, "r") as f:
 
         for line in f:
-            if str(line_column) == column:
+            if str(line_column) in column:
                 printf_positions = [m.span()
                                     for m in regex.finditer('printf', line)]
                 if(len(printf_positions) > 0):
@@ -91,6 +91,7 @@ def column_fix(old_file, new_file, column):
                         fix_line + "\n"
                     except:
                         line = line
+                        print(INPUT_CHARS)
             file_data += line
 
             line_column = line_column+1
@@ -100,9 +101,11 @@ def column_fix(old_file, new_file, column):
 
 
 def find_column(warning_text, filename):
-    column = 0
+    
+    column = []
     for text in warning_text:
-        
+       
+       
         p = [m.span()for m in regex.finditer('error', text)]
 
         if(len(p) > 0):
@@ -112,17 +115,19 @@ def find_column(warning_text, filename):
             
             colume_start = [m.span()
                             for m in regex.finditer(f"{filename}:", text)]
-            if len(colume_start)>0 :
+            #print(colume_start)
+            if (len(colume_start)>0) :
                 column_end = min((i[0] for i in colon_positions if i[0] >
                               colume_start[0][1]), key=lambda x: abs(x - colume_start[0][1]))
+                n = text[colume_start[0][1]:column_end]
           
-            
-                column = text[colume_start[0][1]:column_end]
+                if n not in column:
+                    column.append(text[colume_start[0][1]:column_end]) 
             else: 
-                column = 0
+                continue
             
-            break
-
+            
+    
     return column
 
 

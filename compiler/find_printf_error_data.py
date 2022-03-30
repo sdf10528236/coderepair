@@ -120,7 +120,7 @@ def check_printf_error(line):
 def find_column(warning_text, filename):
     column = []
     for text in warning_text:
-        print(text)
+        #print(text)
         error_p = [m.span()for m in regex.finditer('error', text)]
         warning_p = [m.span()for m in regex.finditer('warning', text)]
         if(len(error_p ) or len(warning_p)):

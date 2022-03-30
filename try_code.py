@@ -6,11 +6,13 @@ code = '''
 
 int main()
 {   
-   	int x,y;
-	print("2/5=%.2f",2/5);
+   	printf('"This" and \'this' are the same string in Python.'');
+		  
 	return 0;
 
 }
+
+
 
 
 '''
