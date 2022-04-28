@@ -87,7 +87,6 @@ class C_Tokenizer(Tokenizer):
         ]
         tok_regex = '|'.join('(?P<%s>%s)' %
                              pair for pair in token_specification)
-        print(tok_regex)
         line_num = 1
         line_start = 0
         for mo in re.finditer(tok_regex, code):
@@ -106,6 +105,45 @@ class C_Tokenizer(Tokenizer):
                 column = mo.start() - line_start
                 yield Token(kind, value, line_num, column)
 
-code = '''printf("%d", a);'''
-code =  C_Tokenizer._tokenize_code("",code)
-print(code)
+
+
+    def tokenize(self, code, keep_format_specifiers=False, keep_names=True,
+                 keep_literals=False):
+        """
+        return:
+          aligned lists [tok, tok, ...], [type, type, ...]
+          skip whitespace?
+        """
+        ret_toks = []
+        ret_types = []
+
+        # Get the iterable
+        my_gen = self._tokenize_code(code)
+
+        while True:
+            try:
+                token = next(my_gen)
+            except StopIteration:
+                break
+
+            if isinstance(token, Exception):
+                return ret_toks, ret_types
+
+            type_ = str(token[0])
+            value = str(token[1])
+            if type_ == 'whitespace':
+                continue
+
+            if value in self._types:
+                type_ = "type"
+            elif value in self._calls:
+                type_ = "call"
+            elif value in self._keywords:
+                type_ = "keyword"
+            if len(ret_toks) >1 and ret_toks[-1] == '.' and type_ == 'name': # s.push_back()
+                type_ = "call"
+
+            ret_toks.append(value)
+            ret_types.append(type_)
+
+        return ret_toks, ret_types

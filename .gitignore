@@ -4,6 +4,8 @@ create_data/printf.py
 model_test/training_*
 npdata/
 pdata/
+pedata/
+peedata/
 data/
 a.out
 test/

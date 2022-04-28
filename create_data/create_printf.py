@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 from auto_corrupt_syntax import auto_corrupt_syntax, auto_corrupt_printf
 
-def printf_add_word(cur_line_str):
+def printf_add_word(cur_line_str):  # ex. printf("hello");
     WORDS = ("python", "good", "difficult", "Hello world!", "hello", "nice", "Yes", "No", "Error", "I can do it!", "\\n", "This and this are the same string in Python.")
     word = random.choice(WORDS)
     positions = [m.span()
@@ -15,10 +15,10 @@ def printf_add_word(cur_line_str):
     to_corrupt = positions[0]  # 第一個"的地方
     cur_line_str = cur_line_str[:to_corrupt[0]+1]+word+cur_line_str[to_corrupt[0]+1:]
     print(cur_line_str)
-    return cur_line_str
+    return cur_line_str 
 
 
-def printf_add_parameter(cur_line_str, numbers):
+def printf_add_parameter(cur_line_str, numbers):  # ex. printf("%d",a);
     format_placeholder = ["d", "f", "s", "c","lf"]
     format_placeholder = random.choice(format_placeholder)
 
@@ -42,7 +42,7 @@ def printf_add_parameter(cur_line_str, numbers):
     return cur_line_str
 
 
-def creat_printf(numbers, number_of_strings=20):  # 產生printf("字串")程式碼
+def creat_printf(numbers, number_of_strings=20):  # 產生printf("字串")程式碼    ex. printf("sdfsdgqw");
     cur_line_str = []
     for i in range(numbers):
         cur_line_str.append("printf(\""+"".join(random.choice(string.ascii_letters)
@@ -59,6 +59,8 @@ if __name__ == '__main__':
         "wrong": [],
     }
     df = pd.DataFrame(data)
+    #--------------------------------------------------------------------------------------------
+
     cur_line_strs = []
     cur_line_strs = creat_printf(6500, 0)
     for i in range(len(cur_line_strs)):
