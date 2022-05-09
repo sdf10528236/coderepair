@@ -139,15 +139,15 @@ if __name__ == '__main__':
     encoder_embedding = keras.layers.Embedding(
         input_dim=len(INPUT_CHARS) + 1,
         output_dim=encoder_embedding_size)(encoder_input)
-    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
-        lstm_units, return_state=True)(encoder_embedding)
+    _, encoder_state_h, encoder_state_c = keras.layers.Bidirectional(keras.layers.LSTM(
+        lstm_units, return_state=True))(encoder_embedding)
     encoder_state = [encoder_state_h, encoder_state_c]
 
     decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
     decoder_embedding = keras.layers.Embedding(
         input_dim=len(OUTPUT_CHARS) + 2,
         output_dim=decoder_embedding_size)(decoder_input)
-    decoder_lstm_output = keras.layers.LSTM(lstm_units, return_sequences=True)(
+    decoder_lstm_output = keras.layers.Bidirectional(keras.layers.LSTM(lstm_units, return_sequences=True))(
         decoder_embedding, initial_state=encoder_state)
     decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
                                         activation="softmax")(decoder_lstm_output)
