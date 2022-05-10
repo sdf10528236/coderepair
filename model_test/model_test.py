@@ -19,6 +19,7 @@ def create_model():
     encoder_embedding_size = 32
     decoder_embedding_size = 32
     lstm_units = 128
+    
 
     np.random.seed(42)
     tf.random.set_seed(42)
@@ -27,15 +28,15 @@ def create_model():
     encoder_embedding = keras.layers.Embedding(
         input_dim=len(INPUT_CHARS) + 1,
         output_dim=encoder_embedding_size)(encoder_input)
-    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
-        lstm_units, return_state=True)(encoder_embedding)
-    encoder_state = [encoder_state_h, encoder_state_c]
+    encoder_outputs, forward_h, forward_c, backward_h, backward_c = keras.layers.Bidirectional(keras.layers.LSTM(
+        lstm_units, return_state=True))(encoder_embedding)
+    encoder_state = [forward_h, forward_c, backward_h, backward_c]
 
     decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
     decoder_embedding = keras.layers.Embedding(
         input_dim=len(OUTPUT_CHARS) + 2,
         output_dim=decoder_embedding_size)(decoder_input)
-    decoder_lstm_output = keras.layers.LSTM(lstm_units, return_sequences=True)(
+    decoder_lstm_output = keras.layers.Bidirectional(keras.layers.LSTM(lstm_units, return_sequences=True))(
         decoder_embedding, initial_state=encoder_state)
     decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
                                         activation="softmax")(decoder_lstm_output)
@@ -60,56 +61,37 @@ def run_compiler(filepath, compiler_path="gcc"):
     return warning_text
 
 
-def column_fix(old_file, new_file, column):
-    line_column = 1
-    file_data = ""
-    checkpoint_path = "training_2/cp-{epoch:04d}.ckpt"
-    checkpoint_dir = os.path.dirname(checkpoint_path)
-    latest = tf.train.latest_checkpoint(checkpoint_dir)
-    with open(old_file, "r") as f:
-
-        for line in f:
-            if str(line_column) == column:
-                printf_positions = [m.span()
-                                    for m in regex.finditer('printf', line)]
-                if(len(printf_positions) > 0):
-                    
-                    
-                    
-                    model = create_model()
-                    model.load_weights(latest)
-                    
-                    fix_line = predict_date_strs(
-                        [line[printf_positions[0][0]:]], model)[0]
-
-                    line = line[:printf_positions[0][0]] + \
-                        fix_line + "\n"
-
-            file_data += line
-
-            line_column = line_column+1
-        # print(file_data)
-    with open(new_file, "w") as f:
-        f.write(file_data)
 
 
 def find_column(warning_text, filename):
+    column = []
     for text in warning_text:
-
+       
+       
         p = [m.span()for m in regex.finditer('error', text)]
-        if(len(p) != 0):
+
+        if(len(p) > 0):
             # print(text)
             colon_positions = [m.span()
                                for m in regex.finditer(":", text)]  # 冒號位置
+            
             colume_start = [m.span()
                             for m in regex.finditer(f"{filename}:", text)]
-            column_end = min((i[0] for i in colon_positions if i[0] >
+            #print(colume_start)
+            if (len(colume_start)>0) :
+                column_end = min((i[0] for i in colon_positions if i[0] >
                               colume_start[0][1]), key=lambda x: abs(x - colume_start[0][1]))
-
-            column = text[colume_start[0][1]:column_end]
-            break
-
+                n = text[colume_start[0][1]:column_end]
+          
+                if n not in column:
+                    column.append(text[colume_start[0][1]:column_end]) 
+            else: 
+                continue
+            
+            
+    
     return column
+
 
 
 def auto_model_fix(folder_path, filename):
@@ -159,7 +141,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     print(latest)

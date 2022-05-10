@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
     ################################################
 
-    checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
 
@@ -131,6 +131,7 @@ if __name__ == '__main__':
     encoder_embedding_size = 32
     decoder_embedding_size = 32
     lstm_units = 128
+    lstm_units_2 = max_output_length 
 
     np.random.seed(42)
     tf.random.set_seed(42)
@@ -139,9 +140,9 @@ if __name__ == '__main__':
     encoder_embedding = keras.layers.Embedding(
         input_dim=len(INPUT_CHARS) + 1,
         output_dim=encoder_embedding_size)(encoder_input)
-    _, encoder_state_h, encoder_state_c = keras.layers.Bidirectional(keras.layers.LSTM(
+    encoder_outputs, forward_h, forward_c, backward_h, backward_c = keras.layers.Bidirectional(keras.layers.LSTM(
         lstm_units, return_state=True))(encoder_embedding)
-    encoder_state = [encoder_state_h, encoder_state_c]
+    encoder_state = [forward_h, forward_c, backward_h, backward_c]
 
     decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
     decoder_embedding = keras.layers.Embedding(
