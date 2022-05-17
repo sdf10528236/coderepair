@@ -6,8 +6,9 @@ int main()
     
     int s;
 	scanf("%s", &s);
-	if(s>=90)print("A 95");
-	else if(s>=80)print("B 85");
+
+	if(s>=90)printf("No");                                          
+	
 	return 0;
 		
     
