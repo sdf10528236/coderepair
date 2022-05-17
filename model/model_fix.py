@@ -6,6 +6,7 @@ import numpy as np
 import tensorflow as tf 
 from tensorflow import keras
 import os
+from model_test import create_model
 
 
 INPUT_CHARS = "".join(
@@ -17,48 +18,48 @@ sos_id = len(OUTPUT_CHARS) + 1
 
 
 
-def create_model():
-    encoder_embedding_size = 32
-    decoder_embedding_size = 32
-    lstm_units = 256
-    lstm_units_2 = 128
-    lstm_units_3 = 640
-    np.random.seed(42)
-    tf.random.set_seed(42)
+# def create_model():
+#     encoder_embedding_size = 32
+#     decoder_embedding_size = 32
+#     lstm_units = 256
+#     lstm_units_2 = 128
+#     lstm_units_3 = 640
+#     np.random.seed(42)
+#     tf.random.set_seed(42)
 
-    encoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
-    encoder_embedding = keras.layers.Embedding(
-        input_dim=len(INPUT_CHARS) + 1,
-        output_dim=encoder_embedding_size)(encoder_input)
+#     encoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
+#     encoder_embedding = keras.layers.Embedding(
+#         input_dim=len(INPUT_CHARS) + 1,
+#         output_dim=encoder_embedding_size)(encoder_input)
 
 
-    encoder_lstm_1 =keras.layers.LSTM(lstm_units, return_sequences=True)(encoder_embedding)
+#     encoder_lstm_1 =keras.layers.LSTM(lstm_units, return_sequences=True)(encoder_embedding)
     
-    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
-        lstm_units_2 , return_state=True)(encoder_lstm_1)
+#     _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
+#         lstm_units_2 , return_state=True)(encoder_lstm_1)
 
-    encoder_state = [encoder_state_h, encoder_state_c]
+#     encoder_state = [encoder_state_h, encoder_state_c]
 
-    decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
-    decoder_embedding = keras.layers.Embedding(
-        input_dim=len(OUTPUT_CHARS) + 2,
-        output_dim=decoder_embedding_size)(decoder_input)
+#     decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
+#     decoder_embedding = keras.layers.Embedding(
+#         input_dim=len(OUTPUT_CHARS) + 2,
+#         output_dim=decoder_embedding_size)(decoder_input)
 
-    decoder_lstm_1 =  keras.layers.LSTM(lstm_units_2, return_sequences=True)(decoder_embedding, initial_state=encoder_state)
+#     decoder_lstm_1 =  keras.layers.LSTM(lstm_units_2, return_sequences=True)(decoder_embedding, initial_state=encoder_state)
 
-    decoder_lstm_output = keras.layers.LSTM(lstm_units_3, return_sequences=True)(decoder_lstm_1)
+#     decoder_lstm_output = keras.layers.LSTM(lstm_units_3, return_sequences=True)(decoder_lstm_1)
 
-    decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
-                                        activation="softmax")(decoder_lstm_output)
+#     decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
+#                                         activation="softmax")(decoder_lstm_output)
 
-    model = keras.models.Model(inputs=[encoder_input, decoder_input],
-                            outputs=[decoder_output])
+#     model = keras.models.Model(inputs=[encoder_input, decoder_input],
+#                             outputs=[decoder_output])
 
-    optimizer = keras.optimizers.Nadam()
-    model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
-                metrics=["accuracy"])
+#     optimizer = keras.optimizers.Nadam()
+#     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
+#                 metrics=["accuracy"])
 
-    return model
+#     return model
 
 def run_compiler(filepath, compiler_path="gcc"):
     p = subprocess.run(
