@@ -8,13 +8,13 @@ for path in os.listdir(dir):
         all_count += 1
 
 
-dir = "data/fsdata"
+dir = "data/fsdata_2"
 for path in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, path)):
         correct_count += 1
 
 
-dir = "data/ffdata"
+dir = "data/ffdata_2"
 for path in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, path)):
         fail_count += 1

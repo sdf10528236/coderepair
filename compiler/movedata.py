@@ -1,4 +1,3 @@
-from inspect import ismethoddescriptor
 import os
 import shutil
 

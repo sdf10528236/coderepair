@@ -13,14 +13,15 @@ INPUT_CHARS = "".join(
 
 OUTPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
+    
 sos_id = len(OUTPUT_CHARS) + 1
 
 def create_model():
     encoder_embedding_size = 32
     decoder_embedding_size = 32
-    lstm_units = 128
-    
-
+    lstm_units = 256
+    lstm_units_2 = 128
+    lstm_units_3 = 640
     np.random.seed(42)
     tf.random.set_seed(42)
 
@@ -28,29 +29,37 @@ def create_model():
     encoder_embedding = keras.layers.Embedding(
         input_dim=len(INPUT_CHARS) + 1,
         output_dim=encoder_embedding_size)(encoder_input)
-    encoder_outputs, forward_h, forward_c, backward_h, backward_c = keras.layers.Bidirectional(keras.layers.LSTM(
-        lstm_units, return_state=True))(encoder_embedding)
-    encoder_state = [forward_h, forward_c, backward_h, backward_c]
+
+
+    encoder_lstm_1 =keras.layers.LSTM(lstm_units, return_sequences=True)(encoder_embedding)
+    
+    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
+        lstm_units_2 , return_state=True)(encoder_lstm_1)
+
+    encoder_state = [encoder_state_h, encoder_state_c]
 
     decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
     decoder_embedding = keras.layers.Embedding(
         input_dim=len(OUTPUT_CHARS) + 2,
         output_dim=decoder_embedding_size)(decoder_input)
-    decoder_lstm_output = keras.layers.Bidirectional(keras.layers.LSTM(lstm_units, return_sequences=True))(
-        decoder_embedding, initial_state=encoder_state)
+
+    decoder_lstm_1 =  keras.layers.LSTM(lstm_units_2, return_sequences=True)(decoder_embedding, initial_state=encoder_state)
+
+    decoder_lstm_output = keras.layers.LSTM(lstm_units_3, return_sequences=True)(decoder_lstm_1)
+
     decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
                                         activation="softmax")(decoder_lstm_output)
-
-
 
     model = keras.models.Model(inputs=[encoder_input, decoder_input],
                             outputs=[decoder_output])
 
-
-
     optimizer = keras.optimizers.Nadam()
     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
                 metrics=["accuracy"])
+
+
+    
+
     return model
 
 def run_compiler(filepath, compiler_path="gcc"):
@@ -65,6 +74,7 @@ def run_compiler(filepath, compiler_path="gcc"):
 
 def find_column(warning_text, filename):
     column = []
+    print(warning_text)
     for text in warning_text:
        
        
@@ -89,16 +99,12 @@ def find_column(warning_text, filename):
                 continue
             
             
-    
+    print(column)
     return column
 
 
 
-def auto_model_fix(folder_path, filename):
-    warning_text = run_compiler(folder_path)
 
-    column = find_column(warning_text, filename)
-    column_fix(folder_path, folder_path, column)
 
 def create_dataset(x, y):
 
@@ -141,26 +147,25 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate_2l/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     print(latest)
 
-
     model = create_model()
     model.load_weights(latest)
+    
     df = pd.read_csv('../data/printf_autocreate.csv')
     
-    X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
-    X_valid, Y_valid = create_dataset(df['wrong'][60000:80000], df['correct'][60000:80000])
-    X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
+    X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
+    X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
+    #X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
 
-
+    
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]
 
-    # print([df['wrong'][1410],df['wrong'][1611]])
-    # print(predict_date_strs([df['wrong'][1410],df['wrong'][1611]])) 
+    
     filename = "c1.c"
     folder_path = f'{filename}'
     
@@ -173,7 +178,7 @@ if __name__ == '__main__':
     with open(folder_path, "r") as f:
 
         for line in f:
-            if str(line_column) == column:
+            if str(line_column) in column:
                 printf_positions = [m.span()
                                     for m in regex.finditer('printf', line)]
                 if(len(printf_positions) > 0):
@@ -195,4 +200,4 @@ if __name__ == '__main__':
             file_data += line
 
             line_column = line_column+1
-        # print(file_data)
+        print(file_data)

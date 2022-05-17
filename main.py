@@ -1,5 +1,5 @@
-from compiler.fix_printf_scanf import auto_fix_str
-from model_test.model_fix import auto_model_fix
+from str_fix.fix_printf_scanf import auto_fix_str
+from model.model_fix import auto_model_fix
 #from compiler.compile_msg import run_compiler
 import argparse
 import os
@@ -23,11 +23,11 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
             for i in range(5):
                 if(code_fix(os.path.join(args.idir, file),file)):
-                    shutil.copyfile(f'{args.idir}/{file}',f'data/fsdata/{file}')
+                    shutil.copyfile(f'{args.idir}/{file}',f'data/fsdata_2l/{file}')
                     print("move to success folder")
                     break
                 if (i == 4):
-                    shutil.copyfile(f'{args.idir}/{file}',f'data/ffdata/{file}')
+                    shutil.copyfile(f'{args.idir}/{file}',f'data/ffdata_2l/{file}')
                     print("fix error! move it to error data!")  
                 
 

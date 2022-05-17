@@ -1,11 +1,9 @@
 create_data/test.py
 create_data/printf.py
 
-model_test/training_*
-npdata/
-pdata/
-pedata/
-peedata/
+model/training_*
+
+
 data/
 a.out
-test/
+test_data/
