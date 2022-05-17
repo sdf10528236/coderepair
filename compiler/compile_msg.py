@@ -1,10 +1,7 @@
-from difflib import SequenceMatcher
 import subprocess
-import pandas as pd
 import argparse
-import regex
 import os
-import shutil
+
 
 
 def get_dir_files(dir):
