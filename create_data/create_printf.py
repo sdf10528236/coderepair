@@ -4,7 +4,7 @@ import random
 import regex
 import pandas as pd
 import numpy as np
-from auto_corrupt_syntax import auto_corrupt_syntax, auto_corrupt_printf
+from auto_corrupt_syntax import auto_corrupt_syntax
 
 def printf_add_word(cur_line_str):  # ex. printf("hello");
     WORDS = ("python", "good", "difficult", "Hello world!", "hello", "nice", "Yes", "No", "Error", "I can do it!", "\\n", "This and this are the same string in Python.")
