@@ -29,6 +29,8 @@ sos_id = len(OUTPUT_CHARS) + 1
 
 
 
+
+
 def data_str_to_ids(date_str, chars):
 
     return [1+chars.index(c) for c in date_str]
@@ -129,11 +131,10 @@ def create_model():
 
 
 if __name__ == '__main__':
-    
     df = pd.read_csv('../data/printf_autocreate.csv')
     X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
     X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
-    
+
 
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]

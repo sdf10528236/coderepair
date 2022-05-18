@@ -41,8 +41,8 @@ def str_warning(filename, warning_text):
         text = text.replace("‘","\'")
         text = text.replace("’","\'")
         p = [m.span()for m in regex.finditer("\'", text)]
-        print(text)
-        print(p)
+        #print(text)
+        #print(p)
         if len(p) != 0:
             for i in range(len(p)):
 
@@ -51,7 +51,7 @@ def str_warning(filename, warning_text):
                 else:
                     position_end = p[i][0]
                     string = text[position_start:position_end]
-                    print(string)
+                    #print(string)
                     
                     if SequenceMatcher(None, "printf", string).ratio() > 0.7:
                         colon_positions = [m.span()
@@ -67,7 +67,7 @@ def str_warning(filename, warning_text):
                         if column_line not in printf_fix_line:
 
                             printf_fix_line[column_line] = string
-                            print(printf_fix_line)
+                            #print(printf_fix_line)
     
 
     return printf_fix_line
