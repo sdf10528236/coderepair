@@ -27,6 +27,8 @@ OUTPUT_CHARS = "".join(
     
 sos_id = len(OUTPUT_CHARS) + 1
 
+
+
 def data_str_to_ids(date_str, chars):
 
     return [1+chars.index(c) for c in date_str]
@@ -69,11 +71,7 @@ def shifted_output_sequences(Y):
     Yshift = np.ones(Y.shape) * sos_id
     Yshift[:,1:] = Y[:,:-1]
     return Yshift
-    # sos_tokens = tf.fill(dims=(len(Y), 1), value=sos_id)
-    #print(Y)
-    #print("sos=",sos_tokens)
-    #print(tf.concat([sos_tokens, Y[:, :-1]], axis=1))
-    # return tf.concat([sos_tokens, Y[:, :-1]], axis=1)
+   
 
 
 
@@ -87,11 +85,12 @@ def predict_date_strs(date_strs, model):
         Y_pred_next = tf.argmax(Y_probas_next, axis=-1, output_type=tf.int32)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
     return ids_to_date_strs(Y_pred[:, 1:])
+
 def create_model():
     encoder_embedding_size = 32
     decoder_embedding_size = 32
     lstm_units = 128
-    lstm_units_2 = max_output_length 
+    
 
     np.random.seed(42)
     tf.random.set_seed(42)
@@ -127,25 +126,23 @@ def create_model():
     return model
 
 
+
+
 if __name__ == '__main__':
-    df = pd.read_csv('../data/printf_autocreate.csv')
     
-
-
-
-    X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
+    df = pd.read_csv('../data/printf_autocreate.csv')
+    X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
     X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
     
 
     max_input_length = X_train.shape[1]
-    
+    max_output_length = Y_train.shape[1]
+
 
     X_train_decoder = shifted_output_sequences(Y_train)
     X_valid_decoder = shifted_output_sequences(Y_valid)
 
     
-    max_output_length = Y_train.shape[1]
-
     ################################################
 
     checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
