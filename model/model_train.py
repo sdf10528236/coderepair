@@ -75,7 +75,7 @@ def shifted_output_sequences(Y):
 
 
 
-def predict_date_strs(date_strs, model):
+def predict_date_strs(date_strs):
     X = prepare_date_strs_padded(date_strs)
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     for index in range(max_output_length):
