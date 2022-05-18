@@ -43,14 +43,18 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
             print("filename:"+file)
             for i in range(5):
                 
-                if(code_fix(os.path.join(input_path, file),file)):
+                if(code_fix(os.path.join(input_path, file),file)==1):
                     
                     shutil.copyfile(f'{input_path}/{file}',f'{sucees_fix_folder}/{file}')
                     print("move to success folder")
                     break
-                elif (i == 4):
+                elif(code_fix(os.path.join(input_path, file),file)==2):
                     shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
-                    print("fix error! move it to error data!")  
+                    print("model output error ! fix error! move it to error data!") 
+                    break
+                elif (i == 4):  #若修復五次
+                    shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
+                    print("try over 5 times! fix error! move it to error data!")  
         #程式修復流程
 
 
@@ -68,8 +72,15 @@ def code_fix(file_path,filename):
     
 
         if (len(compile_file(file_path))):
+            error_num = len(compile_file(file_path))
             auto_model_fix(file_path,file_path,filename)
-            return 0
+            if (len(compile_file(file_path))== error_num):
+                return 2
+            elif (len(compile_file(file_path))):
+                return 0
+            else:
+                print("code fix success!")
+                return 1
         else:
             print("code fix success!")
             return 1
