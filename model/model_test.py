@@ -1,5 +1,4 @@
 import regex
-from difflib import SequenceMatcher
 import subprocess
 import pandas as pd
 import string
