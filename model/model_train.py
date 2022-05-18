@@ -87,46 +87,7 @@ def predict_date_strs(date_strs, model):
         Y_pred_next = tf.argmax(Y_probas_next, axis=-1, output_type=tf.int32)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
     return ids_to_date_strs(Y_pred[:, 1:])
-
-
-
-if __name__ == '__main__':
-    df = pd.read_csv('../data/printf_autocreate.csv')
-    
-
-
-
-    X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
-    X_valid, Y_valid = create_dataset(df['wrong'][60000:80000], df['correct'][60000:80000])
-    X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
-
-
-    max_input_length = X_train.shape[1]
-    
-
-    X_train_decoder = shifted_output_sequences(Y_train)
-    X_valid_decoder = shifted_output_sequences(Y_valid)
-    x_test_decoder = shifted_output_sequences(Y_test)
-
-
-
-    
-    max_output_length = Y_train.shape[1]
-
-    ################################################
-
-    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
-    checkpoint_dir = os.path.dirname(checkpoint_path)
-
-
-
-    cp_callback = tf.keras.callbacks.ModelCheckpoint(
-        filepath=checkpoint_path, 
-        verbose=1, 
-        save_weights_only=True,
-        save_freq = 'epoch' )
-
-    ################################################
+def create_model():
     encoder_embedding_size = 32
     decoder_embedding_size = 32
     lstm_units = 128
@@ -162,9 +123,47 @@ if __name__ == '__main__':
     optimizer = keras.optimizers.Nadam()
     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
                 metrics=["accuracy"])
+    
+    return model
+
+
+if __name__ == '__main__':
+    df = pd.read_csv('../data/printf_autocreate.csv')
+    
+
+
+
+    X_train, Y_train = create_dataset(df['wrong'][0:60000], df['correct'][0:60000])
+    X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
+    
+
+    max_input_length = X_train.shape[1]
+    
+
+    X_train_decoder = shifted_output_sequences(Y_train)
+    X_valid_decoder = shifted_output_sequences(Y_valid)
+
+    
+    max_output_length = Y_train.shape[1]
+
+    ################################################
+
+    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
+    checkpoint_dir = os.path.dirname(checkpoint_path)
+
+
+
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(
+        filepath=checkpoint_path, 
+        verbose=1, 
+        save_weights_only=True,
+        save_freq = 'epoch' )
+
+    ################################################
+    model = create_model()
     #################################################
     model.save_weights(checkpoint_path.format(epoch=0))
     #################################################
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=20,  callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=10,  callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
