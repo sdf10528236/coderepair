@@ -121,7 +121,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate_128_ep50/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     #print(latest)

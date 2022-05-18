@@ -5,7 +5,7 @@ import tensorflow as tf
 import subprocess
 import os
 import numpy as np
-from model.model_train import create_model,predict_date_strs,create_dataset
+from model.model_train import create_model
 
 
 INPUT_CHARS = "".join(
@@ -15,13 +15,7 @@ OUTPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
 sos_id = len(OUTPUT_CHARS) + 1
 
-df = pd.read_csv(f'{os.getcwd()}/data/printf_autocreate.csv')
-X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
-X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
-    
 
-max_input_length = X_train.shape[1]
-max_output_length = Y_train.shape[1]
 
 
 def data_str_to_ids(date_str, chars):
@@ -54,11 +48,6 @@ def prepare_date_strs_padded(date_strs):
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
     return X
-
-
-
-
-   
 
 
 
@@ -116,7 +105,7 @@ def find_column(warning_text, filename):
 def column_fix(old_file, new_file, column):
     line_column = 1
     file_data = ""
-    checkpoint_path = "/home/laz/Program/coderepair/model/training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "/home/laz/Program/coderepair/model/training_autocreate_128_ep50/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     with open(old_file, "r") as f:
@@ -162,7 +151,13 @@ def auto_model_fix(folder_path, new_folder,filename):
     column = find_column(warning_text, filename)
     column_fix(folder_path, new_folder, column)
     
+df = pd.read_csv(f'{os.getcwd()}/data/printf_autocreate.csv')
+X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
+X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
+    
 
+max_input_length = X_train.shape[1]
+max_output_length = Y_train.shape[1]
 
 
 
