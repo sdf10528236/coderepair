@@ -1,6 +1,6 @@
 from str_fix.fix_printf_scanf import auto_fix_str
 from model.model_fix import auto_model_fix
-#from compiler.compile_msg import run_compiler
+
 import argparse
 import os
 import subprocess
@@ -56,7 +56,6 @@ def code_fix(file_path,filename):
         return 1
 
 if __name__ == '__main__':
-
     
     parser = argparse.ArgumentParser(description='fix printf error code files by using model')
 
@@ -66,4 +65,5 @@ if __name__ == '__main__':
     opts = parser.parse_args()
     
     run_code_fix(opts)
+    
     

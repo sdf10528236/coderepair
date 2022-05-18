@@ -74,7 +74,7 @@ def run_compiler(filepath, compiler_path="gcc"):
 
 def find_column(warning_text, filename):
     column = []
-    print(warning_text)
+    #print(warning_text)
     for text in warning_text:
        
        
@@ -99,7 +99,7 @@ def find_column(warning_text, filename):
                 continue
             
             
-    print(column)
+    #print(column)
     return column
 
 
@@ -131,7 +131,7 @@ def prepare_date_strs_padded(date_strs):
     X = prepare_date_strs(date_strs)
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
-    return X
+    return X#X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
 
 def predict_date_strs(date_strs):
     X = prepare_date_strs_padded(date_strs)
@@ -150,7 +150,7 @@ if __name__ == '__main__':
     checkpoint_path = "training_autocreate_2l/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
-    print(latest)
+    #print(latest)
 
     model = create_model()
     model.load_weights(latest)
@@ -159,7 +159,7 @@ if __name__ == '__main__':
     
     X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
     X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
-    #X_test, Y_test = create_dataset(df['wrong'][80000:100000 ], df['correct'][80000:100000 ])
+    
 
     
     max_input_length = X_train.shape[1]
