@@ -7,3 +7,4 @@ model/training_*
 data/
 a.out
 test_data/
+all _models.txt

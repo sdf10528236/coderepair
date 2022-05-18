@@ -92,7 +92,6 @@ def create_model():
     encoder_embedding_size = 32
     decoder_embedding_size = 32
     lstm_units = 128
-    
 
     np.random.seed(42)
     tf.random.set_seed(42)
@@ -101,29 +100,26 @@ def create_model():
     encoder_embedding = keras.layers.Embedding(
         input_dim=len(INPUT_CHARS) + 1,
         output_dim=encoder_embedding_size)(encoder_input)
-    encoder_outputs, forward_h, forward_c, backward_h, backward_c = keras.layers.Bidirectional(keras.layers.LSTM(
-        lstm_units, return_state=True))(encoder_embedding)
-    encoder_state = [forward_h, forward_c, backward_h, backward_c]
+    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
+        lstm_units, return_state=True)(encoder_embedding)
+    encoder_state = [encoder_state_h, encoder_state_c]
 
     decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
     decoder_embedding = keras.layers.Embedding(
         input_dim=len(OUTPUT_CHARS) + 2,
         output_dim=decoder_embedding_size)(decoder_input)
-    decoder_lstm_output = keras.layers.Bidirectional(keras.layers.LSTM(lstm_units, return_sequences=True))(
+    decoder_lstm_output = keras.layers.LSTM(lstm_units, return_sequences=True)(
         decoder_embedding, initial_state=encoder_state)
     decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
                                         activation="softmax")(decoder_lstm_output)
 
-
-
     model = keras.models.Model(inputs=[encoder_input, decoder_input],
                             outputs=[decoder_output])
-
-
 
     optimizer = keras.optimizers.Nadam()
     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
                 metrics=["accuracy"])
+   
     
     return model
 
@@ -146,7 +142,7 @@ if __name__ == '__main__':
     
     ################################################
 
-    checkpoint_path = "training_autocreate_Bidirectional/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate_128_ep50/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
 
@@ -163,5 +159,5 @@ if __name__ == '__main__':
     model.save_weights(checkpoint_path.format(epoch=0))
     #################################################
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=10,  callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=50,  callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
