@@ -4,11 +4,11 @@
 ## 主程式
 
 ### main.py
--主要修復流程的程式碼(-i 資料夾 )
-建議一次跑500筆內(500筆約要跑快兩小時)
-下指令 ex.python main.py -i data/p2data
+-主要修復流程的程式碼(-i 資料夾 )<br>
+建議一次跑500筆內(500筆約要跑快兩小時)<br>
+下指令： ex. python main.py -i data/p2data
 ### count.py 
--main.py跑完後,計算修復率的程式碼
+-main.py跑完後,計算修復率的程式碼<br>
 *要用時,請先更改裡面的dir參數(資料夾路徑)
 
 
@@ -25,15 +25,16 @@
 
 ### create_data 資料夾
 ##### auto_corrupt_syntax.py
- - 用來破壞正確程式碼的程式(來源：Drrepair) 主要用到的函式：auto_corrupt_synta
+ - 用來破壞正確程式碼的程式(來源：Drrepair) <br>
+ 主要用到的函式：auto_corrupt_synta
 
 ##### concact_csv.py 
 - 用來合併兩個以上csv檔的程式碼
 
 ##### create_printf_train_data.py 
-- 用來產生輸出函數的測試、訓練資料(csv)，主要有三種資料：
-1.printf("%d",a);
-2.printf("hello");
+- 用來產生輸出函數的測試、訓練資料(csv)，主要有三種資料：<br>
+1.printf("%d",a);<br>
+2.printf("hello");<br>
 3.printf("sdfsdgqw");
  
  ##### find_codinghere_printf_error_data.py
@@ -47,8 +48,8 @@
 ### data 資料夾
 -原本沒有此資料夾請自己創建一個(檔名：data)，將下面 DATA的資料都放入此資料夾
 #### DATA：
-[LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)
-1.pdata2 資料夾裡是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料
+[LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)<br>
+1.pdata2 資料夾裡是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料<br>
 2.printf_autocreate.csv 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)
 
 ### model 資料夾 
