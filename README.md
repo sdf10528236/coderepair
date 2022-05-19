@@ -14,7 +14,7 @@
 
 
 
-## 資料夾
+## 資料夾 (主要會用到data,model資料夾)
 
 ### compiler 資料夾
 ##### compile_msg.py 
