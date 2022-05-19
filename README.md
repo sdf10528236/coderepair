@@ -36,6 +36,24 @@
  ex.printf("%d", s[i]);
 
 ## data 資料夾
--請將 上述 DATA的資料都放入此資料夾,若原本沒有此資料夾請自己創建一個(檔名：data)
+-原本沒有此資料夾請自己創建一個(檔名：data)，將上述 DATA的資料都放入此資料夾
 
-## model 資料夾
+## model 資料夾 
+##### model_train.py
+-用來訓練模型的程式碼
+
+##### model_test.py
+-用來測試訓練好的模型的程式碼
+
+##### model_fix.py
+-用來修復有輸出函數語法錯誤的程式碼
+主要是main.py會引用
+
+## str_fix 資料夾
+##### fix_printf_scanf.py
+-用來修復有輸出函數'字串'錯誤的程式碼
+
+
+## main.py
+
+## count.py 
