@@ -1,12 +1,5 @@
 # Code Repair
 
-## DATA
-[LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)
-1.pdata2 資料夾裡是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料
-
-2.printf_autocreate.csv 是模型順練的資料
-
-
 ## compiler 資料夾
 ##### compile_msg.py 
 - 會印出程式碼編譯(gcc)的錯誤訊息 (-i 資料夾 / -f 檔案)
@@ -36,7 +29,11 @@
  ex.printf("%d", s[i]);
 
 ## data 資料夾
--原本沒有此資料夾請自己創建一個(檔名：data)，將上述 DATA的資料都放入此資料夾
+-原本沒有此資料夾請自己創建一個(檔名：data)，將下面 DATA的資料都放入此資料夾
+### DATA
+[LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)
+1.pdata2 資料夾裡是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料
+2.printf_autocreate.csv 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)
 
 ## model 資料夾 
 ##### model_train.py
