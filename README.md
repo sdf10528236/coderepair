@@ -15,8 +15,27 @@
 - 可以移動資料到別的資料夾的程式碼
 
 ## create_data 資料夾
-auto_corrupt_syntax.py - 用來破壞正確程式碼的程式(來源：Drrepair) 主要用到的函式：auto_corrupt_synta
+##### auto_corrupt_syntax.py
+ - 用來破壞正確程式碼的程式(來源：Drrepair) 主要用到的函式：auto_corrupt_synta
 
-concact_csv.py - 用來合併兩個以上csv檔的程式碼
+##### concact_csv.py 
+- 用來合併兩個以上csv檔的程式碼
 
-create_printf_train_data.py - 
+##### create_printf_train_data.py 
+- 用來產生輸出函數的測試、訓練資料(csv)，主要有三種資料：
+1.printf("%d",a);
+2.printf("hello");
+3.printf("sdfsdgqw");
+ 
+ ##### find_codinghere_printf_error_data.py
+ - 用來找出codinghere data裡有輸出函式錯誤的程式碼
+
+
+ ##### get_codinghere_printf_correct_data.py
+ - 用來找出codinghere data裡輸出函式語法正確的輸出函式資料
+ ex.printf("%d", s[i]);
+
+## data 資料夾
+-請將 上述 DATA的資料都放入此資料夾,若原本沒有此資料夾請自己創建一個(檔名：data)
+
+## model 資料夾
