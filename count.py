@@ -2,19 +2,16 @@ import os
 correct_count = 0
 fail_count = 0
 all_count = 0
-dir = "data/pdata_copy"
-for path in os.listdir(dir):
-    if os.path.isfile(os.path.join(dir, path)):
-        all_count += 1
 
 
-dir = "data/fsdata_2"
+
+dir = "data/fsdata_2"  #修復成功程式碼的資料夾
 for path in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, path)):
         correct_count += 1
 
 
-dir = "data/ffdata_2"
+dir = "data/ffdata_2"   #修復失敗程式碼的資料夾
 for path in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, path)):
         fail_count += 1

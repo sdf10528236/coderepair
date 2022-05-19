@@ -52,5 +52,8 @@
 
 
 ## main.py
-
+-主要修復流程的程式碼(-i 資料夾 ex.python main.py -i data/p2data)
+建議一次跑500筆內(500筆約要跑快兩小時)
 ## count.py 
+-main.py跑完後,計算修復率的程式碼
+*要用時,請先更改裡面的dir參數(資料夾路徑)
