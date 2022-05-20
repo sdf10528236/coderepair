@@ -142,7 +142,7 @@ if __name__ == '__main__':
     
     ################################################
 
-    checkpoint_path = "training_autocreate_128_ep50/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
 
@@ -159,5 +159,5 @@ if __name__ == '__main__':
     model.save_weights(checkpoint_path.format(epoch=0))
     #################################################
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=50,  callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=10,  callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))

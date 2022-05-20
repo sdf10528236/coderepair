@@ -105,7 +105,7 @@ def find_column(warning_text, filename):
 def column_fix(old_file, new_file, column):
     line_column = 1
     file_data = ""
-    checkpoint_path = "/home/laz/Program/coderepair/model/training_autocreate_128_ep50/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "/home/laz/Program/coderepair/model/training_autocreate/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     with open(old_file, "r") as f:
