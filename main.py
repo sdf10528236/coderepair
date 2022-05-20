@@ -91,8 +91,8 @@ def code_fix(file_path,filename):
 
 if __name__ == '__main__':
     
-    sucees_fix_folder = 'data/fsdata_2l'
-    fail_fix_folder = 'data/ffdata_2l'
+    sucees_fix_folder = 'data/fsdata_test'
+    fail_fix_folder = 'data/ffdata_test'
     
     create_folder(sucees_fix_folder)
     create_folder(fail_fix_folder)
