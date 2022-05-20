@@ -1,9 +1,9 @@
 import os
-from main import sucees_fix_folder,fail_fix_folder
+
 
 correct_count = 0
 fail_count = 0
-all_count = 0
+
 
 
 
