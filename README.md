@@ -68,14 +68,12 @@
  ex.printf("%d", s[i]);
 
 ### data 資料夾
--原本沒有此資料夾請自己創建一個(檔名：data)，將下面 DATA的資料都放入此資料夾
-#### DATA：
-[LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)<br>
-**1.p2data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料<br>
-**2.printf_autocreate.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)
-**3.training_autocreate資料夾** 模型順練完後的參數
+-原本沒有此資料夾，請自己創建一個(檔名：data)。
+
 
 ### model 資料夾 
+
+
 ##### model_train.py
 -用來訓練模型的程式碼
 
