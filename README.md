@@ -1,8 +1,17 @@
 # Code Repair
 
-## 第一次用看這裡
+## 第一次用看這裡(修復程式碼)
+1.到main.py，更改sucees_fix_folder、fail_fix_folder變數(若程式修復成功會複製到sucees_fix_folder變數的路徑資料夾;若程式修復失敗會複製到fail_fix_folder變數的路徑資料夾)<br>
+2.把要修復的程式碼放進任一資料夾<br>
+3.下指令： ex. python main.py -i ( 資料夾路徑 )   *建議一次跑500筆內(500筆約要跑快兩小時)<br>
+4.main.py跑完後，輸入python count.py ,查看修復率  *要啟用count.py時,請先更改count.py裡面的dir參數(資料夾路徑)
 
 
+## 若要更改模型
+
+
+
+# 詳細說明
 
 ## 主程式
 
