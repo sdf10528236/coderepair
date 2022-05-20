@@ -1,14 +1,16 @@
 # Code Repair
 
 ## 第一次用看這裡(修復程式碼)
-1.到main.py，更改sucees_fix_folder、fail_fix_folder變數(若程式修復成功會複製到sucees_fix_folder變數的路徑資料夾;若程式修復失敗會複製到fail_fix_folder變數的路徑資料夾)<br>
-2.把要修復的程式碼放進任一資料夾<br>
-3.下指令： ex. python main.py -i ( 資料夾路徑 )   *建議一次跑500筆內(500筆約要跑快兩小時)<br>
-4.main.py跑完後，輸入python count.py ,查看修復率  *要啟用count.py時,請先更改count.py裡面的dir參數(資料夾路徑)
+`1.到main.py，更改sucees_fix_folder、fail_fix_folder變數`<br>(若程式修復成功會複製到sucees_fix_folder變數的路徑資料夾;若程式修復失敗會複製到fail_fix_folder變數的路徑資料夾)<br>
+`2.把要修復的程式碼放進任一資料夾`<br>
+`3.下指令： ex. python main.py -i ( 資料夾路徑 )`<br>   *建議一次跑500筆內(500筆約要跑快兩小時)<br>
+`4.main.py跑完後，輸入python count.py ,查看修復率`<br>  *要啟用count.py時,請先更改count.py裡面的dir參數(資料夾路徑)
 
 
 ## 若要更改模型
-
+`1.進到model資料夾裡的model_train.py，修改checkpoint_path參數(訓練參數除存的資料夾)，更改模型並進行訓練`<br>
+`2.訓練好後，若是只想測試一下自己的模型訓練成果可以到model_test.py`裡，修改checkpoint_path參數(訓練參數除存的資料夾)，並啟用程式碼，會印出model input: 和 model output:。<br>(主要會使用model資料夾裡的c1.c檔做測試)<br>
+`3.訓練好後，到model_fix.py的column_fix函式裡更改checkpoint_path參數(同model_train.py)，修改完後即可使用main.py`<br>
 
 
 # 詳細說明

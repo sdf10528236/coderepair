@@ -162,10 +162,10 @@ if __name__ == '__main__':
                     
                     model = create_model()
                     model.load_weights(latest)
-                    print(line[printf_positions[0][0]:])
+                    print("model input: "+line[printf_positions[0][0]:])
                     wrong_str = line[printf_positions[0][0]:]
                     fixed_str = predict_date_strs([wrong_str])[0]
-                    print(fixed_str)
+                    print("model output: "+fixed_str)
                    
 
             file_data += line
