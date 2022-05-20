@@ -1,10 +1,18 @@
 # Code Repair
+#### DATA：
+[LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)<br>
+**1.p2data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料<br>
+**2.printf_autocreate.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)
+**3.training_autocreate資料夾** 模型順練完後的參數
 
 ## 第一次用看這裡(修復程式碼)
-**1.到main.py，更改sucees_fix_folder、fail_fix_folder變數**<br>(若程式修復成功會複製到sucees_fix_folder變數的路徑資料夾;若程式修復失敗會複製到fail_fix_folder變數的路徑資料夾)<br>
-**2.把要修復的程式碼放進任一資料夾**<br>
-**3.下指令： ex. python main.py -i ( 資料夾路徑 )**<br>   *建議一次跑500筆內(500筆約要跑快兩小時)<br>
-**4.main.py跑完後，輸入python count.py ,查看修復率**<br>  *要啟用count.py時,請先更改count.py裡面的dir參數(資料夾路徑)
+**1.先從DATA中下載上述1.2.3.檔案，在coderepair中創建一個名為 data 的資料夾。**<br>
+**將p2data資料夾、printf_autocreate.csv 放入data資料夾。**<br>
+**將training_autocreate資料夾 放入model資料夾。**<br>
+**2.因p2data裡的程式碼筆數太多，建議分批修復，先把要修復的程式碼放進任一資料夾內**<br>*建議一次跑500筆內(500筆約要跑快兩小時)<br>
+**3.下指令： ex. python main.py -i ( 資料夾路徑 ) ，會開始跑修復流程**<br> 
+(修復成功的檔案會複製到data/sucees資料夾;修復失敗會複製到data/fail資料夾)<br> 
+**4.main.py跑完後，輸入python count.py ,查看修復率**<br>  
 
 
 ## 若要更改模型
