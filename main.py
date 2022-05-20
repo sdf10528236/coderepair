@@ -50,7 +50,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                     break
                 elif(code_fix(os.path.join(input_path, file),file)==2):
                     shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
-                    print("model output error ! fix error! move it to error data!") 
+                    print("model fix error ! fix error! move it to error data!") 
                     break
                 elif (i == 4):  #若修復五次
                     shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
