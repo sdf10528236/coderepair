@@ -1,4 +1,4 @@
-import regex
+#import regex
 import pandas as pd
 import string
 import tensorflow as tf 
@@ -6,6 +6,7 @@ import subprocess
 import os
 import numpy as np
 from model.model_train import create_model
+import re as regex
 
 
 INPUT_CHARS = "".join(
@@ -14,7 +15,6 @@ INPUT_CHARS = "".join(
 OUTPUT_CHARS = "".join(
     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
 sos_id = len(OUTPUT_CHARS) + 1
-
 
 
 
@@ -52,7 +52,6 @@ def prepare_date_strs_padded(date_strs):
 
 
 def predict_date_strs(date_strs,model):
-    
     X = prepare_date_strs_padded(date_strs)
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     for index in range(max_output_length):
@@ -60,7 +59,10 @@ def predict_date_strs(date_strs,model):
         X_decoder = tf.pad(Y_pred, [[0, 0], [0, pad_size]])
         Y_probas_next = model.predict([X, X_decoder])[:, index:index+1]
         Y_pred_next = tf.argmax(Y_probas_next, axis=-1, output_type=tf.int32)
+        #if Y_pred_next.numpy() 
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
+        if Y_pred_next.numpy()[0][0] == 0:
+            break
     return ids_to_date_strs(Y_pred[:, 1:])
 
 
@@ -102,12 +104,12 @@ def find_column(warning_text, filename):
     #print(column)
     return column
 
-def column_fix(old_file, new_file, column):
+
+def column_fix(old_file, new_file, column, model):
+    global total
     line_column = 1
     file_data = ""
-    checkpoint_path = "/home/laz/Program/coderepair/model/training_autocreate/cp-{epoch:04d}.ckpt"
-    checkpoint_dir = os.path.dirname(checkpoint_path)
-    latest = tf.train.latest_checkpoint(checkpoint_dir)
+
     with open(old_file, "r") as f:
 
         for line in f:
@@ -115,11 +117,6 @@ def column_fix(old_file, new_file, column):
                 printf_positions = [m.span()
                                     for m in regex.finditer('printf', line)]
                 if(len(printf_positions) > 0):
-                    
-                    
-                    
-                    model = create_model()
-                    model.load_weights(latest)
                     
                     wrong_str = line[printf_positions[0][0]:]
 
@@ -145,11 +142,11 @@ def column_fix(old_file, new_file, column):
 
 
 
-def auto_model_fix(folder_path, new_folder,filename):
+def auto_model_fix(folder_path, new_folder,filename, model):
     warning_text = run_compiler(folder_path)
 
     column = find_column(warning_text, filename)
-    column_fix(folder_path, new_folder, column)
+    column_fix(folder_path, new_folder, column, model)
     
 df = pd.read_csv(f'{os.getcwd()}/data/printf_autocreate.csv')
 X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])

@@ -1,24 +1,27 @@
 # Code Repair
+
 #### DATA：
 [LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)<br>
-**1.p2data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料<br>
-**2.printf_autocreate.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)
-**3.training_autocreate資料夾** 模型順練完後的參數
+
+1. **p2data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料  
+2. **printf_autocreate.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)  
+3. **training_autocreate資料夾** 模型訓練完後的參數
 
 ## 第一次用看這裡(修復程式碼)
-**1.先從DATA中下載上述1.2.3.檔案，在coderepair中創建一個名為 data 的資料夾。**<br>
-**將p2data資料夾、printf_autocreate.csv 放入data資料夾。**<br>
+1. **先從DATA中下載上述1.2.3.檔案，在coderepair中創建一個名為 data 的資料夾**。
+2. **將p2data資料夾、printf_autocreate.csv 放入data資料夾。**  
 **將training_autocreate資料夾 放入model資料夾。**<br>
-**2.因p2data資料夾裡的程式碼筆數太多，建議分批修復，先把要修復的程式碼放進任一資料夾內**<br>*建議一次跑200筆內(200筆約要跑半小時)<br>
-**3.下指令： ex. python main.py -i ( 資料夾路徑 ) ，會開始跑修復流程**<br> 
+2. **因p2data資料夾裡的程式碼筆數太多，建議分批修復，先把要修復的程式碼放進任一資料夾內**
+3. **建議一次跑200筆內(200筆約要跑半小時)**  
+4. 下指令： ex. python main.py -i ( 資料夾路徑 ) ，會開始跑修復流程**<br> 
 (修復成功的檔案會複製到data/sucees資料夾;修復失敗會複製到data/fail資料夾)<br> 
-**4.main.py跑完後，輸入python count.py ，查看修復率**<br>  
+5. **main.py跑完後，輸入python count.py ，查看修復率**<br>  
 
 
 ## 若要更改模型
-**1.進到model資料夾裡的model_train.py，修改checkpoint_path參數(訓練參數除存的資料夾)，更改模型並進行訓練**<br>
-**2.訓練好後，若是只想測試一下自己的模型訓練成果可以到model_test.py**裡，修改checkpoint_path參數(訓練參數除存的資料夾)，並啟用程式碼，會印出model input: 和 model output:。<br>(主要會使用model資料夾裡的c1.c檔做測試)<br>
-**3.訓練好後，到model_fix.py的column_fix函式裡更改checkpoint_path參數(同model_train.py)，修改完後即可使用main.py**<br>
+**1. 進到model資料夾裡的model_train.py，修改checkpoint_path參數(訓練參數除存的資料夾)，更改模型並進行訓練**<br>
+**2. 訓練好後，若是只想測試一下自己的模型訓練成果可以到model_test.py**裡，修改checkpoint_path參數(訓練參數除存的資料夾)，並啟用程式碼，會印出model input: 和 model output:。<br>(主要會使用model資料夾裡的c1.c檔做測試)<br>
+**3. 訓練好後，到model_fix.py的column_fix函式裡更改checkpoint_path參數(同model_train.py)，修改完後即可使用main.py**<br>
 
 
 # 資料夾、py檔 詳細說明
@@ -55,10 +58,10 @@
 
 ##### create_printf_train_data.py 
 - 用來產生輸出函數的測試、訓練資料(csv)，主要有三種資料：<br>
-1.printf("%d",a);<br>
-2.printf("hello");<br>
-3.printf("sdfsdgqw");
- 
+1. printf("%d",a);<br>
+2. printf("hello");<br>
+3. printf("sdfsdgqw");
+
  ##### find_codinghere_printf_error_data.py
  - 用來找出codinghere data裡有輸出函式錯誤的程式碼
 
@@ -87,5 +90,4 @@
 ### str_fix 資料夾
 ##### fix_printf_scanf.py
 -用來修復有輸出函數'字串'錯誤的程式碼
-
 

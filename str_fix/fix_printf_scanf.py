@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import subprocess
 from difflib import SequenceMatcher
-import regex
+import re as regex
 
 
 def fix_str(old_file, new_file, printf_fix_line):
