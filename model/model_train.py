@@ -20,21 +20,16 @@ if gpus:
     print(e)
 
 INPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
+    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
 
 OUTPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
+    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
     
 sos_id = len(OUTPUT_CHARS) + 1
 
 
-
-
-
 def data_str_to_ids(date_str, chars):
-
     return [1+chars.index(c) for c in date_str]
-
 
 def prepare_date_strs(data_strs, chars=INPUT_CHARS):
     X_ids = [data_str_to_ids(dt, chars) for dt in data_strs]
@@ -42,26 +37,20 @@ def prepare_date_strs(data_strs, chars=INPUT_CHARS):
     y = []
     for i in range(len(X_ids)):
         y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
-
     return np.array(y)
 
-
 def create_dataset(x, y):
-
     return prepare_date_strs(x, INPUT_CHARS), prepare_date_strs(y, OUTPUT_CHARS)
-
 
 def ids_to_date_strs(ids, chars=OUTPUT_CHARS):
     return ["".join([(" " + chars)[index] for index in sequence])
             for sequence in ids]
-
 
 def prepare_date_strs_padded(date_strs):
     X = prepare_date_strs(date_strs)
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
     return X
-
 
 def convert_date_strs(date_strs):
     X = prepare_date_strs_padded(date_strs)
@@ -73,9 +62,6 @@ def shifted_output_sequences(Y):
     Yshift = np.ones(Y.shape) * sos_id
     Yshift[:,1:] = Y[:,:-1]
     return Yshift
-   
-
-
 
 def predict_date_strs(date_strs):
     X = prepare_date_strs_padded(date_strs)
@@ -119,11 +105,7 @@ def create_model():
     optimizer = keras.optimizers.Nadam()
     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
                 metrics=["accuracy"])
-   
-    
     return model
-
-
 
 
 if __name__ == '__main__':
@@ -135,17 +117,13 @@ if __name__ == '__main__':
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]
 
-
     X_train_decoder = shifted_output_sequences(Y_train)
     X_valid_decoder = shifted_output_sequences(Y_valid)
 
-    
     ################################################
 
     checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
-
-
 
     cp_callback = tf.keras.callbacks.ModelCheckpoint(
         filepath=checkpoint_path, 
