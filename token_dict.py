@@ -15,15 +15,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from unicodedata import name
+
 import pandas as pd
 from util.c_tokenizer import C_Tokenizer
+import os
+import numpy as np
 tokenize = C_Tokenizer().tokenize
 
 def build_dictionary(token_strings, drop_ids, tl_dict={}):
 
     def build_dict(list_generator, dict_ref):
+        
         for tokenized_code in list_generator:
+            #print(tokenized_code)
             for token in tokenized_code.split():
                 if drop_ids and '_<id>_' in token:
                     continue
@@ -33,10 +37,11 @@ def build_dictionary(token_strings, drop_ids, tl_dict={}):
 
     tl_dict['_pad_'] = 0
     tl_dict['_eos_'] = 1
-    tl_dict['~'] = 2
+    #tl_dict['~'] = 2
 
     if drop_ids:
-        tl_dict['_<id>_@'] = 3
+        #tl_dict['_<id>_@'] = 3
+        tl_dict['_<id>_@'] = 2
 
     if type(token_strings) == list:
         token_strings_list = token_strings
@@ -44,45 +49,49 @@ def build_dictionary(token_strings, drop_ids, tl_dict={}):
         for token_strings in token_strings_list:
             for key in token_strings:
                 for problem_id in token_strings[key]:
-                    build_dict((prog + ' ' + fix for prog,
-                                fix in token_strings[key][problem_id]), tl_dict)
+                    build_dict((prog for prog
+                                 in token_strings[key][problem_id]), tl_dict)
     else:
         for key in token_strings:
             for problem_id in token_strings[key]:
                 
-                build_dict((prog + ' ' + fix for prog,
-                            fix in token_strings[key][problem_id]), tl_dict)
+                build_dict((prog  for prog
+                        in token_strings[key][problem_id]), tl_dict)
 
     print ('dictionary size:', len(tl_dict))
     assert len(tl_dict) > 4
     return tl_dict
 if __name__ == '__main__':
-
-    filename = "model/c1.c"
-    folder_path = f'{filename}'
-
-    file_data = ""
-    line_column = 1
-
-    df = pd.read_csv('data/printf_para.csv')
-    code = df['correct'][81000]
-    print(code)
-    tokenized_code, name_dict, name_seq = tokenize(code)
-    print(tokenized_code, name_dict, name_seq)
-    print(tokenized_code.split())
-    codelength = len(tokenized_code.split())
-    print(codelength)
-    token_strings = {'train': {}, 'validation': {}}
-    #print(token_strings)
-    token_strings['train'][0] = [(tokenized_code, "-1")]
-    token_strings['train'][1] = [(tokenized_code, "-1")]
-    token_strings['validation'][0] = [(tokenized_code, "-1")]
-    token_strings['validation'][1] = [(tokenized_code, "-1")]
-    print(token_strings)
-    print(type(token_strings))
+    folder_path = '/home/laz/Program/coderepair/data/p2data/'
+    folderList = os.listdir(folder_path)
+    folderList.sort()
+    token_strings = {'correct': {}, 'wrong': {}}
     
-    print(build_dictionary(token_strings,True))
+    cnt = 0
 
+    for base in folderList:
+        path = folder_path + base
+        #print(path)
+        
+        
+        file_code = ""
+        line_column = 1
+        with open(path, "r") as f:
 
+            for line in f:
+               
+                    
 
+                file_code += line
 
+                line_column = line_column+1
+            #print(file_code)
+            tokenized_code, name_dict, name_seq = tokenize(file_code)
+            token_strings['correct'][cnt] = [(tokenized_code)]
+    
+            cnt+=1
+    all_dicts = build_dictionary(token_strings,True)
+    print(all_dicts)
+    np.save(os.path.join('/home/laz/Program/coderepair/', 'all_dicts.npy'), all_dicts)
+
+  

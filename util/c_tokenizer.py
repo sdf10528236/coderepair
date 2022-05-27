@@ -44,16 +44,18 @@ class C_Tokenizer(Tokenizer):
             ('comment',
              r'\/\*(?:[^*]|\*(?!\/))*\*\/|\/\*([^*]|\*(?!\/))*\*?|\/\/[^\n]*'),
             ('directive', r'#\w+'),
-            ('string', r'"(?:[^"\n]|\\")*"?'),
+            #('string', r'(?:[^"\n]|\\")*"?'),         原字串token  =>  "asdad"
             ('char', r"'(?:\\?[^'\n]|\\')'"),
             ('char_continue', r"'[^']*"),
             ('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
             ('include',  r'(?<=\#include) *<([_A-Za-z]\w*(?:\.h))?>'),
+            ('pa', r'%([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup]'),  #新增%d %f 的token
             ('op',
-             r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#]'),
+             r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#"]'),
             ('name',  r'[_A-Za-z]\w*'),
             ('whitespace',  r'\s+'),
             ('nl', r'\\\n?'),
+            
             ('MISMATCH', r'.'),            # Any other character
         ]
         tok_regex = '|'.join('(?P<%s>%s)' %
@@ -77,6 +79,7 @@ class C_Tokenizer(Tokenizer):
                 yield Token(kind, value, line_num, column)
 
     def _sanitize_brackets(self, tokens_string):
+        print(tokens_string)
         lines = get_lines(tokens_string)
 
         # if len(lines) == 1:
@@ -109,8 +112,8 @@ class C_Tokenizer(Tokenizer):
 
     def tokenize(self, code, keep_format_specifiers=False, keep_names=True,
                  keep_literals=False):
-        result = '0 ~ '
-
+        #result = '0 ~ '
+        result = ''
         names = ''
         line_count = 1
         name_dict = {}
@@ -207,8 +210,9 @@ class C_Tokenizer(Tokenizer):
         if result.endswith('~'):
             idx = result.rfind('}')
             result = result[:idx + 1]
-        
-        return self._sanitize_brackets(result), name_dict, name_sequence
+        #return self._sanitize_brackets(result), name_dict, name_sequence
+
+        return result, name_dict, name_sequence
 
 # Input: tokenized programprint()
 
