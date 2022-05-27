@@ -35,8 +35,8 @@ with sqlite3.connect(db_path) as conn:
     for row in cursor.execute("SELECT code_id, code FROM Code;"):
         code_id = str(row[0])
         code = row[1].encode('utf-8')
-        print(code)
-        quit()
+        
+       
         tokenized_code, name_dict, name_seq = tokenize(code)
         codelength = len(tokenized_code.split())
         tuples.append((tokenized_code, json.dumps(name_dict),

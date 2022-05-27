@@ -179,7 +179,7 @@ def generate_training_data(db_path, bins, validation_users, min_program_length, 
         print (fix_lengths)
     print ('Total mutate calls:', total_mutate_calls)
     print ('Exceptions in mutate() call:', exceptions_in_mutate_call, '\n')
-
+    
     return token_strings, mutator_obj.get_mutation_distribution() if kind_mutations == 'typo' else {}
 
 

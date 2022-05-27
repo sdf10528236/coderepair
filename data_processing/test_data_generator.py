@@ -55,18 +55,18 @@ def generate_raw_test_data(db_path, bins, min_program_length, max_program_length
 
                 else:
                     skipped += 1
-                    print 'out of length range:', problem_id, user_id, code_id
+                    print ('out of length range:', problem_id, user_id, code_id)
 
-    print 'problem_count:', len(raw_test_data),
-    print 'program_count:', sum([len(raw_test_data[problem_id]) for problem_id in raw_test_data]),
-    print 'discared_problems:', skipped
+    print ('problem_count:', len(raw_test_data),)
+    print ('program_count:', sum([len(raw_test_data[problem_id]) for problem_id in raw_test_data]),)
+    print ('discared_problems:', skipped)
 
     program_lengths = np.sort(program_lengths)
 
-    print 'Statistics'
-    print '----------'
-    print 'Program length:  Mean =', np.mean(program_lengths), '\t95th %ile =', \
-        program_lengths[int(0.95 * len(program_lengths))]
+    print ('Statistics')
+    print ('----------')
+    print ('Program length:  Mean =', np.mean(program_lengths), '\t95th %ile =', \
+        program_lengths[int(0.95 * len(program_lengths))])
 
     return raw_test_data
 
@@ -155,25 +155,25 @@ def generate_seeded_test_data(db_path, bins, min_program_length, max_program_len
     program_lengths = np.sort(program_lengths)
     fix_lengths = np.sort(fix_lengths)
 
-    print 'Statistics'
-    print '----------'
-    print 'Program length:  Mean =', np.mean(program_lengths), '\t95th %ile =', \
-        program_lengths[int(0.95 * len(program_lengths))]
+    print ('Statistics')
+    print ('----------')
+    print ('Program length:  Mean =', np.mean(program_lengths), '\t95th %ile =', \
+        program_lengths[int(0.95 * len(program_lengths))])
     try:
-        print 'Mean fix length: Mean =', np.mean(fix_lengths), '\t95th %ile = ', \
-            fix_lengths[int(0.95 * len(fix_lengths))]
+        print ('Mean fix length: Mean =', np.mean(fix_lengths), '\t95th %ile = ', \
+            fix_lengths[int(0.95 * len(fix_lengths))])
     except Exception as e:
-        print e
-        print 'fix_lengths'
-        print fix_lengths
-    print 'Total mutate calls:', total_mutate_calls
-    print 'Exceptions in mutate() call:', exceptions_in_mutate_call, '\n'
+        print (e)
+        print ('fix_lengths')
+        print (fix_lengths)
+    print ('Total mutate calls:', total_mutate_calls)
+    print ('Exceptions in mutate() call:', exceptions_in_mutate_call, '\n')
 
     return seeded_test_data, mutator_obj.get_mutation_distribution() if kind_mutations == 'typo' else {}
 
 
 def save_bins(destination, test_data, bins, which='raw'):
-    print which
+    print (which)
     full_list = []
     for bin_ in bins:
         for problem_id in bin_:
@@ -192,7 +192,7 @@ def save_bins(destination, test_data, bins, which='raw'):
 
         assert os.path.isdir(os.path.join(destination, 'bin_%d' % i))
 
-        print "Fold %d: %d Test programs in %d problems" % (i, count, len(this_fold))
+        print ("Fold %d: %d Test programs in %d problems" % (i, count, len(this_fold)))
         np.save(os.path.join(destination, 'bin_%d' %
                              i, 'test_%s_bin_%d.npy' % (which, i)), this_fold)
 
@@ -235,4 +235,4 @@ if __name__ == "__main__":
     save_bins(iitk_typo_output_directory, seeded_typo_test_data, bins, 'seeded-typo')
     save_bins(iitk_ids_output_directory, seeded_ids_test_data, bins, 'seeded-ids')
 
-    print 'test dataset generated!'
+    print ('test dataset generated!')
