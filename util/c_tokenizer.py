@@ -17,7 +17,7 @@ limitations under the License.
 
 import collections
 import regex as re
-from util.helpers import get_lines, recompose_program
+
 from util.tokenizer import Tokenizer, UnexpectedTokenException, EmptyProgramException
 
 Token = collections.namedtuple('Token', ['typ', 'value', 'line', 'column'])
@@ -79,8 +79,8 @@ class C_Tokenizer(Tokenizer):
     def _sanitize_brackets(self, tokens_string):
         lines = get_lines(tokens_string)
 
-        if len(lines) == 1:
-            raise EmptyProgramException(tokens_string)
+        # if len(lines) == 1:
+        #     raise EmptyProgramException(tokens_string)
 
         for i in range(len(lines) - 1, -1, -1):
             line = lines[i]
@@ -209,3 +209,35 @@ class C_Tokenizer(Tokenizer):
             result = result[:idx + 1]
         
         return self._sanitize_brackets(result), name_dict, name_sequence
+
+# Input: tokenized programprint()
+
+# Returns: array of lines, each line is tokenized
+def get_lines(program_string):
+    tokens = program_string.split()
+    ignore_tokens = ['~'] + [chr(n + ord('0')) for n in range(10)]
+
+    lines = []
+
+    for token in tokens:
+        if token in ignore_tokens and token == '~':
+            if len(lines) > 0:
+                lines[-1] = lines[-1].rstrip(' ')
+            lines.append('')
+        elif token not in ignore_tokens:
+            lines[-1] += token + ' '
+
+    return lines
+# Input: output of get_lines() (tokenized lines)
+# Result: Tokenized program
+def recompose_program(lines):
+    recomposed_program = ''
+
+    for i, line in enumerate(lines):
+        for digit in str(i):
+            recomposed_program += digit + ' '
+
+        recomposed_program += '~ '
+        recomposed_program += line + ' '
+
+    return recomposed_program
