@@ -121,14 +121,18 @@ class C_Tokenizer(Tokenizer):
 
         regex = '%(d|i|f|c|s|u|g|G|e|p|llu|ll|ld|l|o|x|X)'
         isNewLine = True
-
+        
+        
         # Get the iterable
         my_gen = self._tokenize_code(code)
-
+        
+        
         while True:
             try:
                 token = next(my_gen)
+                
             except StopIteration:
+                
                 break
 
             if isinstance(token, Exception):
@@ -206,7 +210,7 @@ class C_Tokenizer(Tokenizer):
 
         result = result[:-1]
         names = names[:-1]
-
+        
         if result.endswith('~'):
             idx = result.rfind('}')
             result = result[:idx + 1]

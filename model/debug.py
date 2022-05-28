@@ -7,6 +7,9 @@ import tensorflow as tf
 import os
 from model_train import create_model 
 from util.c_tokenizer import C_Tokenizer
+import difflib
+
+
 
 
 tokenize = C_Tokenizer().tokenize
@@ -170,7 +173,10 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
 def prepare_date_strs_padded(date_strs):
     
+
+    
     X = prepare_data(date_strs)
+    
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
     return X
@@ -180,7 +186,7 @@ def prepare_date_strs_padded(date_strs):
 def predict_date_strs(date_strs):
     
     X = prepare_date_strs_padded(date_strs)
-    #print(X)
+    print(X)
     
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     #print(Y_pred)
@@ -194,12 +200,11 @@ def predict_date_strs(date_strs):
         #print(Y_pred_next)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
         #print(Y_pred)
-    #print(Y_pred[:, 1:])
+    print(Y_pred[:, 1:])
 
     tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
-    #print(tokens)
-    tokenized_code, name_dict, name_seq = tokenize(date_strs)
-    strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq)
+    print(tokens)
+    strs = tokens_to_source(tokens,INPUT_CHARS)
     
     return strs
 
@@ -251,8 +256,14 @@ if __name__ == '__main__':
                     model.load_weights(latest)
                     print("model input: "+line[printf_positions[0][0]:])
                     wrong_str = line[printf_positions[0][0]:]
+                    print(wrong_str)
+                    print("printf(\" %lf %lf %lf\", jk, FXF, LdP),")
+                    print(wrong_str.strip() == "printf(\" %lf %lf %lf\", jk, FXF, LdP),")
                     
-                    fixed_str = predict_date_strs(wrong_str.strip())
+                    tokenized_code, name_dict, name_seq = tokenize( "printf(\" %lf %lf %lf\", jk, FXF, LdP),")
+                    print(tokenized_code, name_dict, name_seq)
+                    
+                    fixed_str = predict_date_strs("printf(\" %lf %lf %lf\", jk, FXF, LdP),")
                     print("model output: "+fixed_str)
                    
 

@@ -5,7 +5,7 @@ int main()
 {
     
     int IE;
-	printf(" %lf %lf %lf", jk, FXF, LdP),
+	printf(" %c %c" DnF A);
 	
 	return 0;
 		
