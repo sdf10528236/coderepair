@@ -151,11 +151,15 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
             elif type_ == 'number':
                 content = content.rstrip('#')
 
-            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall'or type_ == 'pa'or type_ == 'es':
+            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall'or type_ == 'pa':
                 if type_ == 'op' and prev_type_was_op:
                     result = result[:-1] + content + ' '
                 else:
                     result += content + ' '
+            elif type_ == 'es':
+               
+                result = result[:-1] + content[1:] + ' '   #新增/n /t
+
             elif type_ == 'id':
                 result += content + ' '
             elif type_ == 'number':

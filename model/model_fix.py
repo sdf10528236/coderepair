@@ -111,6 +111,10 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                     result = result[:-1] + content + ' '
                 else:
                     result += content + ' '
+            elif type_ == 'es':
+                
+                result = result[:-1] + content[1:] + ' '   #新增/n /t
+                
             elif type_ == 'id':
                 result += content + ' '
             elif type_ == 'number':
