@@ -12,7 +12,9 @@ tokenize = C_Tokenizer().tokenize
 INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 def data_str_to_token(data_str):
+    print(data_str)
     tokenized_code, name_dict, name_seq = tokenize(data_str)
+    print(tokenized_code, name_dict, name_seq)
     tokenized_code_list = tokenized_code.split()
         
         
@@ -40,6 +42,7 @@ def prepare_date_strs(data_strs, chars=INPUT_CHARS):
     y = []
     for i in range(len(X_ids)):
         y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
+        print(y)
     return np.array(y)
 def create_dataset(x, y):
     return prepare_date_strs(x, INPUT_CHARS), prepare_date_strs(y, OUTPUT_CHARS)
