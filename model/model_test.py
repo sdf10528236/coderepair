@@ -206,9 +206,12 @@ def predict_date_strs(date_strs):
 
     tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
     
-    print(tokens)
+    
     tokenized_code, name_dict, name_seq = tokenize(date_strs)
     print(tokenized_code, name_dict, name_seq)
+    print("\n")
+    print(tokens)
+    print("\n")
     strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq)
     
     return strs
