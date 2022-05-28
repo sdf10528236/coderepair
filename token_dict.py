@@ -92,6 +92,6 @@ if __name__ == '__main__':
             cnt+=1
     all_dicts = build_dictionary(token_strings,True)
     print(all_dicts)
-    np.save(os.path.join('/home/laz/Program/coderepair/', 'all_dicts.npy'), all_dicts)
+    np.save(os.path.join('/home/laz/Program/coderepair/model/', 'all_dicts.npy'), all_dicts)
 
   
