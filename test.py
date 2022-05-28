@@ -91,6 +91,10 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                     result = result[:-1] + content + ' '
                 else:
                     result += content + ' '
+            elif type_ == 'es':
+                
+                result = result[:-1] + content[1:] + ' '   #新增/n /t
+                
             elif type_ == 'id':
                 result += content + ' '
             elif type_ == 'number':
@@ -110,6 +114,26 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
 if __name__ == '__main__':
     
+    filename = "c1.c"
+    folder_path = f'{filename}'
     
+    file_data = ""
+    line_column = 1
+    with open(folder_path, "r") as f:
+
+        for line in f:
+            
+                
+                    
+                    
+                    
+                   
+
+            file_data += line
+
+            line_column = line_column+1
+        print(file_data)
     
-    print(tokenize('printf("dasdasd\\nasdsad");'))
+    print(tokenize(file_data))
+    tokenized_code, name_dict, name_seq = tokenize(file_data)
+    print(tokens_to_source(tokenized_code,INPUT_CHARS))
