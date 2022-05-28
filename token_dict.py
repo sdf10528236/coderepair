@@ -91,6 +91,19 @@ if __name__ == '__main__':
             token_strings['correct'][cnt] = [(tokenized_code)]
     
             cnt+=1
+    df = pd.read_csv("data/printf_all.csv")
+    
+    for strs in df["correct"]:
+        #print(strs)
+        tokenized_code, name_dict, name_seq = tokenize(strs)
+        token_strings['correct'][cnt] = [(tokenized_code)]
+        cnt+=1
+    for strs in df["wrong"]:
+        #print(strs)
+        tokenized_code, name_dict, name_seq = tokenize(strs)
+        token_strings['correct'][cnt] = [(tokenized_code)]
+        cnt+=1
+    
     all_dicts = build_dictionary(token_strings,True)
     print(all_dicts)
     np.save(os.path.join(now_path+'/model/', 'all_dicts.npy'), all_dicts)

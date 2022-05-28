@@ -118,9 +118,9 @@ def create_model():
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../data/printf_autocreate.csv')
-    X_train, Y_train = create_dataset(df['wrong'][0:70000], df['correct'][0:70000])
-    X_valid, Y_valid = create_dataset(df['wrong'][70000:100000], df['correct'][70000:100000])
+    df = pd.read_csv('../data/printf_all.csv')
+    X_train, Y_train = create_dataset(df['wrong'][0:175000], df['correct'][0:175000])
+    X_valid, Y_valid = create_dataset(df['wrong'][175000:250000], df['correct'][175000:250000])
     
 
     max_input_length = X_train.shape[1]
@@ -131,7 +131,7 @@ if __name__ == '__main__':
 
     ################################################
 
-    checkpoint_path = "training_token/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_token_printfall/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
     cp_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -147,5 +147,5 @@ if __name__ == '__main__':
     #################################################
 
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=3, batch_size=256, callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=3, batch_size=1024, callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
