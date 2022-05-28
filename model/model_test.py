@@ -10,6 +10,7 @@ from util.c_tokenizer import C_Tokenizer
 
 
 tokenize = C_Tokenizer().tokenize
+
 INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 id_to_token_dict = {v:k for k,v in INPUT_CHARS.items()}
@@ -207,7 +208,7 @@ def predict_date_strs(date_strs):
 
 if __name__ == '__main__':
    
-
+    
     checkpoint_path = "training_token/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)

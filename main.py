@@ -1,12 +1,20 @@
 from str_fix.fix_printf_scanf import auto_fix_str
 from model.model_fix import auto_model_fix
+from model.model_train import create_model
 import argparse
 import os
 import subprocess
 import shutil
 import os
+import tensorflow as tf
+now_path = os.path.dirname(os.path.abspath(__file__))
+checkpoint_path = now_path+"/model/training_token/cp-{epoch:04d}.ckpt"
+checkpoint_dir = os.path.dirname(checkpoint_path)
+latest = tf.train.latest_checkpoint(checkpoint_dir)
+#print(latest)
 
-
+model = create_model()
+model.load_weights(latest)
 
 def create_folder(path):
     
@@ -73,7 +81,7 @@ def code_fix(file_path,filename):
 
         if (len(compile_file(file_path))):
             error_num = len(compile_file(file_path))
-            auto_model_fix(file_path,file_path,filename)
+            auto_model_fix(file_path,file_path,filename,model)
             if (len(compile_file(file_path))== error_num):
                 return 2
             elif (len(compile_file(file_path))):

@@ -21,10 +21,11 @@ if gpus:
     print(e)
 
 tokenize = C_Tokenizer().tokenize
-INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
-OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 
-    
+now_path = os.path.dirname(os.path.abspath(__file__))
+INPUT_CHARS = np.load(now_path+'/all_dicts.npy',allow_pickle=True).item()
+OUTPUT_CHARS = np.load(now_path+'/all_dicts.npy',allow_pickle=True).item()
+
 sos_id = len(OUTPUT_CHARS) + 1
 
 
