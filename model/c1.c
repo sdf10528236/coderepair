@@ -7,7 +7,7 @@ int main()
     int s;
 	scanf("%s", &s);
 
-	if(s>=90)printf("No);
+	if(s>=90)printf("no")
 	
 	return 0;
 		

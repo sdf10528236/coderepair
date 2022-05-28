@@ -6,13 +6,13 @@ import numpy as np
 import tensorflow as tf 
 import os
 from model_train import create_model 
+from util.c_tokenizer import C_Tokenizer
 
 
-INPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
-
-OUTPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
+tokenize = C_Tokenizer().tokenize
+INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
+OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
+id_to_token_dict = {v:k for k,v in INPUT_CHARS.items()}
     
 sos_id = len(OUTPUT_CHARS) + 1
 
@@ -59,30 +59,99 @@ def find_column(warning_text, filename):
     #print(column)
     return column
 
+def data_str_to_token(data_str):
+    #print(data_str)
+    tokenized_code, name_dict, name_seq = tokenize(data_str)
+    #print(tokenized_code, name_dict, name_seq)
+    tokenized_code_list = tokenized_code.split()
+    
+        
+    tokenized_code_list=[]
+    #print(tokenized_code.split())
+    for token in tokenized_code.split():
+        
+        if '_<id>_' in token:
+            
+            token = '_<id>_@'
+            
+        tokenized_code_list.append(token)
+    return tokenized_code_list 
+   
 def data_str_to_ids(date_str, chars):
-
-    return [1+chars.index(c) for c in date_str]
-
+    tokenized_code_list = data_str_to_token(date_str)
+    #print(tokenized_code_list)
+    return [chars[f'{token}'] for token in tokenized_code_list]
 
 def prepare_date_strs(data_strs, chars=INPUT_CHARS):
+    
     X_ids = [data_str_to_ids(dt, chars) for dt in data_strs]
+    #print( X_ids)
     xlen = max(len(x) for x in X_ids)
     y = []
     for i in range(len(X_ids)):
         y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
-
+    #print(np.array(y))
     return np.array(y)
-
-
 def create_dataset(x, y):
-
     return prepare_date_strs(x, INPUT_CHARS), prepare_date_strs(y, OUTPUT_CHARS)
 
 
-def ids_to_date_strs(ids, chars=OUTPUT_CHARS):
-   
-    return ["".join([(" " + chars)[index] for index in sequence])
-            for sequence in ids]
+
+def ids_to_token(ids, chars=id_to_token_dict):
+    #print(ids)
+       
+    return [" ".join(chars[index] for index in sequence)for sequence in ids]
+
+
+
+def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
+    result = ''
+    type_ = None
+
+    reverse_name_dict = {}
+    name_count = 0
+
+    for k, v in name_dict.items():
+        reverse_name_dict[v] = k
+
+    for token in tokens.split():
+        try:
+            prev_type_was_op = (type_ == 'op')
+
+            type_, content = token.split('>_')
+            type_ = type_.lstrip('_<')
+
+            if type_ == 'id':
+                if name_seq is not None:
+                    content = name_seq[name_count]
+                    name_count += 1
+                else:
+                    try:
+                        content = reverse_name_dict[content.rstrip('@')]
+                    except KeyError:
+                        content = 'new_id_' + content.rstrip('@')
+            elif type_ == 'number':
+                content = content.rstrip('#')
+
+            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall'or type_ == 'pa':
+                if type_ == 'op' and prev_type_was_op:
+                    result = result[:-1] + content + ' '
+                else:
+                    result += content + ' '
+            elif type_ == 'id':
+                result += content + ' '
+            elif type_ == 'number':
+                result += '0 '
+            elif type_ == 'string':
+                result += '"String" '
+            elif type_ == 'char':
+                result += "'c' "
+        except ValueError:
+            if token == '~':
+                result += '\n'
+
+    if not clang_format:
+        return result
 
 
 def prepare_date_strs_padded(date_strs):
@@ -90,19 +159,6 @@ def prepare_date_strs_padded(date_strs):
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
     return X
-
-
-def convert_date_strs(date_strs):
-    X = prepare_date_strs_padded(date_strs)
-    pids = model.predict(X)
-    ids = np.argmax(pids, axis=2)
-    return ids_to_date_strs(ids)
-
-def shifted_output_sequences(Y):
-    Yshift = np.ones(Y.shape) * sos_id
-    Yshift[:,1:] = Y[:,:-1]
-    return Yshift
-   
 
 
 
@@ -121,16 +177,20 @@ def predict_date_strs(date_strs):
         #print(Y_pred_next)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
         #print(Y_pred)
-    print(Y_pred[:, 1:])
-    print(ids_to_date_strs(Y_pred[:, 1:]))    
-    return ids_to_date_strs(Y_pred[:, 1:])
+    #print(Y_pred[:, 1:])
+
+    tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
+    print(tokens)
+    strs = tokens_to_source(tokens,INPUT_CHARS)
+    
+    return strs
 
 
 
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_para/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_token/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     #print(latest)
@@ -138,7 +198,7 @@ if __name__ == '__main__':
     model = create_model()
     model.load_weights(latest)
     
-    df = pd.read_csv('../data/printf_para.csv')
+    df = pd.read_csv('../data/printf_autocreate.csv')
     
     X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
     X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
@@ -173,11 +233,11 @@ if __name__ == '__main__':
                     model.load_weights(latest)
                     print("model input: "+line[printf_positions[0][0]:])
                     wrong_str = line[printf_positions[0][0]:]
-                    fixed_str = predict_date_strs([wrong_str])[0]
+                    fixed_str = predict_date_strs([wrong_str])
                     print("model output: "+fixed_str)
                    
 
             file_data += line
 
             line_column = line_column+1
-        print(file_data)
+        #print(file_data)

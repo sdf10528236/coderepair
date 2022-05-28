@@ -62,7 +62,8 @@ def build_dictionary(token_strings, drop_ids, tl_dict={}):
     assert len(tl_dict) > 4
     return tl_dict
 if __name__ == '__main__':
-    folder_path = '/home/laz/Program/coderepair/data/p2data/'
+    now_path = os.path.dirname(os.path.abspath(__file__))
+    folder_path = now_path+'/data/p2data/'
     folderList = os.listdir(folder_path)
     folderList.sort()
     token_strings = {'correct': {}, 'wrong': {}}
@@ -92,6 +93,6 @@ if __name__ == '__main__':
             cnt+=1
     all_dicts = build_dictionary(token_strings,True)
     print(all_dicts)
-    np.save(os.path.join('/home/laz/Program/coderepair/model/', 'all_dicts.npy'), all_dicts)
+    np.save(os.path.join(now_path+'/model/', 'all_dicts.npy'), all_dicts)
 
   
