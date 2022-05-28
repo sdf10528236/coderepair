@@ -219,10 +219,10 @@ def column_fix(old_file, new_file, column, model):
                     print("model input: "+wrong_str)
                     try:
                         fix_line = predict_date_strs(wrong_str.strip(),model)
-                        print(fix_line)
+                        
                         
                         print("model output: "+fix_line)
-                        quit()
+                        
 
                         line = line[:printf_positions[0][0]] + \
                         fix_line + "\n"
