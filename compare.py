@@ -22,6 +22,7 @@ def prepare_date_strs(data_strs, chars=INPUT_CHARS):
     y = []
     for i in range(len(X_ids)):
         y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
+    print(np.array(y))
     return np.array(y)
 
 def create_dataset(x, y):
@@ -29,5 +30,5 @@ def create_dataset(x, y):
 
 if __name__ == '__main__':
     df = pd.read_csv('data/printf_autocreate.csv')
-    X_train, Y_train = create_dataset(df['wrong'][0:1], df['correct'][0:1])
+    X_train, Y_train = create_dataset(df['wrong'][0:10], df['correct'][0:10])
     

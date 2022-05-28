@@ -9,10 +9,10 @@ from model_train import create_model
 
 
 INPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
+    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
 
 OUTPUT_CHARS = "".join(
-    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=\n\() ,;.\"[]%'!&"
+    sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
     
 sos_id = len(OUTPUT_CHARS) + 1
 
@@ -80,6 +80,7 @@ def create_dataset(x, y):
 
 
 def ids_to_date_strs(ids, chars=OUTPUT_CHARS):
+   
     return ["".join([(" " + chars)[index] for index in sequence])
             for sequence in ids]
 
@@ -107,16 +108,21 @@ def shifted_output_sequences(Y):
 
 def predict_date_strs(date_strs):
     X = prepare_date_strs_padded(date_strs)
-    print(X)
-    quit()
+    #print(X)
+    
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     for index in range(max_output_length):
         pad_size = max_output_length - Y_pred.shape[1]
         X_decoder = tf.pad(Y_pred, [[0, 0], [0, pad_size]])
         Y_probas_next = model.predict([X, X_decoder])[:, index:index+1]
-        
+        #print(Y_probas_next)
+        #print(Y_probas_next[:, index:index+1])
         Y_pred_next = tf.argmax(Y_probas_next, axis=-1, output_type=tf.int32)
+        #print(Y_pred_next)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
+        #print(Y_pred)
+    print(Y_pred[:, 1:])
+    print(ids_to_date_strs(Y_pred[:, 1:]))    
     return ids_to_date_strs(Y_pred[:, 1:])
 
 
@@ -124,7 +130,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    checkpoint_path = "training_autocreate/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_para/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     #print(latest)
@@ -132,7 +138,7 @@ if __name__ == '__main__':
     model = create_model()
     model.load_weights(latest)
     
-    df = pd.read_csv('../data/printf_autocreate.csv')
+    df = pd.read_csv('../data/printf_para.csv')
     
     X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
     X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
