@@ -138,6 +138,9 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
             if type_ == 'id':
                 if name_seq is not None:
+                    
+                    if(name_count > (len(name_seq)-1)):   #預測出來的<id>數量大於原本name_seq裡的<id>數
+                        name_count = (len(name_seq)-1)
                     content = name_seq[name_count]
                     name_count += 1
                 else:
@@ -148,7 +151,7 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
             elif type_ == 'number':
                 content = content.rstrip('#')
 
-            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall'or type_ == 'pa':
+            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall'or type_ == 'pa'or type_ == 'es':
                 if type_ == 'op' and prev_type_was_op:
                     result = result[:-1] + content + ' '
                 else:
@@ -198,8 +201,10 @@ def predict_date_strs(date_strs):
     #print(Y_pred[:, 1:])
 
     tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
-    #print(tokens)
+    
+    print(tokens)
     tokenized_code, name_dict, name_seq = tokenize(date_strs)
+    print(tokenized_code, name_dict, name_seq)
     strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq)
     
     return strs

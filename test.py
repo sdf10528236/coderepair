@@ -9,8 +9,8 @@ from util.c_tokenizer import C_Tokenizer
 #     sorted(set("".join(string.ascii_letters)))) + " _*/0123456789+-=~@#$^|\n\t`{}\\() ,;.\"[]%'!&?"
 
 tokenize = C_Tokenizer().tokenize
-INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
-OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
+INPUT_CHARS = np.load('model/all_dicts.npy',allow_pickle=True).item()
+OUTPUT_CHARS = np.load('model/all_dicts.npy',allow_pickle=True).item()
 id_to_token_dict = {v:k for k,v in INPUT_CHARS.items()}
 
 def data_str_to_token(data_str):
@@ -109,15 +109,7 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
   
 
 if __name__ == '__main__':
-    df = pd.read_csv('data/printf_autocreate.csv')
     
     
-    X_train, Y_train = create_dataset( df['correct'][15:20],df['wrong'][15:20])
-    #print(X_train)
-    #print(ids_to_token(X_train[3]))
-    token = ids_to_token(X_train[4])[0]
-    print(token)
-    print(token.split())
-    print(tokens_to_source(token,INPUT_CHARS, False,['b', 'QVd', 'tX']))
-    #print(ids_to_token(X_train))
-   
+    
+    print(tokenize('printf("dasdasd\\nasdsad");'))

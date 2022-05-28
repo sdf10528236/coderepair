@@ -5,7 +5,7 @@ int main()
 {
     
     int IE;
-	printf(" %c %c" DnF A);
+	printf("%d\n", sum)
 	
 	return 0;
 		

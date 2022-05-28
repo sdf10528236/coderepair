@@ -50,6 +50,7 @@ class C_Tokenizer(Tokenizer):
             ('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
             ('include',  r'(?<=\#include) *<([_A-Za-z]\w*(?:\.h))?>'),
             ('pa', r'%([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup]'),  #新增%d %f 的token
+            ('es', r'\\[abfnrtv0]'), 
             ('op',
              r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#"]'),
             ('name',  r'[_A-Za-z]\w*'),
@@ -121,18 +122,14 @@ class C_Tokenizer(Tokenizer):
 
         regex = '%(d|i|f|c|s|u|g|G|e|p|llu|ll|ld|l|o|x|X)'
         isNewLine = True
-        
-        
+
         # Get the iterable
         my_gen = self._tokenize_code(code)
-        
-        
+
         while True:
             try:
                 token = next(my_gen)
-                
             except StopIteration:
-                
                 break
 
             if isinstance(token, Exception):
@@ -210,7 +207,7 @@ class C_Tokenizer(Tokenizer):
 
         result = result[:-1]
         names = names[:-1]
-        
+
         if result.endswith('~'):
             idx = result.rfind('}')
             result = result[:idx + 1]
