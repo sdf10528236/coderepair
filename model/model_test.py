@@ -164,9 +164,10 @@ def prepare_date_strs_padded(date_strs):
 
 def predict_date_strs(date_strs):
     X = prepare_date_strs_padded(date_strs)
-    #print(X)
+    print(X)
     
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
+    print(Y_pred)
     for index in range(max_output_length):
         pad_size = max_output_length - Y_pred.shape[1]
         X_decoder = tf.pad(Y_pred, [[0, 0], [0, pad_size]])

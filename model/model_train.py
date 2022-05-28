@@ -6,6 +6,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 import tensorflow as tf
 from tensorflow import keras
+import tensorflow_addons as tfa
 import os
 from util.c_tokenizer import C_Tokenizer
 gpus = tf.config.list_physical_devices('GPU')
@@ -72,33 +73,43 @@ def shifted_output_sequences(Y):
 
 
 def create_model():
-    encoder_embedding_size = 32
-    decoder_embedding_size = 32
-    lstm_units = 128
-
     np.random.seed(42)
     tf.random.set_seed(42)
 
-    encoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
-    encoder_embedding = keras.layers.Embedding(
-        input_dim=len(INPUT_CHARS) + 1,
-        output_dim=encoder_embedding_size)(encoder_input)
-    _, encoder_state_h, encoder_state_c = keras.layers.LSTM(
-        lstm_units, return_state=True)(encoder_embedding)
-    encoder_state = [encoder_state_h, encoder_state_c]
+    encoder_embedding_size = 32
+    decoder_embedding_size = 32
+    units = 128
 
-    decoder_input = keras.layers.Input(shape=[None], dtype=tf.int32)
-    decoder_embedding = keras.layers.Embedding(
-        input_dim=len(OUTPUT_CHARS) + 2,
-        output_dim=decoder_embedding_size)(decoder_input)
-    decoder_lstm_output = keras.layers.LSTM(lstm_units, return_sequences=True)(
-        decoder_embedding, initial_state=encoder_state)
-    decoder_output = keras.layers.Dense(len(OUTPUT_CHARS) + 1,
-                                        activation="softmax")(decoder_lstm_output)
+    encoder_inputs = keras.layers.Input(shape=[None], dtype=np.int32)
+    decoder_inputs = keras.layers.Input(shape=[None], dtype=np.int32)
+    sequence_lengths = keras.layers.Input(shape=[], dtype=np.int32)
 
-    model = keras.models.Model(inputs=[encoder_input, decoder_input],
-                            outputs=[decoder_output])
+    encoder_embeddings = keras.layers.Embedding(
+        len(INPUT_CHARS) + 1, encoder_embedding_size)(encoder_inputs)
 
+    decoder_embedding_layer = keras.layers.Embedding(
+        len(INPUT_CHARS) + 2, decoder_embedding_size)
+    decoder_embeddings = decoder_embedding_layer(decoder_inputs)
+
+    encoder = keras.layers.LSTM(units, return_state=True)
+    encoder_outputs, state_h, state_c = encoder(encoder_embeddings)
+    encoder_state = [state_h, state_c]
+
+    sampler = tfa.seq2seq.sampler.TrainingSampler()
+
+    decoder_cell = keras.layers.LSTMCell(units)
+    output_layer = keras.layers.Dense(len(OUTPUT_CHARS) + 1)
+
+    decoder = tfa.seq2seq.basic_decoder.BasicDecoder(decoder_cell,
+                                                    sampler,
+                                                    output_layer=output_layer)
+    final_outputs, final_state, final_sequence_lengths = decoder(
+        decoder_embeddings,
+        initial_state=encoder_state)
+    Y_proba = keras.layers.Activation("softmax")(final_outputs.rnn_output)
+
+    model = keras.models.Model(inputs=[encoder_inputs, decoder_inputs],
+                            outputs=[Y_proba])
     optimizer = keras.optimizers.Nadam()
     model.compile(loss="sparse_categorical_crossentropy", optimizer=optimizer,
                 metrics=["accuracy"])
@@ -109,8 +120,7 @@ if __name__ == '__main__':
     df = pd.read_csv('../data/printf_autocreate.csv')
     X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
     X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
-    print(X_train)
-    quit()
+    
 
     max_input_length = X_train.shape[1]
     max_output_length = Y_train.shape[1]
@@ -135,5 +145,6 @@ if __name__ == '__main__':
     model.save_weights(checkpoint_path.format(epoch=0))
     #################################################
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=1,  callbacks=[cp_callback], 
+
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=2,  callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
