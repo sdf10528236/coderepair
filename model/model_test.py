@@ -83,7 +83,6 @@ def data_str_to_ids(date_str, chars):
     return [chars[f'{token}'] for token in tokenized_code_list]
 
 def prepare_date_strs(data_strs, chars=INPUT_CHARS):
-    
     X_ids = [data_str_to_ids(dt, chars) for dt in data_strs]
     #print( X_ids)
     xlen = max(len(x) for x in X_ids)
@@ -92,6 +91,19 @@ def prepare_date_strs(data_strs, chars=INPUT_CHARS):
         y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
     #print(np.array(y))
     return np.array(y)
+
+def prepare_date(data_strs, chars=INPUT_CHARS):
+    for dt in data_strs:
+        print(dt)
+    X_ids = [data_str_to_ids(dt, chars) for dt in data_strs]
+    #print( X_ids)
+    xlen = max(len(x) for x in X_ids)
+    y = []
+    for i in range(len(X_ids)):
+        y.append(X_ids[i] + [0]*(xlen-len(X_ids[i])))
+    #print(np.array(y))
+    return np.array(y)
+
 def create_dataset(x, y):
     return prepare_date_strs(x, INPUT_CHARS), prepare_date_strs(y, OUTPUT_CHARS)
 
@@ -155,7 +167,9 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
 
 def prepare_date_strs_padded(date_strs):
-    X = prepare_date_strs(date_strs)
+    print(date_strs)
+    X = prepare_date(date_strs)
+    print(X)
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
     return X
@@ -163,11 +177,12 @@ def prepare_date_strs_padded(date_strs):
 
 
 def predict_date_strs(date_strs):
+    print("1"+date_strs)
     X = prepare_date_strs_padded(date_strs)
     print(X)
     
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
-    print(Y_pred)
+    #print(Y_pred)
     for index in range(max_output_length):
         pad_size = max_output_length - Y_pred.shape[1]
         X_decoder = tf.pad(Y_pred, [[0, 0], [0, pad_size]])
@@ -181,7 +196,7 @@ def predict_date_strs(date_strs):
     #print(Y_pred[:, 1:])
 
     tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
-    print(tokens)
+    #print(tokens)
     strs = tokens_to_source(tokens,INPUT_CHARS)
     
     return strs
@@ -201,8 +216,8 @@ if __name__ == '__main__':
     
     df = pd.read_csv('../data/printf_autocreate.csv')
     
-    X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
-    X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
+    X_train, Y_train = create_dataset(df['wrong'][0:70000], df['correct'][0:70000])
+    X_valid, Y_valid = create_dataset(df['wrong'][70000:100000], df['correct'][70000:100000])
     
 
     
@@ -234,7 +249,9 @@ if __name__ == '__main__':
                     model.load_weights(latest)
                     print("model input: "+line[printf_positions[0][0]:])
                     wrong_str = line[printf_positions[0][0]:]
-                    fixed_str = predict_date_strs([wrong_str])
+                    wrong_str_list = []
+                    wrong_str_list.append(wrong_str)
+                    fixed_str = predict_date_strs(wrong_str_list)
                     print("model output: "+fixed_str)
                    
 

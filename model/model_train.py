@@ -118,8 +118,8 @@ def create_model():
 
 if __name__ == '__main__':
     df = pd.read_csv('../data/printf_autocreate.csv')
-    X_train, Y_train = create_dataset(df['wrong'][0:80000], df['correct'][0:80000])
-    X_valid, Y_valid = create_dataset(df['wrong'][80000:100000], df['correct'][80000:100000])
+    X_train, Y_train = create_dataset(df['wrong'][0:70000], df['correct'][0:70000])
+    X_valid, Y_valid = create_dataset(df['wrong'][70000:100000], df['correct'][70000:100000])
     
 
     max_input_length = X_train.shape[1]
@@ -146,5 +146,5 @@ if __name__ == '__main__':
     #################################################
 
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=2,  callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=5, batch_size=2048, callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
