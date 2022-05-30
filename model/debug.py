@@ -7,11 +7,12 @@ import tensorflow as tf
 import os
 from model_train import create_model 
 from util.c_tokenizer import C_Tokenizer
+import difflib
+
 
 
 
 tokenize = C_Tokenizer().tokenize
-
 INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 id_to_token_dict = {v:k for k,v in INPUT_CHARS.items()}
@@ -139,9 +140,6 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
             if type_ == 'id':
                 if name_seq is not None:
-                    
-                    if(name_count > (len(name_seq)-1)):   #預測出來的<id>數量大於原本name_seq裡的<id>數
-                        name_count = (len(name_seq)-1)
                     content = name_seq[name_count]
                     name_count += 1
                 else:
@@ -157,10 +155,6 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                     result = result[:-1] + content + ' '
                 else:
                     result += content + ' '
-            elif type_ == 'es':
-               
-                result = result[:-1] + content[1:] + ' '   #新增/n /t
-
             elif type_ == 'id':
                 result += content + ' '
             elif type_ == 'number':
@@ -179,38 +173,26 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
 def prepare_date_strs_padded(date_strs):
     
+
+    
     X = prepare_data(date_strs)
+    
     if X.shape[1] < max_input_length:
         X = tf.pad(X, [[0, 0], [0, max_input_length - X.shape[1]]])
     return X
 
 
 
-
-def shifted_output_sequences(Y):
-    Yshift = np.ones(Y.shape) * sos_id
-    Yshift[:,1:] = Y[:,:-1]
-    return Yshift
-   
-
-
-
-
 def predict_date_strs(date_strs):
     
     X = prepare_date_strs_padded(date_strs)
-    
-    Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
-    
-
-    #print(X)
+    print(X)
     
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
     #print(Y_pred)
     for index in range(max_output_length):
         pad_size = max_output_length - Y_pred.shape[1]
         X_decoder = tf.pad(Y_pred, [[0, 0], [0, pad_size]])
-        
         Y_probas_next = model.predict([X, X_decoder])[:, index:index+1]
         #print(Y_probas_next)
         #print(Y_probas_next[:, index:index+1])
@@ -218,17 +200,11 @@ def predict_date_strs(date_strs):
         #print(Y_pred_next)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
         #print(Y_pred)
-    #print(Y_pred[:, 1:])
+    print(Y_pred[:, 1:])
 
     tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
-    
-    
-    tokenized_code, name_dict, name_seq = tokenize(date_strs)
-    print(tokenized_code, name_dict, name_seq)
-    print("\n")
     print(tokens)
-    print("\n")
-    strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq)
+    strs = tokens_to_source(tokens,INPUT_CHARS)
     
     return strs
 
@@ -237,8 +213,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
 
-    
-    checkpoint_path = "training_token_printfall/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_token/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     #print(latest)
@@ -246,9 +221,10 @@ if __name__ == '__main__':
     model = create_model()
     model.load_weights(latest)
     
-    df = pd.read_csv('../data/printf_all.csv')
-    X_train, Y_train = create_dataset(df['wrong'][0:175000], df['correct'][0:175000])
-    X_valid, Y_valid = create_dataset(df['wrong'][175000:250000], df['correct'][175000:250000])
+    df = pd.read_csv('../data/printf_autocreate.csv')
+    
+    X_train, Y_train = create_dataset(df['wrong'][0:70000], df['correct'][0:70000])
+    X_valid, Y_valid = create_dataset(df['wrong'][70000:100000], df['correct'][70000:100000])
     
 
     
@@ -280,8 +256,14 @@ if __name__ == '__main__':
                     model.load_weights(latest)
                     print("model input: "+line[printf_positions[0][0]:])
                     wrong_str = line[printf_positions[0][0]:]
+                    print(wrong_str)
+                    print("printf(\" %lf %lf %lf\", jk, FXF, LdP),")
+                    print(wrong_str.strip() == "printf(\" %lf %lf %lf\", jk, FXF, LdP),")
                     
-                    fixed_str = predict_date_strs(wrong_str.strip())
+                    tokenized_code, name_dict, name_seq = tokenize( "printf(\" %lf %lf %lf\", jk, FXF, LdP),")
+                    print(tokenized_code, name_dict, name_seq)
+                    
+                    fixed_str = predict_date_strs("printf(\" %lf %lf %lf\", jk, FXF, LdP),")
                     print("model output: "+fixed_str)
                    
 

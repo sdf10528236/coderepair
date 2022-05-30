@@ -4,10 +4,8 @@
 int main()
 {
     
-    int s;
-	scanf("%s", &s);
-
-	if(s>=90)printf("No);
+    int IE;
+	printf("%d x %d x %d=%d"\n, l*w*h);
 	
 	return 0;
 		
