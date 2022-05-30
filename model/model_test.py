@@ -9,7 +9,6 @@ from model_train import create_model
 from util.c_tokenizer import C_Tokenizer
 
 
-
 tokenize = C_Tokenizer().tokenize
 
 INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
@@ -186,23 +185,9 @@ def prepare_date_strs_padded(date_strs):
 
 
 
-
-def shifted_output_sequences(Y):
-    Yshift = np.ones(Y.shape) * sos_id
-    Yshift[:,1:] = Y[:,:-1]
-    return Yshift
-   
-
-
-
-
 def predict_date_strs(date_strs):
     
     X = prepare_date_strs_padded(date_strs)
-    
-    Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
-    
-
     #print(X)
     
     Y_pred = tf.fill(dims=(len(X), 1), value=sos_id)
@@ -210,7 +195,6 @@ def predict_date_strs(date_strs):
     for index in range(max_output_length):
         pad_size = max_output_length - Y_pred.shape[1]
         X_decoder = tf.pad(Y_pred, [[0, 0], [0, pad_size]])
-        
         Y_probas_next = model.predict([X, X_decoder])[:, index:index+1]
         #print(Y_probas_next)
         #print(Y_probas_next[:, index:index+1])
@@ -236,7 +220,6 @@ def predict_date_strs(date_strs):
 
 if __name__ == '__main__':
    
-
     
     checkpoint_path = "training_token_printfall/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
