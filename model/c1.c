@@ -5,7 +5,7 @@ int main()
 {
     
     int IE;
-	printf("%d x %d x %d=%d"\n, l*w*h);
+	printf ( " %d*%d=%d   " ", j, i , i*j);   
 	
 	return 0;
 		
