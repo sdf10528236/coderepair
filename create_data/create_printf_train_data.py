@@ -205,7 +205,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(5, 0)
+    cur_line_strs = creat_printf(5000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 3))    #printf(" %d %d %d", wPX, v, NIn);
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(5, 0)
+    cur_line_strs = creat_printf(5000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_parameter_string(
             cur_line_strs[i], random.randint(1, 4))    #printf(" %d %d + %d", mof, U, vNv);
@@ -253,7 +253,7 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------------------------
 
     cur_line_strs = []
-    cur_line_strs = creat_printf(5, 0)
+    cur_line_strs = creat_printf(5000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter_op(
             cur_line_strs[i], random.randint(1, 3))    #printf(" %d %d", p/33, V+GMp-H/x);
@@ -277,7 +277,7 @@ if __name__ == '__main__':
 
 
     #--------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(5, 0)
+    cur_line_strs = creat_printf(5000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_op(          #printf("Ugnj / 10 m = iDj * 4\n");
             cur_line_strs[i])
@@ -297,7 +297,7 @@ if __name__ == '__main__':
             print(cnt)
             cnt = cnt+1
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(5)               #printf("ZldxM YTQr Kdt JxoSjTm\n");
+    cur_line_strs = creat_printf(5000)               #printf("ZldxM YTQr Kdt JxoSjTm\n");
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_string(
             cur_line_strs[i], random.randint(1, 5))
@@ -320,6 +320,6 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------------------------------------------------
     df = df.sample(frac=1).reset_index(drop = True)
     print(df)
-    df.to_csv("../data/printf_test.csv",
+    df.to_csv("../data/printf_new.csv",
              encoding='utf-8', index=False)
 

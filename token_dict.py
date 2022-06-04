@@ -91,7 +91,7 @@ if __name__ == '__main__':
             token_strings['correct'][cnt] = [(tokenized_code)]
     
             cnt+=1
-    df = pd.read_csv("data/printf_all.csv")
+    df = pd.read_csv("data/printf_new.csv")
     
     for strs in df["correct"]:
         #print(strs)

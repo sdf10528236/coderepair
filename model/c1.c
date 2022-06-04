@@ -5,8 +5,7 @@ int main()
 {
     
     int IE;
-	input: printf()
-	
+	printf("%d %d". smax, x);
 	return 0;
 		
     

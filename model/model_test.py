@@ -141,7 +141,10 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                     
                     if(name_count > (len(name_seq)-1)):   #預測出來的<id>數量大於原本name_seq裡的<id>數
                         name_count = (len(name_seq)-1)
-                    content = name_seq[name_count]
+                    try:
+                        content = name_seq[name_count]
+                    except:
+                        content = ""
                     name_count += 1
                 else:
                     try:
@@ -221,7 +224,7 @@ def predict_date_strs(date_strs):
 if __name__ == '__main__':
    
     
-    checkpoint_path = "training_token_printfall/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_token_printfnew/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
     latest = tf.train.latest_checkpoint(checkpoint_dir)
     #print(latest)
@@ -229,9 +232,9 @@ if __name__ == '__main__':
     model = create_model()
     model.load_weights(latest)
     
-    df = pd.read_csv('../data/printf_all.csv')
-    X_train, Y_train = create_dataset(df['wrong'][0:175000], df['correct'][0:175000])
-    X_valid, Y_valid = create_dataset(df['wrong'][175000:250000], df['correct'][175000:250000])
+    df = pd.read_csv('../data/printf_new.csv')
+    X_train, Y_train = create_dataset(df['wrong'][0:125000], df['correct'][0:125000])
+    X_valid, Y_valid = create_dataset(df['wrong'][125000:180000], df['correct'][125000:180000])
     
 
     

@@ -96,7 +96,13 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
             if type_ == 'id':
                 if name_seq is not None:
-                    content = name_seq[name_count]
+                    
+                    if(name_count > (len(name_seq)-1)):   #預測出來的<id>數量大於原本name_seq裡的<id>數
+                        name_count = (len(name_seq)-1)
+                    try:
+                        content = name_seq[name_count]
+                    except:
+                        content = ""
                     name_count += 1
                 else:
                     try:
@@ -112,9 +118,9 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                 else:
                     result += content + ' '
             elif type_ == 'es':
-                
+               
                 result = result[:-1] + content[1:] + ' '   #新增/n /t
-                
+
             elif type_ == 'id':
                 result += content + ' '
             elif type_ == 'number':
@@ -129,6 +135,7 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
 
     if not clang_format:
         return result
+
 
 
 def prepare_date_strs_padded(date_strs):
