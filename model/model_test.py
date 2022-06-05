@@ -37,8 +37,8 @@ def find_column(warning_text, filename):
        
        
         p = [m.span()for m in regex.finditer('error', text)]
-
-        if(len(p) > 0):
+        w = [m.span()for m in regex.finditer('warning', text)]
+        if(len(p) > 0 or len(w)>0):
             # print(text)
             colon_positions = [m.span()
                                for m in regex.finditer(":", text)]  # 冒號位置

@@ -188,8 +188,8 @@ def find_column(warning_text, filename):
        
        
         p = [m.span()for m in regex.finditer('error', text)]
-
-        if(len(p) > 0):
+        w = [m.span()for m in regex.finditer('warning', text)]
+        if(len(p) > 0 or len(w)>0):
             # print(text)
             colon_positions = [m.span()
                                for m in regex.finditer(":", text)]  # 冒號位置
@@ -258,9 +258,9 @@ def auto_model_fix(folder_path, new_folder,filename,model):
     column = find_column(warning_text, filename)
     column_fix(folder_path, new_folder, column, model)
     
-df = pd.read_csv(f'{os.getcwd()}/data/printf_all.csv')
-X_train, Y_train = create_dataset(df['wrong'][0:175000], df['correct'][0:175000])
-X_valid, Y_valid = create_dataset(df['wrong'][175000:250000], df['correct'][175000:250000])
+df = pd.read_csv(f'{os.getcwd()}/data/printf_new.csv')
+X_train, Y_train = create_dataset(df['wrong'][0:125000], df['correct'][0:125000])
+X_valid, Y_valid = create_dataset(df['wrong'][125000:180000], df['correct'][125000:180000])
     
 
 max_input_length = X_train.shape[1]

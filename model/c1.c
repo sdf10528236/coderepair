@@ -4,8 +4,8 @@
 int main()
 {
     
-    int IE;
-	printf("%d %d". smax, x);
+    
+	printf("x/y=%d, x/y");
 	return 0;
 		
     
