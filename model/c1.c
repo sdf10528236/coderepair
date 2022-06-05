@@ -5,7 +5,7 @@ int main()
 {
     
     
-	printf("x/y=%d, x/y");
+	printf("\"This\" and \'this\' are the same string in python.")
 	return 0;
 		
     
