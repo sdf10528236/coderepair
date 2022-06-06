@@ -281,9 +281,9 @@ def auto_model_fix(folder_path, new_folder,filename,model):
     column = find_column(warning_text, filename)
     column_fix(folder_path, new_folder, column, model)
     
-df = pd.read_csv(f'{os.getcwd()}/data/printf_new.csv')
-X_train, Y_train = create_dataset(df['wrong'][0:125000], df['correct'][0:125000])
-X_valid, Y_valid = create_dataset(df['wrong'][125000:180000], df['correct'][125000:180000])
+df = pd.read_csv('../data/printf_new.csv')
+X_train, Y_train = create_dataset(df['wrong'][0:140000], df['correct'][0:140000])
+X_valid, Y_valid = create_dataset(df['wrong'][140000:200000], df['correct'][140000:200000])
     
 
 max_input_length = X_train.shape[1]
