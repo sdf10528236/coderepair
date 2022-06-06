@@ -5,7 +5,7 @@ int main()
 {
     
     
-	printf("%d",a);
+	 printf ( " %d%d%d " x , z , y ) ;
 		
     
 }
