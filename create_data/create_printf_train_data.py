@@ -211,7 +211,7 @@ if __name__ == '__main__':
             cur_line_strs[i], random.randint(1, 3))    #printf(" %d %d %d", wPX, v, NIn);
     for cur_line_str in cur_line_strs:
         
-        
+        quit()
         cur_line_str_correct = cur_line_str
         for i in range(random.randint(5, 10)):
             cur_line_str_wrong = cur_line_str_correct
