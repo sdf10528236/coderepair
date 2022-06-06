@@ -38,7 +38,7 @@ class C_Tokenizer(Tokenizer):
     def _escape(self, string):
         return repr(string)[1:-1]
 
-    def _tokenize_code(self, code):
+   def _tokenize_code(self, code):
         keywords = {'IF', 'THEN', 'ENDIF', 'FOR', 'NEXT', 'GOSUB', 'RETURN'}
         token_specification = [
             ('comment',
@@ -47,13 +47,13 @@ class C_Tokenizer(Tokenizer):
             #('string', r'(?:[^"\n]|\\")*"?'),         #原字串token  =>  "asdad"
             ('char', r"'(?:\\?[^'\n]|\\')'"),
             ('char_continue', r"'[^']*"),
-            ('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
+            #('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
             ('include',  r'(?<=\#include) *<([_A-Za-z]\w*(?:\.h))?>'),
             ('pa', r'%([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup]'),  #新增%d %f 的token
-            ('es', r'\\[nt]'), 
+            ('es', r'\\[nt]'),            
             ('op',
              r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#"]'),
-            ('name',  r'[_A-Za-z]\w*(\s*[_A-Za-z]\w*)*'),
+            ('name',  r'[_A-Za-z0-9-+*\'!]\w*(\s*[_A-Za-z0-9-+*\'!]\w*)*'),
             ('whitespace',  r'\s+'),
             ('nl', r'\\\n?'),
             
@@ -78,6 +78,7 @@ class C_Tokenizer(Tokenizer):
                     kind = value
                 column = mo.start() - line_start
                 yield Token(kind, value, line_num, column)
+
 
     def _sanitize_brackets(self, tokens_string):
         print(tokens_string)

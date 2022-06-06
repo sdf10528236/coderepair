@@ -5,7 +5,7 @@ int main()
 {
     
     
-	printf("\"This\" and \'this\' are the same string in python.")
+	printf ( " %d*%d =%2d  " , j , i , i * j ) 
 	return 0;
 		
     
