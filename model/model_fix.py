@@ -21,7 +21,7 @@ sos_id = len(OUTPUT_CHARS) + 1
 
 def data_str_to_token(data_str):
     #print(data_str)
-    tokenized_code, name_dict, name_seq = tokenize(data_str)
+    tokenized_code, name_dict, name_seq,pa_dict,pa_sequence = tokenize(data_str)
    
     tokenized_code_list = tokenized_code.split()
     
@@ -33,6 +33,10 @@ def data_str_to_token(data_str):
         if '_<id>_' in token:
             
             token = '_<id>_@'
+         
+        if '_<pa>_' in token:
+            
+            token = '_<pa>_@'
             
         tokenized_code_list.append(token)
     return tokenized_code_list 
@@ -77,12 +81,14 @@ def ids_to_token(ids, chars=id_to_token_dict):
 
 
 
-def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
+def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None,pa_seq = None):
     result = ''
     type_ = None
 
     reverse_name_dict = {}
     name_count = 0
+    pa_count = 0
+
 
     for k, v in name_dict.items():
         reverse_name_dict[v] = k
@@ -109,10 +115,25 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                         content = reverse_name_dict[content.rstrip('@')]
                     except KeyError:
                         content = 'new_id_' + content.rstrip('@')
+            elif type_ == 'pa':
+                if pa_seq is not None:
+                    
+                    if(pa_count > (len(pa_seq)-1)):   #預測出來的<id>數量大於原本name_seq裡的<id>數
+                        pa_count = (len(pa_seq)-1)
+                    try:
+                        content = pa_seq[pa_count]
+                    except:
+                        content = ""
+                    pa_count += 1
+                else:
+                    try:
+                        content = reverse_name_dict[content.rstrip('@')]
+                    except KeyError:
+                        content = 'new_id_' + content.rstrip('@')
             elif type_ == 'number':
                 content = content.rstrip('#')
 
-            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall'or type_ == 'pa':
+            if type_ == 'directive' or type_ == 'include' or type_ == 'op' or type_ == 'type' or type_ == 'keyword' or type_ == 'APIcall':
                 if type_ == 'op' and prev_type_was_op:
                     result = result[:-1] + content + ' '
                 else:
@@ -122,6 +143,8 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None):
                 result = result[:-1] + content[1:] + ' '   #新增/n /t
 
             elif type_ == 'id':
+                result += content + ' '
+            elif type_ == 'pa':
                 result += content + ' '
             elif type_ == 'number':
                 result += '0 '

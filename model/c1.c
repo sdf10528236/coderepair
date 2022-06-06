@@ -5,7 +5,7 @@ int main()
 {
     
     
-	printf("%d",[1);
+	printf("%d",a);
 		
     
 }

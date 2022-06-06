@@ -31,8 +31,8 @@ sos_id = len(OUTPUT_CHARS) + 1
 
 def data_str_to_token(data_str):
     #print(data_str)
-    tokenized_code, name_dict, name_seq = tokenize(data_str)
-    #print(tokenized_code, name_dict, name_seq)
+    tokenized_code, name_dict, name_seq,pa_dict,pa_sequence = tokenize(data_str)
+   
     tokenized_code_list = tokenized_code.split()
     
         
@@ -43,6 +43,10 @@ def data_str_to_token(data_str):
         if '_<id>_' in token:
             
             token = '_<id>_@'
+         
+        if '_<pa>_' in token:
+            
+            token = '_<pa>_@'
             
         tokenized_code_list.append(token)
     return tokenized_code_list 

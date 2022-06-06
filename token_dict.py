@@ -31,6 +31,8 @@ def build_dictionary(token_strings, drop_ids, tl_dict={}):
             for token in tokenized_code.split():
                 if drop_ids and '_<id>_' in token:
                     continue
+                elif drop_ids and '_<pa>_' in token:
+                    continue
                 token = token.strip()
                 if token not in dict_ref:
                     dict_ref[token] = len(dict_ref)
@@ -42,6 +44,7 @@ def build_dictionary(token_strings, drop_ids, tl_dict={}):
     if drop_ids:
         #tl_dict['_<id>_@'] = 3
         tl_dict['_<id>_@'] = 2
+        tl_dict['_<pa>_@'] = 3
 
     if type(token_strings) == list:
         token_strings_list = token_strings
@@ -63,44 +66,47 @@ def build_dictionary(token_strings, drop_ids, tl_dict={}):
     return tl_dict
 if __name__ == '__main__':
     now_path = os.path.dirname(os.path.abspath(__file__))
-    folder_path = now_path+'/data/p2data/'
+    folder_path = now_path+'/data/p3data/'
     folderList = os.listdir(folder_path)
     folderList.sort()
     token_strings = {'correct': {}, 'wrong': {}}
     
     cnt = 0
 
-    for base in folderList:
-        path = folder_path + base
-        #print(path)
+    # for base in folderList:
+    #     path = folder_path + base
+    #     #print(path)
         
         
-        file_code = ""
-        line_column = 1
-        with open(path, "r") as f:
+    #     file_code = ""
+    #     line_column = 1
+    #     with open(path, "r") as f:
 
-            for line in f:
+    #         for line in f:
                
                     
 
-                file_code += line
+    #             file_code += line
 
-                line_column = line_column+1
-            #print(file_code)
-            tokenized_code, name_dict, name_seq = tokenize(file_code)
-            token_strings['correct'][cnt] = [(tokenized_code)]
+    #             line_column = line_column+1
+    #         print(file_code)
+    #         tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence = tokenize(file_code)
+    #         #print(tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence)
+    #         token_strings['correct'][cnt] = [(tokenized_code)]
     
-            cnt+=1
+    #         cnt+=1
     df = pd.read_csv("data/printf_new.csv")
     
-    for strs in df["correct"]:
+    for strs in df["correct"][0:10]:
         #print(strs)
-        tokenized_code, name_dict, name_seq = tokenize(strs)
+        tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence= tokenize(strs)
+        
         token_strings['correct'][cnt] = [(tokenized_code)]
         cnt+=1
+   
     for strs in df["wrong"]:
         #print(strs)
-        tokenized_code, name_dict, name_seq = tokenize(strs)
+        tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence = tokenize(strs)
         token_strings['correct'][cnt] = [(tokenized_code)]
         cnt+=1
     
