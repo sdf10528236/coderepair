@@ -5,7 +5,7 @@ int main()
 {
     
     
-	printf ( " %d*%d =%2d  " , j , i , i * j ) 
+	printf ( " 5/2%d " , 5 / 2 )
 	return 0;
 		
     

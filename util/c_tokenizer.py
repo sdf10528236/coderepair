@@ -38,7 +38,7 @@ class C_Tokenizer(Tokenizer):
     def _escape(self, string):
         return repr(string)[1:-1]
 
-   def _tokenize_code(self, code):
+    def _tokenize_code(self, code):
         keywords = {'IF', 'THEN', 'ENDIF', 'FOR', 'NEXT', 'GOSUB', 'RETURN'}
         token_specification = [
             ('comment',
@@ -53,7 +53,7 @@ class C_Tokenizer(Tokenizer):
             ('es', r'\\[nt]'),            
             ('op',
              r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#"]'),
-            ('name',  r'[_A-Za-z0-9-+*\'!]\w*(\s*[_A-Za-z0-9-+*\'!]\w*)*'),
+            ('name',  r'[_A-Za-z0-9-+*\/\'!]\w*(\s*[_A-Za-z0-9-+*\/\'!]\w*)*'),
             ('whitespace',  r'\s+'),
             ('nl', r'\\\n?'),
             
