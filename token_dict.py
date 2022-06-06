@@ -97,7 +97,7 @@ if __name__ == '__main__':
     #         cnt+=1
     df = pd.read_csv("data/printf_new.csv")
     
-    for strs in df["correct"][0:10]:
+    for strs in df["correct"]:
         #print(strs)
         tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence= tokenize(strs)
         
