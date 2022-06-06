@@ -45,8 +45,8 @@ class C_Tokenizer(Tokenizer):
              r'\/\*(?:[^*]|\*(?!\/))*\*\/|\/\*([^*]|\*(?!\/))*\*?|\/\/[^\n]*'),
             ('directive', r'#\w+'),
             #('string', r'(?:[^"\n]|\\")*"?'),         #原字串token  =>  "asdad"
-            ('char', r"'(?:\\?[^'\n]|\\')'"),
-            ('char_continue', r"'[^']*"),
+            #('char', r"'(?:\\?[^'\n]|\\')'"),
+            #('char_continue', r"'[^']*"),
             #('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
             ('include',  r'(?<=\#include) *<([_A-Za-z]\w*(?:\.h))?>'),
             ('pa', r'%([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup]'),  #新增%d %f 的token

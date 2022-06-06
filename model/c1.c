@@ -5,7 +5,7 @@ int main()
 {
     
     
-	printf ( " %d " , 5 / 2 )
+	 printf ( " %d%d%d " x , z , y ) ;
 	return 0;
 		
     
