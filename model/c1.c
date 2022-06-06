@@ -5,7 +5,7 @@ int main()
 {
     
     
-	 printf ( " %d%d%d " x , z , y ) ;
+	printf ( " a=%f\n " . 3.14159 * 1.0 * 1.0 * 1.0)    
 		
     
 }
