@@ -197,9 +197,9 @@ def predict_date_strs(date_strs,model):
     positions = [m.span()
                  for m in regex.finditer("\"", strs )]
    
-    to_corrupt = positions[0]  # 第一個"的地方
-    
-    strs  = strs[:to_corrupt[0]+1] + " " + strs[to_corrupt[0]+1:] 
+    if (positions[1][0] - positions[0][1])==0:
+        to_corrupt = positions[0]  # 第一個"的地方
+        strs  = strs[:to_corrupt[0]+1] + " " + strs[to_corrupt[0]+1:] 
     return strs
 
 
