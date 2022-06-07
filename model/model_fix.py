@@ -248,8 +248,16 @@ def column_fix(old_file, new_file, column, model):
                                     for m in regex.finditer('printf', line)]
                 if(len(printf_positions) > 0):
                     
-                    wrong_str = line[printf_positions[0][0]:]
+                    break_positions = [m.span()
+                                    for m in regex.finditer('break', line)]
+                    right_positions = [m.span()
+                                    for m in regex.finditer('}', line)]
 
+                    wrong_str = line[printf_positions[0][0]:]
+                    if len( break_positions ):
+                        wrong_str = line[printf_positions[0][0]:break_positions[0][0]]
+                    elif len( right_positions ):
+                        wrong_str = line[printf_positions[0][0]:right_positions[0][0]]
                     print("model input: "+wrong_str)
                     try:
                         fix_line = predict_date_strs(wrong_str.strip(),model)
@@ -257,6 +265,10 @@ def column_fix(old_file, new_file, column, model):
                         
                         print("model output: "+fix_line)
                         
+                        if len( break_positions ):
+                            fix_line =  fix_line + " break;"
+                        elif len( right_positions ):
+                            fix_line =  fix_line + " }"
 
                         line = line[:printf_positions[0][0]] + \
                         fix_line + "\n"

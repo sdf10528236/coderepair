@@ -6,7 +6,7 @@ int main()
     
     
 	
-	printf ( '%.2f' , a / b )      
+	printf ( " yes " \n ) ;    
 		
     
 }
