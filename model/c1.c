@@ -6,7 +6,7 @@ int main()
     
     
 	
-	printf("\"This\" and \'this\' are the same string\n")		
+	printf()		
 	return 0; 
 		
     
