@@ -73,28 +73,28 @@ if __name__ == '__main__':
     
     cnt = 0
 
-    # for base in folderList:
-    #     path = folder_path + base
-    #     #print(path)
+    for base in folderList:
+        path = folder_path + base
+        #print(path)
         
         
-    #     file_code = ""
-    #     line_column = 1
-    #     with open(path, "r") as f:
+        file_code = ""
+        line_column = 1
+        with open(path, "r") as f:
 
-    #         for line in f:
+            for line in f:
                
                     
 
-    #             file_code += line
+                file_code += line
 
-    #             line_column = line_column+1
-    #         print(file_code)
-    #         tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence = tokenize(file_code)
-    #         #print(tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence)
-    #         token_strings['correct'][cnt] = [(tokenized_code)]
+                line_column = line_column+1
+            print(file_code)
+            tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence = tokenize(file_code)
+            #print(tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence)
+            token_strings['correct'][cnt] = [(tokenized_code)]
     
-    #         cnt+=1
+            cnt+=1
     df = pd.read_csv("data/printf_new.csv")
     
     for strs in df["correct"]:

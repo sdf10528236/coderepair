@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(20, 0)
+    cur_line_strs = creat_printf(2000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 5))    #printf(" %d %d %d", wPX, v, NIn);
@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(20, 0)
+    cur_line_strs = creat_printf(2000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_parameter_string(
             cur_line_strs[i], random.randint(1, 5))    #printf("asdasd %d %d ", a, b);
@@ -227,7 +227,7 @@ if __name__ == '__main__':
         cur_line_strs[i] = printf_string(
             cur_line_strs[i], random.randint(0, 5))
     for cur_line_str in cur_line_strs:
-        quit()
+        
         cur_line_str_correct = cur_line_str
         for i in range(random.randint(5, 10)):
             cur_line_str_wrong = cur_line_str_correct
@@ -245,6 +245,6 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------------------------------------------------
     df = df.sample(frac=1).reset_index(drop = True)
     print(df)
-    df.to_csv("../data/printf_new.csv",
+    df.to_csv("../data/printf_new2.csv",
              encoding='utf-8', index=False)
 
