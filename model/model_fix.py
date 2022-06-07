@@ -293,7 +293,7 @@ def auto_model_fix(folder_path, new_folder,filename,model):
     column = find_column(warning_text, filename)
     column_fix(folder_path, new_folder, column, model)
     
-df = pd.read_csv('../data/printf_new.csv')
+df = pd.read_csv( f'{os.getcwd()}/data/printf_new.csv')
 X_train, Y_train = create_dataset(df['wrong'][0:280000], df['correct'][0:280000])
 X_valid, Y_valid = create_dataset(df['wrong'][280000:370000], df['correct'][280000:370000])
     
