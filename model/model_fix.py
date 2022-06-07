@@ -258,7 +258,7 @@ def column_fix(old_file, new_file, column, model):
                                     for m in regex.finditer('break', wrong_str )]
                     right_positions = [m.span()
                                     for m in regex.finditer('}', wrong_str )]
-                    print(right_positions)
+                    
                     if len( break_positions ):
                         wrong_str = line[printf_positions[0][0]:break_positions[0][0]]
                     elif len( right_positions ):

@@ -141,11 +141,11 @@ def printf_string(cur_line_str, numbers):  # 產生printf("字串 字串 字串"
     # print(cur_line_str, positions)
     to_corrupt = positions[1]  # 第二個"的地方
 
-    cur_line_str = cur_line_str[:to_corrupt[0]]
+    cur_line_str = cur_line_str[:to_corrupt[0]] + " "
 
-    for i in range(random.randint(0,numbers)):
-        cur_line_str = cur_line_str+" "+"".join(random.choice(string.ascii_letters)
-                                                for _ in range(random.randint(0, 10)))
+    for i in range(numbers):
+        cur_line_str = cur_line_str+"".join(random.choice(string.ascii_letters)
+                                                for _ in range(random.randint(0, 10)))+" "
     cur_line_str = cur_line_str + "\");"
 
     positions = [m.span()
@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(20000, 0)
+    cur_line_strs = creat_printf(20, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 5))    #printf(" %d %d %d", wPX, v, NIn);
@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(20000, 0)
+    cur_line_strs = creat_printf(20, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_parameter_string(
             cur_line_strs[i], random.randint(1, 5))    #printf("asdasd %d %d ", a, b);
@@ -222,12 +222,12 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------------------------
     
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(10000)               #printf("ZldxM YTQr Kdt JxoSjTm\n");
+    cur_line_strs = creat_printf(1000)               #printf("ZldxM YTQr Kdt JxoSjTm\n");
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_string(
-            cur_line_strs[i], random.randint(1, 5))
+            cur_line_strs[i], random.randint(0, 5))
     for cur_line_str in cur_line_strs:
-        
+        quit()
         cur_line_str_correct = cur_line_str
         for i in range(random.randint(5, 10)):
             cur_line_str_wrong = cur_line_str_correct
