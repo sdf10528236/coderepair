@@ -161,6 +161,7 @@ def tokens_to_source(tokens, name_dict, clang_format=False, name_seq=None,pa_seq
 
 
 
+
 def prepare_date_strs_padded(date_strs):
     
     X = prepare_data(date_strs)
@@ -191,8 +192,8 @@ def predict_date_strs(date_strs,model):
 
     tokens = ids_to_token(Y_pred[:, 1:].numpy())[0]
     #print(tokens)
-    tokenized_code, name_dict, name_seq = tokenize(date_strs)
-    strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq)
+    tokenized_code, name_dict, name_seq ,pa_dict,pa_sequence= tokenize(date_strs)
+    strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq,pa_sequence)
     
     return strs
 

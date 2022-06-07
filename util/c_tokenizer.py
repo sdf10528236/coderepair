@@ -49,7 +49,7 @@ class C_Tokenizer(Tokenizer):
             #('char_continue', r"'[^']*"),
             #('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
             ('include',  r'(?<=\#include) *<([_A-Za-z]\w*(?:\.h))?>'),
-            ('pa', r'%\w*([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup%]'),  #新增%d %f 的token
+            ('pa', r'%\W*([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup%]'),  #新增%d %f 的token
             ('es', r'\\[nt]'),            
             # ('op',
             #  r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#"]'),
@@ -80,7 +80,6 @@ class C_Tokenizer(Tokenizer):
                     kind = value
                 column = mo.start() - line_start
                 yield Token(kind, value, line_num, column)
-
 
     def _sanitize_brackets(self, tokens_string):
         print(tokens_string)
@@ -114,7 +113,9 @@ class C_Tokenizer(Tokenizer):
 
         return recompose_program(lines)
 
-    def tokenize(self, code, keep_format_specifiers=False, keep_names=True,keep_literals=False):
+ 
+    def tokenize(self, code, keep_format_specifiers=False, keep_names=True,
+                 keep_literals=False):
         #result = '0 ~ '
         result = ''
         names = ''
@@ -124,13 +125,13 @@ class C_Tokenizer(Tokenizer):
         name_sequence = []
         pa_sequence = []
 
-        
+
         regex = '%(d|i|f|c|s|u|g|G|e|p|llu|ll|ld|l|o|x|X)'
         isNewLine = True
 
         # Get the iterable
         my_gen = self._tokenize_code(code)
-        
+
         while True:
             try:
                 token = next(my_gen)
@@ -201,11 +202,11 @@ class C_Tokenizer(Tokenizer):
 
                     pa_sequence.append(self._escape(value))
                     result += '_<pa>_' + pa_dict[self._escape(value)] + '@ '
-                    #names += '_<pa>_' + pa_dict[self._escape(value)] + '@ '
+                    names += '_<pa>_' + pa_dict[self._escape(value)] + '@ '
                 else:
-                    result += '_<pa>_' + '@ '
+                    result += '_<id>_' + '@ '
                 isNewLine = False
-            
+
             elif type_ == 'number':
                 if keep_literals:
                     result += '_<number>_' + self._escape(value) + '# '
@@ -230,8 +231,9 @@ class C_Tokenizer(Tokenizer):
             idx = result.rfind('}')
             result = result[:idx + 1]
         #return self._sanitize_brackets(result), name_dict, name_sequence
-        
+
         return result, name_dict, name_sequence , pa_dict ,pa_sequence
+
 # Input: tokenized programprint()
 
 # Returns: array of lines, each line is tokenized
