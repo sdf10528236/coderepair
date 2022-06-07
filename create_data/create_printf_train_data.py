@@ -132,7 +132,7 @@ def printf_add_parameter_op(cur_line_str, numbers):  # ex. #printf(" %d %d", p/x
 
 
 
-def printf_string(cur_line_str, numbers):  # 產生printf("字串 字串 字串")程式碼    ex. printf("sdfsdgqw sdf sdfsdf");
+def printf_string(cur_line_str, numbers):  # 產生printf("字串 字串 字串");    ex. printf("sdfsdgqw sdf sdfsdf");
     positions = [m.span()
                  for m in regex.finditer("\"", cur_line_str)]
     # print(cur_line_str, positions)
@@ -154,6 +154,10 @@ def printf_string(cur_line_str, numbers):  # 產生printf("字串 字串 字串"
     print(cur_line_str)
     return cur_line_str
 
+
+
+
+    
 if __name__ == '__main__':
     cnt = 1
     data = {
