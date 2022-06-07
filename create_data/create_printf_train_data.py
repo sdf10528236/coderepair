@@ -171,7 +171,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(2000, 0)
+    cur_line_strs = creat_printf(5000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_add_parameter(
             cur_line_strs[i], random.randint(1, 5))    #printf(" %d %d %d", wPX, v, NIn);
@@ -195,7 +195,7 @@ if __name__ == '__main__':
 
     #--------------------------------------------------------------------------------------------
     cur_line_strs = []
-    cur_line_strs = creat_printf(2000, 0)
+    cur_line_strs = creat_printf(5000, 0)
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_parameter_string(
             cur_line_strs[i], random.randint(1, 5))    #printf("asdasd %d %d ", a, b);
@@ -222,7 +222,7 @@ if __name__ == '__main__':
     #--------------------------------------------------------------------------------------------
     
     #--------------------------------------------------------------------------------------------------------------------
-    cur_line_strs = creat_printf(1000)               #printf("ZldxM YTQr Kdt JxoSjTm\n");
+    cur_line_strs = creat_printf(2500)               #printf("ZldxM YTQr Kdt JxoSjTm\n");
     for i in range(len(cur_line_strs)):
         cur_line_strs[i] = printf_string(
             cur_line_strs[i], random.randint(0, 5))
