@@ -49,7 +49,7 @@ class C_Tokenizer(Tokenizer):
             #('char_continue', r"'[^']*"),
             #('number',  r'[0-9]*\.?[0-9]+(?:[eE][-+]?[0-9]+)?'),
             ('include',  r'(?<=\#include) *<([_A-Za-z]\w*(?:\.h))?>'),
-            ('pa', r'%([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup]'),  #新增%d %f 的token
+            ('pa', r'%\w*([0-9]*\.?[0-9]+)*l?[cdouxXfeEgGfsup%]'),  #新增%d %f 的token
             ('es', r'\\[nt]'),            
             ('op',
              r'\(|\)|\[|\]|{|}|->|<<|>>|\*\*|\|\||&&|--|\+\+|[-+*|&%\/=]=|[-<>~!%^&*\/+=?|.,:;#"]'),
