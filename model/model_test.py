@@ -239,7 +239,11 @@ def predict_date_strs(date_strs):
     print(tokens)
     print("\n")
     strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq,pa_sequence)
-    
+    positions = [m.span()
+                 for m in regex.finditer("\"", strs )]
+    to_corrupt = positions[0]  # 第一個"的地方
+
+    strs  = strs[:to_corrupt[0]] + " " + strs[to_corrupt[0]:] 
     return strs
 
 
@@ -301,7 +305,7 @@ if __name__ == '__main__':
                         wrong_str = line[printf_positions[0][0]:break_positions[0][0]]
                     elif len( right_positions ):
                         wrong_str = line[printf_positions[0][0]:right_positions[0][0]]
-                        
+
                     print("model input: "+ wrong_str )
 
 
