@@ -288,19 +288,20 @@ if __name__ == '__main__':
                     model = create_model()
                     model.load_weights(latest)
 
-                    break_positions = [m.span()
-                                    for m in regex.finditer('break', line)]
-                    right_positions = [m.span()
-                                    for m in regex.finditer('}', line)]
-
-                    
-                    
+                   
                     wrong_str = line[printf_positions[0][0]:]
-
+                    
+                    
+                    
+                    break_positions = [m.span()
+                                    for m in regex.finditer('break', wrong_str )]
+                    right_positions = [m.span()
+                                    for m in regex.finditer('}', wrong_str )]
                     if len( break_positions ):
                         wrong_str = line[printf_positions[0][0]:break_positions[0][0]]
                     elif len( right_positions ):
                         wrong_str = line[printf_positions[0][0]:right_positions[0][0]]
+                        
                     print("model input: "+ wrong_str )
 
 
