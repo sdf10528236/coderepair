@@ -200,7 +200,7 @@ if __name__ == '__main__':
         cur_line_strs[i] = printf_parameter_string(
             cur_line_strs[i], random.randint(1, 5))    #printf("asdasd %d %d ", a, b);
     for cur_line_str in cur_line_strs:
-        quit()
+        
         
         cur_line_str_correct = cur_line_str
         for i in range(random.randint(5, 10)):

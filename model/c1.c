@@ -6,7 +6,7 @@ int main()
     
     
 	
-	 printf ( " The program uses 34%% CPU resource./n" )     
+	printf ( '%.2f' , a / b )      
 		
     
 }

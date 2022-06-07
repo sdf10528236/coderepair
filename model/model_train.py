@@ -151,5 +151,5 @@ if __name__ == '__main__':
     #################################################
 
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=10, batch_size=1024, callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=15, batch_size=1024, callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
