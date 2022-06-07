@@ -32,6 +32,9 @@ def printf_parameter_string(cur_line_str, numbers):  # ex. printf("asdasd %d %d 
                                                 for _ in range(random.randint(0, 10)))
         cur_line_str = cur_line_str + \
             " %" + format_placeholder
+        if int(random.choices(choice)[0]):
+            cur_line_str = cur_line_str+" "+"".join(random.choice(string.ascii_letters)
+                                                for _ in range(random.randint(0, 10)))
        
         
 
@@ -197,7 +200,7 @@ if __name__ == '__main__':
         cur_line_strs[i] = printf_parameter_string(
             cur_line_strs[i], random.randint(1, 5))    #printf("asdasd %d %d ", a, b);
     for cur_line_str in cur_line_strs:
-        
+        quit()
         
         cur_line_str_correct = cur_line_str
         for i in range(random.randint(5, 10)):

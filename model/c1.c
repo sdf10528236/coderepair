@@ -6,7 +6,7 @@ int main()
     
     
 	
-	printf ( "%d*%d= %d  , j, i, sum); 
+	 printf ( " The program uses 34%% CPU resource./n" )     
 		
     
 }

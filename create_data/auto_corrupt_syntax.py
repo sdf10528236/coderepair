@@ -84,7 +84,7 @@ def auto_corrupt_syntax(cur_line_str):
         'duplicate]': ("\]", "] ]"),
         'replace;with,': (";", ","),
         'replace;with.': (";", "."),
-        
+        'replace\"with\'': ("\"", "\'"),
         'replace\\n\"with\"\\n': (r"\\n\"", "\"\\n"), 
         'replace);with");': ("\);", "\");"),
         
