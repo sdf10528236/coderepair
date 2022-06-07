@@ -241,9 +241,10 @@ def predict_date_strs(date_strs):
     strs = tokens_to_source(tokens,INPUT_CHARS,False,name_seq,pa_sequence)
     positions = [m.span()
                  for m in regex.finditer("\"", strs )]
-    to_corrupt = positions[0]  # 第一個"的地方
-
-    strs  = strs[:to_corrupt[0]] + " " + strs[to_corrupt[0]:] 
+   
+    to_corrupt = positions[1]  # 第二個"的地方
+    
+    strs  = strs[:to_corrupt[1]] + " " + strs[to_corrupt[1]:] 
     return strs
 
 
