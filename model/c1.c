@@ -6,7 +6,7 @@ int main()
     
     
 	
-	printf("")		
+	printf("The program uses 34 CPU resource.\n")	
 	return 0; 
 		
     
