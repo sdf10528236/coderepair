@@ -8,7 +8,7 @@
 3. **training_token_printfnew資料夾** 模型訓練完後的參數
 4. **all_dicts.npy** 程式碼標記化的字典(由token_dict.py 產出)  
 
-## 第一次用看這裡(修復程式碼)
+## 第一次用看這裡
 1. **先從DATA中下載上述1.2.3.4.檔案，在coderepair中創建一個名為 data 的資料夾**。
 2. **將p3data資料夾、printf_new.csv 放入data資料夾。**  
 **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
