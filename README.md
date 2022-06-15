@@ -3,7 +3,7 @@
 #### DATA：
 [LINK](https://drive.google.com/drive/folders/1NfAx5mKUyAcAq9oc7q_1CW1UYczY8UuK?usp=sharing)<br>
 
-1. **p2data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料  
+1. **p3data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料(有排除特殊錯誤)  
 2. **printf_autocreate.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)  
 3. **training_autocreate資料夾** 模型訓練完後的參數
 
