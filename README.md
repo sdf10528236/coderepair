@@ -18,7 +18,7 @@
 
 
 ## 若要更改模型
-**1. 進到model資料夾裡的model_train.py，修改checkpoint_path參數(訓練參數除存的資料夾)，更改模型並進行訓練**<br>
+**1. 進到model資料夾裡的model_train.py，修改checkpoint_path參數(訓練參數儲存的資料夾)，更改模型並進行訓練**<br>
 **2. 訓練好後，若是只想測試一下自己的模型訓練成果可以到model_test.py**裡，修改checkpoint_path參數(訓練參數除存的資料夾)，並啟用程式碼，會印出model input: 和 model output:。<br>(主要會使用model資料夾裡的c1.c檔做測試)<br>
 **3. 訓練好後，到model_fix.py的column_fix函式裡更改checkpoint_path參數(同model_train.py)，修改完後即可使用main.py**<br>
 
@@ -29,8 +29,7 @@
 
 ### main.py
 -主要修復流程的程式碼(-i 資料夾 )<br>
-建議一次跑500筆內(500筆約要跑快兩小時)<br>
-下指令： ex. python main.py -i data/p2data
+下指令： ex. python main.py -i data/p3data
 ### count.py 
 -main.py跑完後,計算修復率的程式碼<br>
 *要用時,請先更改裡面的dir參數(資料夾路徑)
@@ -57,9 +56,9 @@
 
 ##### create_printf_train_data.py 
 - 用來產生輸出函數的測試、訓練資料(csv)，主要有三種資料：<br>
-1. printf("%d",a);<br>
-2. printf("hello");<br>
-3. printf("sdfsdgqw");
+1. 輸出函數內只有文字 ex.printf("ZldxM YTQr Kdt JxoSjTm\n");<br>
+2. 輸出函數內只有參數 ex.printf(" %d %d %d", wPX, v, NIn);<br>
+3. 輸出函數內有文字也有參數 ex.printf("asdasd %d %d gsdf ", a, b);
 
  ##### find_codinghere_printf_error_data.py
  - 用來找出codinghere data裡有輸出函式錯誤的程式碼
