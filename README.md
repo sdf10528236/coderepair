@@ -6,7 +6,7 @@
 1. **p3data資料夾** 裡面是從codinghere程式平台篩選出來有printf輸出函式錯誤的資料(有排除特殊錯誤)  
 2. **printf_new.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)  
 3. **training_token_printfnew資料夾** 模型訓練完後的參數
-4. **all_dicts.npy** 程式碼標記化的字典
+4. **all_dicts.npy** 程式碼標記化的字典(由token_dict.py 產出)  
 
 ## 第一次用看這裡(修復程式碼)
 1. **先從DATA中下載上述1.2.3.4.檔案，在coderepair中創建一個名為 data 的資料夾**。
@@ -33,8 +33,8 @@
 ### count.py 
 -main.py跑完後,計算修復率的程式碼<br>
 *要用時,請先更改裡面的dir參數(資料夾路徑)
-
-
+### token_dict.py
+-用來產生程式碼標記化的字典
 
 
 ## 資料夾 (主要會用到data,model資料夾)
