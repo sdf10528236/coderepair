@@ -8,7 +8,7 @@ import shutil
 import os
 import tensorflow as tf
 now_path = os.path.dirname(os.path.abspath(__file__))
-checkpoint_path = now_path+"/model/training_token_printfall/cp-{epoch:04d}.ckpt"
+checkpoint_path = now_path+"/model/training_token_printfnew/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 latest = tf.train.latest_checkpoint(checkpoint_dir)
 #print(latest)

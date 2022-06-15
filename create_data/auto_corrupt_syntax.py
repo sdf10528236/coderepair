@@ -76,14 +76,19 @@ def auto_corrupt_syntax(cur_line_str):
         'delete>': (">", ""),
         'delete>': ("&", ""),
         'delete>': ("\*", ""),
-        
-        
+        'duplicate,': (",", ",,"), 
+        'duplicate"': ("\"", "\"\""),        
         'duplicate{': ("\{", "{ {"),
         'duplicate}': ("\}", "} }"),
         'duplicate[': ("\[", "[ ["),
         'duplicate]': ("\]", "] ]"),
         'replace;with,': (";", ","),
         'replace;with.': (";", "."),
+        'replace;with:': (";", ":"),
+        'replace\"with\'': ("\"", "\'"),
+        'replace\\n\"with\"\\n': (r"\\n\"", "\"\\n"), 
+        'replace);with");': ("\);", "\");"),
+        
         'replace);with;)': ("\) ;", "; )"),
     }
 
@@ -104,7 +109,7 @@ def auto_corrupt_syntax(cur_line_str):
 
         positions = [m.span()
                      for m in regex.finditer(_patt[0], cur_line_str)]
-
+        
         if len(positions) == 0:
             _action = _actions[np.random.randint(len(_actions))]
         else:

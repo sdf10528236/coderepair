@@ -4,10 +4,10 @@
 int main()
 {
     
+
     int IE;
 	printf ( " %d*%d=%d   " ", j, i , i*j);   
-	
-	return 0;
+
 		
     
 }

@@ -31,8 +31,8 @@ sos_id = len(OUTPUT_CHARS) + 1
 
 def data_str_to_token(data_str):
     #print(data_str)
-    tokenized_code, name_dict, name_seq = tokenize(data_str)
-    #print(tokenized_code, name_dict, name_seq)
+    tokenized_code, name_dict, name_seq,pa_dict,pa_sequence = tokenize(data_str)
+   
     tokenized_code_list = tokenized_code.split()
     
         
@@ -43,6 +43,10 @@ def data_str_to_token(data_str):
         if '_<id>_' in token:
             
             token = '_<id>_@'
+         
+        if '_<pa>_' in token:
+            
+            token = '_<pa>_@'
             
         tokenized_code_list.append(token)
     return tokenized_code_list 
@@ -118,9 +122,9 @@ def create_model():
 
 
 if __name__ == '__main__':
-    df = pd.read_csv('../data/printf_all.csv')
-    X_train, Y_train = create_dataset(df['wrong'][0:175000], df['correct'][0:175000])
-    X_valid, Y_valid = create_dataset(df['wrong'][175000:250000], df['correct'][175000:250000])
+    df = pd.read_csv('../data/printf_new.csv')
+    X_train, Y_train = create_dataset(df['wrong'][0:280000], df['correct'][0:280000])
+    X_valid, Y_valid = create_dataset(df['wrong'][280000:370000], df['correct'][280000:370000])
     
 
     max_input_length = X_train.shape[1]
@@ -131,7 +135,7 @@ if __name__ == '__main__':
 
     ################################################
 
-    checkpoint_path = "training_token_printfall/cp-{epoch:04d}.ckpt"
+    checkpoint_path = "training_token_printfnew/cp-{epoch:04d}.ckpt"
     checkpoint_dir = os.path.dirname(checkpoint_path)
 
     cp_callback = tf.keras.callbacks.ModelCheckpoint(
@@ -147,5 +151,5 @@ if __name__ == '__main__':
     #################################################
 
 
-    history = model.fit([X_train, X_train_decoder], Y_train, epochs=5, batch_size=1024, callbacks=[cp_callback], 
+    history = model.fit([X_train, X_train_decoder], Y_train, epochs=15, batch_size=1024, callbacks=[cp_callback], 
                         validation_data=([X_valid, X_valid_decoder], Y_valid))
