@@ -7,6 +7,10 @@ import subprocess
 import shutil
 import os
 import tensorflow as tf
+import json, base64, os
+import urllib.parse
+
+
 now_path = os.path.dirname(os.path.abspath(__file__))
 checkpoint_path = now_path+"/model/training_token_printfnew/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
@@ -20,7 +24,7 @@ def create_folder(path):
     
     if not os.path.isdir(path):
         os.mkdir(path)
-
+    
 
 def get_dir_files(dir):
     files = [f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f)) and f[-1:]=='c']
@@ -30,10 +34,13 @@ def get_dir_files(dir):
 def run_code_fix(args): #filepath, compiler_path="gcc"):
     
     if args.file:
-        shutil.copyfile(f'{args.file}',f'copy.c')
-        file = 'copy.c'
-        print(args.file)
-        code_fix(file ,file)
+        copy_file = 'copy.c'
+        copy_path = 'data'
+        shutil.copyfile(f'{args.file}',os.path.join(copy_path ,copy_file))
+        
+        DrRepair_fix(os.path.join(copy_path ,copy_file))
+        code_fix(os.path.join(copy_path ,copy_file) ,copy_file)
+        
         
         
     elif args.idir:
@@ -101,9 +108,29 @@ def code_fix(file_path,filename):
         #修復完compiler無錯誤訊息
         print("code fix success!")
         return 1
+def DrRepair_fix(file):
+    with open(file, "r") as f:
+        code = f.read()
+    
+    data = {
+        "probid": 'test001', # this.problem.id,
+        "info": "INFO",
+        "subid": "Subid",
+        "code": code,
+    }
+
+    datastr = json.dumps(data) #.replace("'", "\\'")
+    msg = base64.b64encode(datastr.encode())
+    umsg = urllib.parse.quote(msg)
+    command = f"curl http://140.135.13.120:3000/test3388/pred3389?q={umsg}"
+    ans = os.popen(command).read()
+    with open('data/DrRepair.c', 'w') as f:
+        f.write(ans)
+    quit()
 
 if __name__ == '__main__':
     
+
     sucees_fix_folder = 'data/sucess'
     fail_fix_folder = 'data/fail'
     
