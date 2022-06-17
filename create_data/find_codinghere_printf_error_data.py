@@ -21,16 +21,7 @@ def run_compiler(args): #filepath, compiler_path="gcc"):
     cnt = 1
     print(args.idir)
     if args.file:
-        result = compile_file(args.file)
-        print(result)
-        print(args.file)
-        if str_warning(result):
-            shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
-        column = find_column(result,args.file)
-        if find_printf_line(args.file,column):
-            
-            shutil.copyfile(f'{args.idir}/{file}',f'pdata/{file}')
-
+        print("please input folder!")
         
     elif args.idir:
         for file in get_dir_files(args.idir):

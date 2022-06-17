@@ -4,7 +4,7 @@ import shutil
 
 if __name__ == '__main__':
 
-    folder_path = '/home/laz/Program/coderepair/data/codinghere_data/'
+    folder_path = '/home/sdf/Program/coderepair/data/codinghere_data/'
     folderList = os.listdir(folder_path)
     folderList.sort()
     #print(folderList)
@@ -20,7 +20,7 @@ if __name__ == '__main__':
             filepath = path + "/" + file
             
             
-            shutil.copyfile(f'{filepath }',f'npdata/{file}')  #複製並移動檔案
+            shutil.copyfile(f'{filepath }',f'../data/codinghere_err_data/{file}')  #複製並移動檔案
     
 
     # all_list = os.listdir('/home/laz/Program/coderepair/compiler/pdata')
