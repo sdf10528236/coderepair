@@ -34,47 +34,110 @@ def get_dir_files(dir):
 def run_code_fix(args): #filepath, compiler_path="gcc"):
     
     if args.file:
+        code = ""
         copy_file = 'copy.c'
         copy_path = 'data'
-        shutil.copyfile(f'{args.file}',os.path.join(copy_path ,copy_file))
+        shutil.copyfile(f'{args.file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到copy.c
         
-        DrRepair_fix(os.path.join(copy_path ,copy_file))
-        code_fix(os.path.join(copy_path ,copy_file) ,copy_file)
+
+        for i in range(5):
+            if(i == 0 ):
+                DrRepair_fix(args.file)   #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
+            else:
+                DrRepair_fix('data/DrRepair.c')
+            code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
+            DrRepair_len = len(compile_file('data/DrRepair.c'))       
+            coderepair_len = len(compile_file(os.path.join(copy_path ,copy_file)))
+            if (i>=4):#若修復五次
+                shutil.copyfile(os.path.join(copy_path ,copy_file) ,f'{fail_fix_folder}/co_{args.file}')
+                shutil.copyfile('data/DrRepair.c',f'{fail_fix_folder}/Dr_{args.file}')
+                print("try over 5 times! fix error! move it to error data!") 
+                break
+            elif (DrRepair_len > coderepair_len):     #coderepair 修復後錯誤訊息較少
+                if coderepair_len:           
+                    with open(os.path.join(copy_path ,copy_file), "r") as f:
+                        coderepair = f.read()
+                    with open('data/DrRepair.c', 'w') as f:
+                        f.write(coderepair)                        #將DrRepair.c 檔內容 用copy.c 檔內容取代
+                else:
+                    shutil.copyfile(os.path.join(copy_path ,copy_file),f'{sucees_fix_folder}/{args.file}')
+                    print("coderepair compiled!")                             #coderepair 修復後無錯誤訊息
+                    break
+            elif(coderepair_len > DrRepair_len):    #DrRepair 修復後錯誤訊息較少
+                if DrRepair_len:
+                    with open('data/DrRepair.c', "r") as f:
+                        DrRepair = f.read()
+                    with open(os.path.join(copy_path ,copy_file), "r") as f:
+                        f.write(DrRepair)                           #將copy.c 檔內容 用DrRepair.c 檔內容取代
+                else:
+                    shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{args.file}')
+                    print("DrRepair compiled!")                             #DrRepair 修復後無錯誤訊息
+                    break
+            elif(coderepair_len == 0 and DrRepair_len == 0):
+                 #coderepair，DrRepair 修復後皆無錯誤訊息
+                shutil.copyfile(os.path.join(copy_path ,copy_file),f'{two_sucees_folder}/co_{args.file}') #修復結果複製到two_sucees_folder資料夾
+                shutil.copyfile('data/DrRepair.c',f'{two_sucees_folder}/Dr_{args.file}')
+                print("two compiled!")
+                break
+            else:
+                #coderepair，DrRepair 修復後錯誤訊息長度相同，則繼續迭代
+                print("two compiled len same")
+            
+        
         
         
         
     elif args.idir:
-        input_path = 'data/input_data'          
-        if not os.path.isdir(input_path):  #創建一個input_data資料夾
-            os.mkdir(input_path)
-        else:
-            shutil.rmtree(input_path)   #刪除並創建一個input_data資料夾
-            os.mkdir(input_path)
-                                             
-
+            
         for file in get_dir_files(args.idir):
             
-            shutil.copyfile(f'{args.idir}/{file}',f'{input_path}/{file}')
-        #將原輸入的資料複製一份到input_data資料夾
-               
-        for file in get_dir_files(input_path):
+            copy_file = 'copy.c'
+            copy_path = 'data'
+            shutil.copyfile(f'{args.idir}/{file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到copy.c
             print("filename:"+file)
             for i in range(5):
                 
-                if(code_fix(os.path.join(input_path, file),file)==1):
-                    
-                    shutil.copyfile(f'{input_path}/{file}',f'{sucees_fix_folder}/{file}')
-                    print("move to success folder")
+                if(i == 0 ):
+                    DrRepair_fix(f'{args.idir}/{file}')   #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
+                else:
+                    DrRepair_fix('data/DrRepair.c')
+                code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
+                DrRepair_len = len(compile_file('data/DrRepair.c'))       
+                coderepair_len = len(compile_file(os.path.join(copy_path ,copy_file)))
+                if (i>=4):#若修復五次
+                    shutil.copyfile(os.path.join(copy_path ,copy_file) ,f'{fail_fix_folder}/co_{file}')
+                    shutil.copyfile('data/DrRepair.c',f'{fail_fix_folder}/Dr_{file}')
+                    print("try over 5 times! fix error! move it to error data!") 
                     break
-                elif(code_fix(os.path.join(input_path, file),file)==2):
-                    #語法錯誤修復完compiler訊息長度不變 
-                    shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
-                    print("model fixco error ! fix error! move it to error data!") 
+                elif (DrRepair_len > coderepair_len):     #coderepair 修復後錯誤訊息較少
+                    if coderepair_len:           
+                        with open(os.path.join(copy_path ,copy_file), "r") as f:
+                            coderepair = f.read()
+                        with open('data/DrRepair.c', 'w') as f:
+                            f.write(coderepair)                        #將DrRepair.c 檔內容 用copy.c 檔內容取代
+                    else:
+                        shutil.copyfile(os.path.join(copy_path ,copy_file),f'{sucees_fix_folder}/{file}')
+                        print("coderepair compiled!")                             #coderepair 修復後無錯誤訊息
+                        break
+                elif(coderepair_len > DrRepair_len):    #DrRepair 修復後錯誤訊息較少
+                    if DrRepair_len:
+                        with open('data/DrRepair.c', "r") as f:
+                            DrRepair = f.read()
+                        with open(os.path.join(copy_path ,copy_file), "r") as f:
+                            f.write(DrRepair)                           #將copy.c 檔內容 用DrRepair.c 檔內容取代
+                    else:
+                        shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{file}')
+                        print("DrRepair compiled!")                             #DrRepair 修復後無錯誤訊息
+                        break
+                elif(coderepair_len == 0 and DrRepair_len == 0):
+                    #coderepair，DrRepair 修復後皆無錯誤訊息
+                    shutil.copyfile(os.path.join(copy_path ,copy_file),f'{two_sucees_folder}/co_{file}') #修復結果複製到two_sucees_folder資料夾
+                    shutil.copyfile('data/DrRepair.c',f'{two_sucees_folder}/Dr_{file}')
+                    print("two compiled!")
                     break
-                elif (i >= 4):  #若修復五次
-                    shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
-                    print("try over 5 times! fix error! move it to error data!")  
-        #程式修復流程
+                else:
+                    #coderepair，DrRepair 修復後錯誤訊息長度相同，則繼續迭代
+                    print("two compiled len same")
 
 
 def compile_file(file):
@@ -124,16 +187,18 @@ def DrRepair_fix(file):
     umsg = urllib.parse.quote(msg)
     command = f"curl http://140.135.13.120:3000/test3388/pred3389?q={umsg}"
     ans = os.popen(command).read()
+    
     with open('data/DrRepair.c', 'w') as f:
         f.write(ans)
-    quit()
+    
 
 if __name__ == '__main__':
     
-
-    sucees_fix_folder = 'data/sucess'
-    fail_fix_folder = 'data/fail'
+    two_sucees_folder = 'data/two_mix_sucess'
+    sucees_fix_folder = 'data/mix_sucess'
+    fail_fix_folder = 'data/mix_fail'
     
+    create_folder(two_sucees_folder)
     create_folder(sucees_fix_folder)
     create_folder(fail_fix_folder)
 
