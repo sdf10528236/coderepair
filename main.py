@@ -30,6 +30,7 @@ def get_dir_files(dir):
 def run_code_fix(args): #filepath, compiler_path="gcc"):
     
     if args.file:
+        
         print("please input folder")
         
         
