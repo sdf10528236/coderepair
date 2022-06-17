@@ -30,12 +30,12 @@ def run_compiler(args): #filepath, compiler_path="gcc"):
             print (result)
             if str_warning(result):
                 
-                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{cnt}.c')
+                shutil.copyfile(f'{args.idir}/{file}',f'../data/codinghere_printf_err_data/{cnt}.c')
                 cnt = cnt+1
             column = find_column(result,file)
             if find_printf_line(os.path.join(args.idir, file),column):
                 
-                shutil.copyfile(f'{args.idir}/{file}',f'pdata/{cnt}.c')
+                shutil.copyfile(f'{args.idir}/{file}',f'../data/codinghere_printf_err_data/{cnt}.c')
                 cnt = cnt+1
 
 
@@ -52,55 +52,45 @@ def find_printf_line(file,column):
                                     for m in regex.finditer('printf', line)]
                 print(printf_positions)
                 if(len(printf_positions) > 0):
-                    
-                    
-                   
-                    
-                    fix_line = line[printf_positions[0][0]:]
-                    print(fix_line)
-
-                    return check_printf_error(fix_line)
-                        
-       
-
-            
+                            
+                    return 1
 
             line_column = line_column+1
         #print(file_data)
     return 0    
             
-def check_printf_error(line):
-    file_data ='''
-        #include <stdio.h>
-        int main()
-        {
+# def check_printf_error(line):
+#     file_data ='''
+#         #include <stdio.h>
+#         int main()
+#         {
             
         
-        '''+f"{line}"+'''    return 0;
-        }'''
+#         '''+f"{line}"+'''    return 0;
+#         }'''
 
 
-    #print(file_data)
-    file_name = "test/temp.c"
-    with open(file_name, "w") as f:
-        f.write(file_data)
-    result = compile_file(file_name)
-    for text in result:
-        error_p = [m.span()for m in regex.finditer('error', text)]
-        warning_p = [m.span()for m in regex.finditer('warning', text)]
-        if(len(error_p ) or len(warning_p)):
-            undeclared_p = [m.span()
-                               for m in regex.finditer("undeclared", text)]
-            if(len(undeclared_p)):
-                print(text)
-                return 0
-            else:
-                print("!!!!!!!!!!!!!!!!!!!!")
-                print(text)
-                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-                return 1
+#     #print(file_data)
+#     file_name = "test/temp.c"
+#     with open(file_name, "w") as f:
+#         f.write(file_data)
+#     result = compile_file(file_name)
+#     for text in result:
+#         error_p = [m.span()for m in regex.finditer('error', text)]
+#         warning_p = [m.span()for m in regex.finditer('warning', text)]
+#         if(len(error_p ) or len(warning_p)):
+#             undeclared_p = [m.span()
+#                                for m in regex.finditer("undeclared", text)]
+#             if(len(undeclared_p)):
+#                 print(text)
+#                 return 0
+#             else:
+#                 print("!!!!!!!!!!!!!!!!!!!!")
+#                 print(text)
+#                 print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+#                 return 1
 
-    return 0
+#     return 0
               
 
         
@@ -150,7 +140,7 @@ def str_warning(warning_text):
                     string = text[position_start:position_end]
                     
                     
-                    if SequenceMatcher(None, "printf", string).ratio() > 0.7:
+                    if SequenceMatcher(None, "printf", string).ratio() > 0.5:
                         return 1
 
                    
