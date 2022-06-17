@@ -6,18 +6,7 @@ code = '''
 
 int main()
 {
-	int n;
-	scanf("%d", &n);
-	for(int i=0; i<n; i++){
-		if(n%i==0){
-			printf("No\n");
-			}
-		if(n%i!=0){
-			printf("Yes"\n);
-
-			}
-			
-		}
+	printf("Hello world")
 		
 
 	return 0;
@@ -37,7 +26,7 @@ data = {
 datastr = json.dumps(data) #.replace("'", "\\'")
 msg = base64.b64encode(datastr.encode())
 umsg = urllib.parse.quote(msg)
-command = f"curl http://140.135.13.120:3000/test3388/pred3388?q={umsg}"
+command = f"curl http://140.135.13.120:3000/test3388/pred3389?q={umsg}"
 ans = os.popen(command).read()
 with open('result.html', 'w') as f:
     f.write(ans)
