@@ -45,7 +45,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                 DrRepair_fix(args.file)   #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
             else:
                 DrRepair_fix('data/DrRepair.c')
-            for i in range(5):
+            for j in range(5):
                 code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
             DrRepair_len = len(compile_file('data/DrRepair.c'))       
             coderepair_len = len(compile_file(os.path.join(copy_path ,copy_file)))
@@ -102,7 +102,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                     DrRepair_fix(f'{args.idir}/{file}')   #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
                 else:
                     DrRepair_fix('data/DrRepair.c')
-                for i in range(5):
+                for j in range(5):
                     code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
  
                 DrRepair_len = len(compile_file('data/DrRepair.c'))       
@@ -126,7 +126,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                     if DrRepair_len:
                         with open('data/DrRepair.c', "r") as f:
                             DrRepair = f.read()
-                        with open(os.path.join(copy_path ,copy_file), "r") as f:
+                        with open(os.path.join(copy_path ,copy_file), "w") as f:
                             f.write(DrRepair)                           #將copy.c 檔內容 用DrRepair.c 檔內容取代
                     else:
                         shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{file}')
