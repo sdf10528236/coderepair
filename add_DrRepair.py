@@ -68,7 +68,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                 if DrRepair_len:
                     with open('data/DrRepair.c', "r") as f:
                         DrRepair = f.read()
-                    with open(os.path.join(copy_path ,copy_file), "r") as f:
+                    with open(os.path.join(copy_path ,copy_file), "w") as f:
                         f.write(DrRepair)                           #將copy.c 檔內容 用DrRepair.c 檔內容取代
                 else:
                     shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{args.file}')
