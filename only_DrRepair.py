@@ -56,7 +56,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                     print("DrRepair compiled!")
                     break
                 
-                elif DrRepair_len > 100:
+                elif DrRepair_len > 60:
                     shutil.copyfile('data/DrRepair.c',f'{fail_fix_folder}/{file}')
                     print("無法修復") 
                     break
@@ -95,8 +95,8 @@ def DrRepair_fix(file):
 if __name__ == '__main__':
     
  
-    sucees_fix_folder = 'data/Dr_sucess'
-    fail_fix_folder = 'data/Dr_fail'
+    sucees_fix_folder = 'data/no_printf_Dr_sucess'
+    fail_fix_folder = 'data/no_printf_Dr_fail'
     
     
     create_folder(sucees_fix_folder)
