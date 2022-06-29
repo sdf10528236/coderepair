@@ -49,6 +49,16 @@ ex.python only_DrRepair.py -i data/codinghere_err_data<br>
 *裡面的dir參數為修復成功與失敗的資料夾路徑
 ### token_dict.py
 -用來產生coderepair的程式碼標記化的字典
+### add_DrRepair.py
+-coderepair+DrRepair 修復流程的程式碼(-i 資料夾 )<br>
+下指令： ex. python add_DrRepair.py -i data/codinghere_err_data
+### mix_count.py
+-add_DrRepair.py跑完後,計算 coderepair+DrRepair 修復率的程式碼<br>
+### only_DrRepair.py.py
+-DrRepair 修復流程的程式碼(-i 資料夾 )<br>
+下指令： ex. python only_DrRepair.py -i data/codinghere_err_data
+### Dr_count.py
+-only_DrRepair.py跑完後,計算 DrRepair 修復率的程式碼<br>
 
 
 ## 資料夾
