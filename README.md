@@ -20,7 +20,7 @@
 ### coderepair+DrRepair
 1. **先從DATA中下載上述2.3.4.5.檔案，在coderepair中創建一個名為 data 的資料夾**。
 2. **將codinghere_err_data資料夾、printf_new.csv 放入data資料夾。** 
-3. **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
+   **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
 
 ### DrRepair
 
