@@ -10,20 +10,23 @@
 5. **codinghere_err_data資料夾** 裡面是codinghere程式平台編譯錯誤的資料(總共有16876筆)
 
 ## 第一次用看這裡
+
 ### coderepair
 1. **先從DATA中下載上述1.2.3.4.檔案，在coderepair中創建一個名為 data 的資料夾**。<br>
 2. **將p3data資料夾、printf_new.csv 放入data資料夾。**  <br>
 **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
 3. **下指令： python main.py -i ( 資料夾路徑 ) ，會開始跑修復流程。** ex.python main.py -i data/p3data<br> 
 (修復成功的檔案會複製到data/sucees資料夾;修復失敗會複製到data/fail資料夾)<br> 
-4. **main.py跑完後，輸入python count.py ，查看修復率**<br>  
+4. **main.py跑完後，輸入python count.py ，查看修復率**<br> 
+ 
 ### coderepair+DrRepair
 1. **先從DATA中下載上述2.3.4.5.檔案，在coderepair中創建一個名為 data 的資料夾**。<br>
 2. **將codinghere_err_data資料夾、printf_new.csv 放入data資料夾。** <br>
 **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
 3. **下指令： python add_DrRepair.py -i ( 資料夾路徑 ) ，會開始跑修復流程。** <br>
 ex.python add_DrRepair.py -i data/codinghere_err_data<br> 
-(兩個模型都修復成功的檔案會複製到data/two_mix_sucess資料夾;其中一個模型修復成功的檔案會複製到data/mix_sucess資料夾;修復失敗會複製到data/mix_fail資料夾)<br> 
+(兩個模型都修復成功的檔案會複製到data/two_mix_sucess資料夾;其中一個模型修復成功的檔案會複製到data/mix_sucess資料夾;修復失敗會複製到data/mix_fail資料夾)<br>
+4. **main.py跑完後，輸入python count.py ，查看修復率**<br>   
 
 ### DrRepair
 
