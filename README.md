@@ -42,13 +42,13 @@ ex.python only_DrRepair.py -i data/codinghere_err_data<br>
 ## 主程式
 
 ### main.py
--主要修復流程的程式碼(-i 資料夾 )<br>
+-coderepair 修復流程的程式碼(-i 資料夾 )<br>
 下指令： ex. python main.py -i data/p3data
 ### count.py 
--main.py跑完後,計算修復率的程式碼<br>
-*要用時,請先更改裡面的dir參數(資料夾路徑)
+-main.py跑完後,計算coderepair修復率的程式碼<br>
+*裡面的dir參數為修復成功與失敗的資料夾路徑
 ### token_dict.py
--用來產生程式碼標記化的字典
+-用來產生coderepair的程式碼標記化的字典
 
 
 ## 資料夾
