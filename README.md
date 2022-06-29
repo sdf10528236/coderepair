@@ -9,13 +9,16 @@
 4. **all_dicts.npy** 程式碼標記化的字典(由token_dict.py 產出)  
 
 ## 第一次用看這裡
-# coderepair
+### coderepair
 1. **先從DATA中下載上述1.2.3.4.檔案，在coderepair中創建一個名為 data 的資料夾**。
 2. **將p3data資料夾、printf_new.csv 放入data資料夾。**  
 **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
 3. **下指令： python main.py -i ( 資料夾路徑 ) ，會開始跑修復流程。** ex.python main.py -i data/p3data<br> 
 (修復成功的檔案會複製到data/sucees資料夾;修復失敗會複製到data/fail資料夾)<br> 
 4. **main.py跑完後，輸入python count.py ，查看修復率**<br>  
+### coderepair+DrRepair
+
+### DrRepair
 
 
 
