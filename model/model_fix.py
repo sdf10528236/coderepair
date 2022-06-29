@@ -265,9 +265,9 @@ def column_fix(old_file, new_file, column, model):
                                     for m in regex.finditer('}', wrong_str )]
                     
                     if len( break_positions ):
-                        wrong_str = line[printf_positions[0][0]:break_positions[0][0]]
+                        wrong_str = wrong_str[:break_positions[0][0]]
                     elif len( right_positions ):
-                        wrong_str = line[printf_positions[0][0]:right_positions[0][0]]
+                        wrong_str = wrong_str[:right_positions[0][0]]
                     print("model input: "+wrong_str)
                     try:
                         fix_line = predict_date_strs(wrong_str.strip(),model)

@@ -1,12 +1,9 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-int main()
-{
-    
-
-    
-	printf ( "%d"\n,sum);
-		
-    
-}
+#include <stdio.h>                                                        
+int main ( )                                                                  
+{       
+	if(a == 2 ){
+		printf("Yes") break; 
+	}                                                                                    
+	                                  
+	return 0 ;                                                                       
+}  

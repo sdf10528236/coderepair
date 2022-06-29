@@ -295,6 +295,7 @@ if __name__ == '__main__':
 
                    
                     wrong_str = line[printf_positions[0][0]:]
+                    print(wrong_str)
                     
                     
                     
@@ -302,11 +303,13 @@ if __name__ == '__main__':
                                     for m in regex.finditer('break', wrong_str )]
                     right_positions = [m.span()
                                     for m in regex.finditer('}', wrong_str )]
-                    if len( break_positions ):
-                        wrong_str = line[printf_positions[0][0]:break_positions[0][0]]
-                    elif len( right_positions ):
-                        wrong_str = line[printf_positions[0][0]:right_positions[0][0]]
 
+                    if len( break_positions ):
+                        wrong_str = wrong_str[:break_positions[0][0]]
+                        
+                    elif len( right_positions ):
+                        wrong_str = wrong_str[:right_positions[0][0]]
+                        
                     print("model input: "+ wrong_str )
 
 
