@@ -9,6 +9,7 @@
 4. **all_dicts.npy** 程式碼標記化的字典(由token_dict.py 產出)  
 
 ## 第一次用看這裡
+# coderepair
 1. **先從DATA中下載上述1.2.3.4.檔案，在coderepair中創建一個名為 data 的資料夾**。
 2. **將p3data資料夾、printf_new.csv 放入data資料夾。**  
 **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
@@ -16,11 +17,6 @@
 (修復成功的檔案會複製到data/sucees資料夾;修復失敗會複製到data/fail資料夾)<br> 
 4. **main.py跑完後，輸入python count.py ，查看修復率**<br>  
 
-
-## 若要更改模型
-**1. 進到model資料夾裡的model_train.py，修改checkpoint_path參數(訓練參數儲存的資料夾)，更改模型並進行訓練**<br>
-**2. 訓練好後，若是只想測試一下自己的模型訓練成果可以到model_test.py**裡，修改checkpoint_path參數(訓練參數除存的資料夾)，並啟用程式碼，會印出model input: 和 model output:。<br>(主要會使用model資料夾裡的c1.c檔做測試)<br>
-**3. 訓練好後，到model_fix.py的column_fix函式裡更改checkpoint_path參數(同model_train.py)，修改完後即可使用main.py**<br>
 
 
 # 資料夾、py檔 詳細說明
