@@ -7,6 +7,7 @@
 2. **printf_new.csv** 模型訊練的資料(由create_data 資料夾裡的create_printf_train_data.py 產出)  
 3. **training_token_printfnew資料夾** 模型訓練完後的參數
 4. **all_dicts.npy** 程式碼標記化的字典(由token_dict.py 產出)  
+5. **codinghere_err_data資料夾** 裡面是codinghere程式平台編譯錯誤的資料(總共有16876筆)
 
 ## 第一次用看這裡
 ### coderepair
@@ -17,6 +18,9 @@
 (修復成功的檔案會複製到data/sucees資料夾;修復失敗會複製到data/fail資料夾)<br> 
 4. **main.py跑完後，輸入python count.py ，查看修復率**<br>  
 ### coderepair+DrRepair
+1. **先從DATA中下載上述2.3.4.5.檔案，在coderepair中創建一個名為 data 的資料夾**。
+2. **將codinghere_err_data資料夾、printf_new.csv 放入data資料夾。** 
+3. **將training_token_printfnew資料夾、all_dicts.npy 放入model資料夾。**<br>
 
 ### DrRepair
 
