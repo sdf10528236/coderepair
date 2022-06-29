@@ -20,6 +20,9 @@ def create_folder(path):
     
     if not os.path.isdir(path):
         os.mkdir(path)
+    else:
+        shutil.rmtree(path)
+        os.mkdir(path)
 
 
 def get_dir_files(dir):

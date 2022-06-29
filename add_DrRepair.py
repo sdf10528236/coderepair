@@ -24,7 +24,9 @@ def create_folder(path):
     
     if not os.path.isdir(path):
         os.mkdir(path)
-    
+    else:
+        shutil.rmtree(path)
+        os.mkdir(path)
 
 def get_dir_files(dir):
     files = [f for f in os.listdir(dir) if os.path.isfile(os.path.join(dir, f)) and f[-1:]=='c']
