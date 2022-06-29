@@ -46,7 +46,13 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
             else:
                 DrRepair_fix('data/DrRepair.c')
             for j in range(5):
+                with open(os.path.join(copy_path ,copy_file), "r") as f:
+                    old_code = f.read()
                 code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
+                with open(os.path.join(copy_path ,copy_file), "r") as f:
+                        new_code = f.read()
+                if old_code.split() == new_code.split():
+                    break
             DrRepair_len = len(compile_file('data/DrRepair.c'))       
             coderepair_len = len(compile_file(os.path.join(copy_path ,copy_file)))
             if (i>=4):#若修復五次
@@ -103,7 +109,14 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                 else:
                     DrRepair_fix('data/DrRepair.c')
                 for j in range(5):
+                    with open(os.path.join(copy_path ,copy_file), "r") as f:
+                        old_code = f.read()
                     code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
+                    with open(os.path.join(copy_path ,copy_file), "r") as f:
+                        new_code = f.read()
+                    if old_code.split() == new_code.split():
+                        print("coderepair break!")
+                        break
  
                 DrRepair_len = len(compile_file('data/DrRepair.c'))       
                 coderepair_len = len(compile_file(os.path.join(copy_path ,copy_file)))
