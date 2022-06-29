@@ -7,13 +7,13 @@ fail_count = 0
 
 
 
-dir = 'data/Dr_sucess'  #修復成功程式碼的資料夾
+dir = 'data/sucess'  #修復成功程式碼的資料夾
 for path in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, path)):
         correct_count += 1
 
 
-dir = 'data/Dr_fail'   #修復失敗程式碼的資料夾
+dir = 'data/fail'   #修復失敗程式碼的資料夾
 for path in os.listdir(dir):
     if os.path.isfile(os.path.join(dir, path)):
         fail_count += 1

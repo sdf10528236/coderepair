@@ -34,7 +34,7 @@ ex.python add_DrRepair.py -i data/codinghere_err_data<br>
 3. **下指令： python only_DrRepair.py -i ( 資料夾路徑 ) ，會開始跑修復流程。** <br>
 ex.python only_DrRepair.py -i data/codinghere_err_data<br> 
 (修復成功的檔案會複製到data/Dr_sucess資料夾;修復失敗會複製到data/Dr_fail資料夾)<br> 
-4. **only_DrRepair.py跑完後，輸入python mix_count.py ，查看修復率**<br>  
+4. **only_DrRepair.py跑完後，輸入python Dr_count.py ，查看修復率**<br>  
 
 
 # 資料夾、py檔 詳細說明
