@@ -95,8 +95,8 @@ def DrRepair_fix(file):
 if __name__ == '__main__':
     
  
-    sucees_fix_folder = 'data/no_printf_Dr_sucess'
-    fail_fix_folder = 'data/no_printf_Dr_fail'
+    sucees_fix_folder = 'data/Dr_sucess'
+    fail_fix_folder = 'data/Dr_fail'
     
     
     create_folder(sucees_fix_folder)
