@@ -20,7 +20,7 @@ if __name__ == '__main__':
             filepath = path + "/" + file
             
             
-            shutil.copyfile(f'{filepath }',f'../data/codinghere_err_data/{sum}')  #複製並移動檔案
+            shutil.copyfile(f'{filepath }',f'../data/codinghere_err_data/{sum}.c')  #複製並移動檔案
             sum = sum+1    
 
     # all_list = os.listdir('/home/laz/Program/coderepair/compiler/pdata')
