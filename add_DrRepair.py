@@ -20,7 +20,7 @@ latest = tf.train.latest_checkpoint(checkpoint_dir)
 model = create_model()
 model.load_weights(latest)
 
-def create_folder(path):
+def create_folder(path):    #創建資料夾，不論原本有沒有此資料夾，都會重新創建一個
     
     if not os.path.isdir(path):
         os.mkdir(path)
@@ -35,25 +35,24 @@ def get_dir_files(dir):
 
 def run_code_fix(args): #filepath, compiler_path="gcc"):
     
-    if args.file:
+    if args.file:               #若輸入為檔案
         code = ""
         copy_file = 'copy.c'
         copy_path = 'data'
-        shutil.copyfile(f'{args.file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到copy.c
+        shutil.copyfile(f'{args.file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到data/copy.c 供coderepair修復, 避免修復過程更動到原檔案
+        shutil.copyfile(f'{args.file}','data/DrRepair.c') #將原檔案複製一份到data/DrRepair.c 供DrRepair修復, 避免修復過程更動到原檔案
         
 
         for i in range(5):
-            if(i == 0 ):
-                DrRepair_fix(args.file)   #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
-            else:
-                DrRepair_fix('data/DrRepair.c')
+            DrRepair_fix('data/DrRepair.c') #跑DrRepair 模型,跑完結果在 data/DrRepair.c 
+
             for j in range(5):
                 with open(os.path.join(copy_path ,copy_file), "r") as f:
-                    old_code = f.read()
-                code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
+                    old_code = f.read()         #將尚未送入coderepair之程式碼儲存            
+                code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data/copy.c  
                 with open(os.path.join(copy_path ,copy_file), "r") as f:
-                        new_code = f.read()
-                if old_code.split() == new_code.split():
+                        new_code = f.read()     #將coderepair輸出之程式碼儲存   
+                if old_code.split() == new_code.split():   #若coderepair輸出之程式碼與原程式碼相同則跳出迴圈
                     break
             DrRepair_len = len(compile_file('data/DrRepair.c'))       
             coderepair_len = len(compile_file(os.path.join(copy_path ,copy_file)))
@@ -70,7 +69,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                         f.write(coderepair)                        #將DrRepair.c 檔內容 用copy.c 檔內容取代
                 else:
                     shutil.copyfile(os.path.join(copy_path ,copy_file),f'{sucees_fix_folder}/{args.file}')
-                    print("coderepair compiled!")                             #coderepair 修復後無錯誤訊息
+                    print("coderepair compiled!")                             #coderepair 修復後無錯誤訊息,表示修復成功
                     break
             elif(coderepair_len > DrRepair_len):    #DrRepair 修復後錯誤訊息較少
                 if DrRepair_len:
@@ -80,7 +79,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                         f.write(DrRepair)                           #將copy.c 檔內容 用DrRepair.c 檔內容取代
                 else:
                     shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{args.file}')
-                    print("DrRepair compiled!")                             #DrRepair 修復後無錯誤訊息
+                    print("DrRepair compiled!")                             #DrRepair 修復後無錯誤訊息,表示修復成功
                     break
             elif(coderepair_len == 0 and DrRepair_len == 0):
                  #coderepair，DrRepair 修復後皆無錯誤訊息
@@ -96,27 +95,27 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
         
         
         
-    elif args.idir:
+    elif args.idir:    #若輸入為資料夾
             
         for file in get_dir_files(args.idir):
             
             copy_file = 'copy.c'
             copy_path = 'data'
-            shutil.copyfile(f'{args.idir}/{file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到copy.c
+            shutil.copyfile(f'{args.idir}/{file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到data/copy.c 供coderepair修復, 避免修復過程更動到原檔案
+            shutil.copyfile(f'{args.file}','data/DrRepair.c') #將原檔案複製一份到data/DrRepair.c 供DrRepair修復, 避免修復過程更動到原檔案
             print("filename:"+file)
+
             for i in range(5):
                 
-                if(i == 0 ):
-                    DrRepair_fix(f'{args.idir}/{file}')   #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
-                else:
-                    DrRepair_fix('data/DrRepair.c')
+                DrRepair_fix('data/DrRepair.c') #跑DrRepair 模型,跑完結果在 data/DrRepair.c 
+        
                 for j in range(5):
                     with open(os.path.join(copy_path ,copy_file), "r") as f:
-                        old_code = f.read()
-                    code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data資料夾 裡的 copy.c 檔 
+                        old_code = f.read()     #將尚未送入coderepair之程式碼儲存   
+                    code_fix(os.path.join(copy_path ,copy_file) ,copy_file)  #跑coderepair 模型,跑完結果在 data/copy.c  
                     with open(os.path.join(copy_path ,copy_file), "r") as f:
-                        new_code = f.read()
-                    if old_code.split() == new_code.split():
+                        new_code = f.read()     #將coderepair輸出之程式碼儲存 
+                    if old_code.split() == new_code.split():    #若coderepair輸出之程式碼與原程式碼相同則跳出迴圈
                         print("coderepair break!")
                         break
  
@@ -135,7 +134,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                             f.write(coderepair)                        #將DrRepair.c 檔內容 用copy.c 檔內容取代
                     else:
                         shutil.copyfile(os.path.join(copy_path ,copy_file),f'{sucees_fix_folder}/{file}')
-                        print("coderepair compiled!")                             #coderepair 修復後無錯誤訊息
+                        print("coderepair compiled!")                             #coderepair 修復後無錯誤訊息,表示修復成功
                         break
                 elif(coderepair_len > DrRepair_len):    #DrRepair 修復後錯誤訊息較少
                     if DrRepair_len:
@@ -145,7 +144,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                             f.write(DrRepair)                           #將copy.c 檔內容 用DrRepair.c 檔內容取代
                     else:
                         shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{file}')
-                        print("DrRepair compiled!")                             #DrRepair 修復後無錯誤訊息
+                        print("DrRepair compiled!")                             #DrRepair 修復後無錯誤訊息,表示修復成功
                         break
                 elif(coderepair_len == 0 and DrRepair_len == 0):
                     #coderepair，DrRepair 修復後皆無錯誤訊息
@@ -216,7 +215,7 @@ if __name__ == '__main__':
     sucees_fix_folder = 'data/mix_sucess'
     fail_fix_folder = 'data/mix_fail'
     
-    create_folder(two_sucees_folder)
+    create_folder(two_sucees_folder) #創建資料夾，不論原本有沒有此資料夾，都會重新創建一個
     create_folder(sucees_fix_folder)
     create_folder(fail_fix_folder)
 

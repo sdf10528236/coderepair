@@ -10,7 +10,7 @@ import urllib.parse
 
 
 
-def create_folder(path):
+def create_folder(path):        #創建資料夾，不論原本有沒有此資料夾，都會重新創建一個
     
     if not os.path.isdir(path):
         os.mkdir(path)
@@ -25,43 +25,40 @@ def get_dir_files(dir):
 
 def run_code_fix(args): #filepath, compiler_path="gcc"):
     
-    if args.file:
+    if args.file:     #若輸入為檔案
         print("請輸入資料夾")
         
         
         
         
-    elif args.idir:
+    elif args.idir:      #若輸入為資料夾
             
         for file in get_dir_files(args.idir):
             
-            copy_file = 'DrRepair.c'
+            copy_file = 'onlyDrRepair.c'
             copy_path = 'data'
-            shutil.copyfile(f'{args.idir}/{file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到DrRepair.c
+            err_file = os.path.join(copy_path ,copy_file)
+            shutil.copyfile(f'{args.idir}/{file}',err_file) #將原檔案複製一份到data/onlyDrRepair.c 供DrRepair修復, 避免修復過程更動到原檔案
             print("filename:"+file)
             for i in range(5):
                 
                 
                 
-                DrRepair_fix('data/DrRepair.c')    #跑DrRepair 模型,跑完結果在 data資料夾 裡的 DrRepair.c 檔 
+                DrRepair_fix(err_file)    #跑DrRepair 模型,跑完結果在 data/onlyDrRepair.c 檔 
                  
-                DrRepair_len = len(compile_file('data/DrRepair.c'))       
+                DrRepair_len = len(compile_file(err_file))       
                 
                 if (i>=4):#若修復五次
                     
-                    shutil.copyfile('data/DrRepair.c',f'{fail_fix_folder}/{file}')
+                    shutil.copyfile(err_file,f'{fail_fix_folder}/{file}')
                     print("try over 5 times! fix error! move it to error data!") 
                     break
                 elif DrRepair_len == 0:
-                    shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{file}')
+                    shutil.copyfile(err_file,f'{sucees_fix_folder}/{file}')
                     #DrRepair 修復後無錯誤訊息
                     print("DrRepair compiled!")
                     break
                 
-                elif DrRepair_len > 60:
-                    shutil.copyfile('data/DrRepair.c',f'{fail_fix_folder}/{file}')
-                    print("無法修復") 
-                    break
                 
                    
 
@@ -90,7 +87,7 @@ def DrRepair_fix(file):
     command = f"curl http://140.135.13.120:3000/test3388/pred3389?q={umsg}"
     ans = os.popen(command).read()
     
-    with open('data/DrRepair.c', 'w') as f:
+    with open(file, 'w') as f:
         f.write(ans)
     
 
@@ -101,7 +98,7 @@ if __name__ == '__main__':
     fail_fix_folder = 'data/Dr_fail'
     
     
-    create_folder(sucees_fix_folder)
+    create_folder(sucees_fix_folder)    #創建資料夾，不論原本有沒有此資料夾，都會重新創建一個
     create_folder(fail_fix_folder)
 
 
