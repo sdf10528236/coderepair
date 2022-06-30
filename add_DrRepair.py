@@ -102,7 +102,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
             copy_file = 'copy.c'
             copy_path = 'data'
             shutil.copyfile(f'{args.idir}/{file}',os.path.join(copy_path ,copy_file)) #將原檔案複製一份到data/copy.c 供coderepair修復, 避免修復過程更動到原檔案
-            shutil.copyfile(f'{args.file}','data/DrRepair.c') #將原檔案複製一份到data/DrRepair.c 供DrRepair修復, 避免修復過程更動到原檔案
+            shutil.copyfile(f'{args.idir}/{file}','data/DrRepair.c') #將原檔案複製一份到data/DrRepair.c 供DrRepair修復, 避免修復過程更動到原檔案
             print("filename:"+file)
 
             for i in range(5):
