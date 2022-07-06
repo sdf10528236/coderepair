@@ -16,7 +16,7 @@ limitations under the License.
 """
 
 import collections
-import regex as re
+import re
 
 from util.tokenizer import Tokenizer, UnexpectedTokenException, EmptyProgramException
 
