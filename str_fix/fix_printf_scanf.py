@@ -12,18 +12,15 @@ def fix_str(old_file, new_file, printf_fix_line):
         print("no str error!")
         return 0
     with open(old_file, "r") as f:
-
         for line in f:
             if str(line_column) in printf_fix_line:
                 line = line.replace(
                     printf_fix_line[str(line_column)], "printf")
             
             file_data += line
-
             line_column = line_column+1
     with open(new_file, "w") as f:
         f.write(file_data)
-
 
 def run_compiler(path):
     p = subprocess.run(
@@ -73,13 +70,11 @@ def str_warning(filename, warning_text):
     return printf_fix_line
 
 
-def auto_fix_str(file_path,new_file, filename):
-    warning_text = run_compiler(file_path)
+def auto_fix_str(file_path, new_file, filename, compile_result):
+    #warning_text = run_compiler(file_path)
 
-    printf_fix_line = str_warning(filename, warning_text)
-
-    fix_str(file_path,
-            new_file, printf_fix_line)
+    printf_fix_line = str_warning(filename, compile_result)
+    fix_str(file_path, new_file, printf_fix_line)
 
 
 if __name__ == '__main__':

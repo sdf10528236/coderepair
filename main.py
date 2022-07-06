@@ -54,41 +54,38 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
         for file in get_dir_files(input_path):
             print("filename:"+file)
             for i in range(5):
-                
-                if(code_fix(os.path.join(input_path, file),file)==1):
-                    
-                    shutil.copyfile(f'{input_path}/{file}',f'{sucees_fix_folder}/{file}')
+                fullpath = os.path.join(input_path, file)
+                if(code_fix(fullpath, file)==1):
+                    shutil.copyfile(fullpath, f'{sucees_fix_folder}/{file}')
                     print("move to success folder")
                     break
-                elif(code_fix(os.path.join(input_path, file),file)==2):
-                    shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
+                elif(code_fix(fullpath, file)==2):
+                    shutil.copyfile(fullpath, f'{fail_fix_folder}/{file}')
                     print("model fixco error ! fix error! move it to error data!") 
                     break
                 elif (i == 4):  #若修復五次
-                    shutil.copyfile(f'{input_path}/{file}',f'{fail_fix_folder}/{file}')
+                    shutil.copyfile(fullpath, f'{fail_fix_folder}/{file}')
                     print("try over 5 times! fix error! move it to error data!")  
         #程式修復流程
-
 
 def compile_file(file):
     p = subprocess.run(['gcc', file], capture_output=True)
     #print(p.stderr.decode("utf-8"))
     result = p.stderr.decode("utf-8").splitlines()
     return result
-            
-def code_fix(file_path,filename):
-    if (len(compile_file(file_path))):
-        
 
-        auto_fix_str(file_path,file_path,filename)
-    
-
-        if (len(compile_file(file_path))):
-            error_num = len(compile_file(file_path))
-            auto_model_fix(file_path,file_path,filename,model)
-            if (len(compile_file(file_path))== error_num):
+def code_fix(file_path, filename):
+    compile_result = compile_file(file_path)
+    if (len(compile_result)):
+        auto_fix_str(file_path, file_path, filename, compile_result)
+        compile_result = compile_file(file_path)
+        if (len(compile_result)):
+            error_num = len(compile_result)
+            auto_model_fix(file_path, file_path, filename, model, compile_result)
+            new_compile_result = compile_file(file_path)
+            if (len(new_compile_result)== error_num):
                 return 2
-            elif (len(compile_file(file_path))):
+            elif (len(new_compile_result)):
                 return 0
             else:
                 print("code fix success!")
@@ -100,6 +97,7 @@ def code_fix(file_path,filename):
     else:
         print("code fix success!")
         return 1
+
 
 if __name__ == '__main__':
     

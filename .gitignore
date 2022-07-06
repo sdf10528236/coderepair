@@ -2,6 +2,7 @@ create_data/test.py
 create_data/printf.py
 
 model/training_*
+model_test
 
 
 data/

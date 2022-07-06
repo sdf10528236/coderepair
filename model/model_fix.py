@@ -171,7 +171,7 @@ def prepare_date_strs_padded(date_strs):
 
 
 
-def predict_date_strs(date_strs,model):
+def predict_date_strs(date_strs, model):
     
     X = prepare_date_strs_padded(date_strs)
     #print(X)
@@ -187,6 +187,8 @@ def predict_date_strs(date_strs,model):
         Y_pred_next = tf.argmax(Y_probas_next, axis=-1, output_type=tf.int32)
         #print(Y_pred_next)
         Y_pred = tf.concat([Y_pred, Y_pred_next], axis=1)
+        if Y_pred_next.numpy()[0][0] == 0:
+            break
         #print(Y_pred)
     #print(Y_pred[:, 1:])
 
@@ -214,8 +216,6 @@ def find_column(warning_text, filename):
     column = []
     #print(warning_text)
     for text in warning_text:
-       
-       
         p = [m.span()for m in regex.finditer('error', text)]
         w = [m.span()for m in regex.finditer('warning', text)]
         if(len(p) > 0 or len(w)>0):
@@ -254,10 +254,7 @@ def column_fix(old_file, new_file, column, model):
                                     for m in regex.finditer('printf', line)]
                 if(len(printf_positions) > 0):
                     
-                    
-                    
                     wrong_str = line[printf_positions[0][0]:]
-
 
                     break_positions = [m.span()
                                     for m in regex.finditer('break', wrong_str )]
@@ -268,10 +265,9 @@ def column_fix(old_file, new_file, column, model):
                         wrong_str = wrong_str[:break_positions[0][0]]
                     elif len( right_positions ):
                         wrong_str = wrong_str[:right_positions[0][0]]
-                    print("model input: "+wrong_str)
+                    print("model input: "+wrong_str, end='')
                     try:
-                        fix_line = predict_date_strs(wrong_str.strip(),model)
-                        
+                        fix_line = predict_date_strs(wrong_str.strip(), model)
                         
                         print("model output: "+fix_line)
                         
@@ -280,8 +276,7 @@ def column_fix(old_file, new_file, column, model):
                         elif len( right_positions ):
                             fix_line =  fix_line + " }"
 
-                        line = line[:printf_positions[0][0]] + \
-                        fix_line + "\n"
+                        line = line[:printf_positions[0][0]] + fix_line + "\n"
                     except:
                         line = line
                         #print(INPUT_CHARS)
@@ -293,14 +288,10 @@ def column_fix(old_file, new_file, column, model):
         f.write(file_data)
 
 
-
-
-
-def auto_model_fix(folder_path, new_folder,filename,model):
+def auto_model_fix(folder_path, new_folder, filename, model, compile_result):
     
-    warning_text = run_compiler(folder_path)
-
-    column = find_column(warning_text, filename)
+    #warning_text = run_compiler(folder_path)
+    column = find_column(compile_result, filename)
     column_fix(folder_path, new_folder, column, model)
     
 df = pd.read_csv( f'{os.getcwd()}/data/printf_new.csv')
