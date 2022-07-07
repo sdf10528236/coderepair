@@ -215,9 +215,8 @@ class EvalModel:
         print("try over 5 times! fix error! move it to error data!")  
         return 0
     #程式修復流程
-    def coderepair_fix_file(self, dir, file):
-        print("\nFile:", file)
-        filepath = os.path.join(dir, file)
+    def coderepair_fix_file(self, filepath ):
+        print("\nFile:", filepath )
         fp = open(filepath, "r")
         self.code = fp.read()
         fp.close()        

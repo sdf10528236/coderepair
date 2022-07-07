@@ -56,11 +56,15 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
             print("filename:"+file)
 
             for i in range(5):
-                
-                DrRepair_fix(Dr_copy_path) #跑DrRepair 模型,跑完結果在 data/DrRepair.c 
-        
+                with open(Dr_copy_path, "r") as f:
+                    DrRepair_code = f.read()
+                if DrRepair_code != "抱歉，這個問題我目前還沒有辦法處理！":
+                    DrRepair_fix(Dr_copy_path,DrRepair_code) #跑DrRepair 模型,跑完結果在 data/DrRepair.c 
+                    with open(Dr_copy_path, "r") as f:
+                        DrRepair_code = f.read()
                 em.coderepair_fix_file(code_copy_path) #跑coderepair 模型,跑完結果在 data/copy.c 
- 
+                with open(code_copy_path, "r") as f:
+                    coderepair_code = f.read()
                 DrRepair_len = len(compile_file(Dr_copy_path))       
                 coderepair_len = len(compile_file(code_copy_path))
                 if (i>=4):#若修復五次
@@ -72,8 +76,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                     break
                 elif (DrRepair_len > coderepair_len):     #coderepair 修復後錯誤訊息較少
                     if coderepair_len:           
-                        with open(code_copy_path, "r") as f:
-                            coderepair_code = f.read()
+                        
                         write_to_file(Dr_copy_path,coderepair_code)                     #將DrRepair.c 檔內容 用copy.c 檔內容取代
                     else:
                         os.system(f"cp {code_copy_path} {sucees_fix_folder}/{file}") #coderepair 修復後無錯誤訊息,表示修復成功
@@ -82,8 +85,7 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
                         break
                 elif(coderepair_len > DrRepair_len):    #DrRepair 修復後錯誤訊息較少
                     if DrRepair_len:
-                        with open(Dr_copy_path, "r") as f:
-                            DrRepair_code = f.read()
+                       
                         write_to_file(code_copy_path,DrRepair_code)                             #將copy.c 檔內容 用DrRepair.c 檔內容取代
                     else:
                         #shutil.copyfile('data/DrRepair.c',f'{sucees_fix_folder}/{file}')
@@ -111,9 +113,7 @@ def compile_file(file):
     return result
             
 
-def DrRepair_fix(file):
-    with open(file, "r") as f:
-        code = f.read()
+def DrRepair_fix(file,code):
     
     data = {
         "probid": 'test001', # this.problem.id,
