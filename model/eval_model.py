@@ -1,5 +1,5 @@
 import os, subprocess
-import shutil, re
+import re
 from model.model_fix import auto_model_fix
 from difflib import SequenceMatcher
 import tensorflow as tf
@@ -213,6 +213,22 @@ class EvalModel:
                 return 0
         self.write_to_file(f'{fail_fix_folder}/{file}')
         print("try over 5 times! fix error! move it to error data!")  
+        return 0
+    #程式修復流程
+    def coderepair_fix_file(self, dir, file):
+        print("\nFile:", file)
+        filepath = os.path.join(dir, file)
+        fp = open(filepath, "r")
+        self.code = fp.read()
+        fp.close()        
+        for i in range(MAX_TIMES):
+            if(self.code_fix()==1):
+                self.write_to_file(filepath)
+                return 1
+            if(self.code_fix()==2):
+                self.write_to_file(filepath)
+                return 0
+        self.write_to_file(filepath)  
         return 0
     #程式修復流程
 
