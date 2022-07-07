@@ -27,17 +27,12 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
         print("Program start...")
         em = EvalModel(modelpath)
         input_path = 'data/input_data'          
-        if not os.path.isdir(input_path):
-            os.mkdir(input_path)
-        else:
-            shutil.rmtree(input_path)
-            os.mkdir(input_path)
+        create_folder(input_path)
         #創建一個input_data資料夾                                     
 
         os.system(f"cp {args.idir}/*.c {input_path}/")
-        # for file in get_dir_files(args.idir):
-        #     shutil.copyfile(f'{args.idir}/{file}',f'{input_path}/{file}')
         #將原輸入的資料複製一份到input_data資料夾
+        
         success, total = 0, 0
         for file in get_dir_files(input_path):
             success += em.try_fix_file(input_path, file)
