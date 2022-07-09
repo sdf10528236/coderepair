@@ -39,25 +39,21 @@ def run_code_fix(args): #filepath, compiler_path="gcc"):
             copy_path = 'data'
             err_file = os.path.join(copy_path ,copy_file)
             shutil.copyfile(f'{args.idir}/{file}',err_file) #將原檔案複製一份到data/onlyDrRepair.c 供DrRepair修復, 避免修復過程更動到原檔案
-            print("filename:"+file)
-            for i in range(5):
+            print("filename:"+file)   
+            DrRepair_fix(err_file)    #跑DrRepair 模型,跑完結果在 data/onlyDrRepair.c 檔 
+
+            DrRepair_len = len(compile_file(err_file))       
                 
+            if DrRepair_len:
+                #DrRepair 修復後還有錯誤訊息
+                shutil.copyfile(err_file,f'{fail_fix_folder}/{file}')
+                print("DrRepair fail!") 
                 
+            else:
+                shutil.copyfile(err_file,f'{sucees_fix_folder}/{file}')
+                #DrRepair 修復後無錯誤訊息
+                print("DrRepair compiled!")
                 
-                DrRepair_fix(err_file)    #跑DrRepair 模型,跑完結果在 data/onlyDrRepair.c 檔 
-                 
-                DrRepair_len = len(compile_file(err_file))       
-                
-                if (i>=4):#若修復五次
-                    
-                    shutil.copyfile(err_file,f'{fail_fix_folder}/{file}')
-                    print("try over 5 times! fix error! move it to error data!") 
-                    break
-                elif DrRepair_len == 0:
-                    shutil.copyfile(err_file,f'{sucees_fix_folder}/{file}')
-                    #DrRepair 修復後無錯誤訊息
-                    print("DrRepair compiled!")
-                    break
                 
                 
                    
