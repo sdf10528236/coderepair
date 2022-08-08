@@ -7,10 +7,11 @@ import tensorflow as tf
 import os
 from model_train import create_model 
 from util.c_tokenizer import C_Tokenizer
+from Dr_util.c_tokenizer import Dr_Tokenizer
 
 
 tokenize = C_Tokenizer().tokenize
-
+Dr_tokenize = Dr_Tokenizer().tokenize
 INPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 OUTPUT_CHARS = np.load('all_dicts.npy',allow_pickle=True).item()
 id_to_token_dict = {v:k for k,v in INPUT_CHARS.items()}
@@ -63,7 +64,7 @@ def find_column(warning_text, filename):
 def data_str_to_token(data_str):
     #print(data_str)
     tokenized_code, name_dict, name_seq,pa_dict,pa_sequence = tokenize(data_str)
-   
+    print(Dr_tokenize(data_str))
     tokenized_code_list = tokenized_code.split()
     
         

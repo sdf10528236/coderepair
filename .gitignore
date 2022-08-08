@@ -5,7 +5,7 @@ model/training_*
 model_test
 model/__pycache__
 str_dix/__pycache__
-
+test.py
 
 data/
 a.out
